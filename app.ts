@@ -1,7 +1,7 @@
 import {Application, Router, helpers, send} from 'https://deno.land/x/oak/mod.ts'
 import {DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import {existsSync} from 'https://deno.land/std/fs/mod.ts'
-import {search} from './src/search.ts'
+import {search} from './src/all.ts'
 
 //Default config
 let config = {

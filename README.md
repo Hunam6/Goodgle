@@ -22,6 +22,7 @@ For now just run `deno run --allow-net --allow-read --unstable app.ts`
 ### Contributing
 
 Hi and welcome! Contributing is very welcome! Every type of contribution is welcomed, just remember to follow the [GitHub Community Guidelines](https://docs.github.com/articles/github-community-guidelines).
+
 *PS: if you don't know where to start look at all the "TODO" comments (I recommend Todo Tree for VSCode).*
 
 ### License
