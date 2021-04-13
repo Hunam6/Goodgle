@@ -407,9 +407,11 @@
   <script>
     //Search functionality
     function search() {
-      location.search = 'q=' + document.querySelector('#search-bar').value.replace(' ', '+')
+      let params = new URLSearchParams(location.search)
+      params.set('q', document.querySelector('#search-bar').value.replace(' ', '+'))
+      location.search = params.toString()
     }
-    document.querySelector('#search-bar').addEventListener('keyup', (e) => event.keyCode === 13 ? document.querySelector('#search').click() : null)
+    document.querySelector('#search-bar').addEventListener('keyup', e => event.keyCode === 13 ? search() : null)
 
     //Previous & next buttons
     function prev() {
@@ -425,7 +427,7 @@
     //TODO: when hover an other menu item then #current "un-hover" the #current element
 
     //Menu links
-    document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search + el.getAttribute('href')))
+    document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search.split('&')[0] + el.getAttribute('href')))
   </script>
 </body>
 
