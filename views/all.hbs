@@ -110,10 +110,13 @@
 
     .menu:hover {
       text-decoration: none;
-      background: var(--darker);
+      background: var(--dark);
       color: var(--white);
-      transition: color 200ms ease-in-out;
-      font-weight: normal;
+    }
+
+    #current {
+      color: var(--white);
+      background: var(--dark);
     }
 
     main {
@@ -391,11 +394,15 @@
     </aside>
   {{/hasKnwlPanel}}
   <nav>
-    <a class="menu" href="#">All</a>
-    <a class="menu" href="#">Images</a>
-    <a class="menu" href="#">Videos</a>
-    <a class="menu" href="#">News</a>
-    <a class="menu" href="#">Maps</a>
+    <a class="menu" id="current"
+      href="&tab=all">All</a>
+    <a class="menu" href="&tab=images">Images</a>
+    <a class="menu" href="&tab=videos">Videos</a>
+    <a class="menu" href="&tab=news">News</a>
+    <a class="menu"
+      href="&tab=shopping">Shopping</a>
+    <a class="menu" href="&tab=books">Books</a>
+    <a class="menu" href="&tab=maps">Maps</a>
   </nav>
   <script>
     //Search functionality
@@ -412,8 +419,13 @@
       location.search = 'q=' + (new URLSearchParams(location.search).get('q')) + '&page=' + ((new URLSearchParams(location.search).has('page')) ? parseInt((new URLSearchParams(location.search).get('page'))) + 1 : 2)
     }
 
-    //mustache_ts no #if support workaround
+    //Manage the visibility of the previous button
     if (new URLSearchParams(location.search).has('page') && (new URLSearchParams(location.search).get('page')) === '1' || !new URLSearchParams(location.search).has('page')) document.querySelector('#prev').style.visibility = 'hidden'
+
+    //TODO: when hover an other menu item then #current "un-hover" the #current element
+
+    //Menu links
+    document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search + el.getAttribute('href')))
   </script>
 </body>
 
