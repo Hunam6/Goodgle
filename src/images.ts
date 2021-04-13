@@ -28,7 +28,10 @@ export const images = async (doc: Document) => {
   //Fix images link
   data.imgs.forEach(el => (el.url.includes('cdn.vox-cdn.com') ? (el.url = 'https://cdn.vox-cdn.com' + el.url.split('cdn.vox-cdn.com')[2]) : null))
   data.imgs.forEach(el => (el.url.includes('play-lh.googleusercontent.com') ? (el.url = el.url.split('\\')[0]) : null))
-  data.imgs.forEach(el => (el.url.includes('\u003d') ? (el.url = el.url.replace('\u003d', '=')) : null)) //TODO: Find why it's not working
+  data.imgs.forEach(el => el.url.replace('\u003d', '=')) //TODO: Find why it's not working
+  data.imgs.forEach(el => (el.url = el.url.split('/revision/latest')[0]))
+
+  //TODO: optimize images (see https://www.industrialempathy.com/posts/image-optimizations)
 
   return await renderFile('./views/images.hbs', data)
 }

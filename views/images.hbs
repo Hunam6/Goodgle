@@ -125,19 +125,13 @@
       justify-content: space-between;
     }
 
-    article {
-      background: var(--gray);
-      border-radius: 25px;
-      padding: .5rem .5rem 1rem .5rem;
-      border: 0.5px solid var(--border);
-      margin: .5rem;
-    }
-
-    article>img {
+    img {
       height: 8vw;
+      width: 100;
       border-radius: 5px;
       display: block;
       margin: .75rem auto;
+      content-visibility: auto;
     }
 
     .title {
@@ -178,14 +172,8 @@
   </header>
   <main>
     {{#imgs}}
-      <article>
-        <img loading="lazy" src={{url}}
-          alt={{title}}>
-        <a href="#" class="title">{{title}}</a>
-        <br>
-        <a href="#"
-          class="subtitle">{{subtitle}}</a>
-      </article>
+      <img loading="lazy" src={{url}}
+        alt={{title}}>
     {{/imgs}}
   </main>
   <nav>
