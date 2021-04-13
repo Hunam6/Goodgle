@@ -1,35 +1,22 @@
-import {DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
+import {Document} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 
-export const search = async (params: Record<string, string>) => {
-  //TODO: change results per page (& handle for start param)
-  const doc = new DOMParser().parseFromString(
-    await fetch('https://google.com/search?q=' + params.q + (params.page != undefined ? '&start='+ (parseInt(params.page)-1) + '0' : ''), {
-      headers: {
-        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41',
-        'accept-language': 'en-GB,en;q=0.9'
-      }
-    }).then(res => res.text()),
-    'text/html'
-  )!
-
-  interface KnwlPanel {
-    title: string
-    subtitle: string
-    desc: string
-    infos: Record<string, string>[]
-  }
-
+export const all = async (doc: Document) => {
   let data: {
     query: string
     firstResult: Record<string, string>
     firstResults: Record<string, string>[]
     results: Record<string, string>[]
     hasKnwlPanel: boolean
-    knwlPanel: KnwlPanel
+    knwlPanel: {
+      title: string
+      subtitle: string
+      desc: string
+      infos: Record<string, string>[]
+    }
     relatedSearchs: string[]
   } = {
-    query: params.q,
+    query: doc.querySelector('title')!.textContent.split(' - ')[0],
     firstResult: {},
     firstResults: [],
     results: [
@@ -69,5 +56,5 @@ export const search = async (params: Record<string, string>) => {
     //TODO: remove unwanted elements from knowledge panel infos (eg: q=toyota)
   } else data.hasKnwlPanel = false
 
-  return await renderFile('./views/index.hbs', data)
+  return await renderFile('./views/all.hbs', data)
 }

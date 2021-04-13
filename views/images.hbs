@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible"
+    content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+  <title>{{query}} - Goodgle</title>
+  <meta name="Description"
+    content="Goodgle images search page." />
+  <link rel="preconnect"
+    href="https://fonts.gstatic.com" />
+  <style type="text/css">
+    * {
+      outline: 0;
+      box-sizing: border-box;
+      font-family: 'Open Sans', sans-serif;
+      --white: #f5f5f5fa;
+      --gray: #f5f5f5;
+      --dark: #50505099;
+      --darker: #505050;
+      --border: #999999;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      position: fixed;
+      display: flex;
+      width: 40vw;
+      text-align: center;
+      border-radius: 100vw;
+      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
+      height: 3rem;
+      background: var(--white);
+    }
+
+    #home {
+      height: 1.5rem;
+      width: 1.5rem;
+      border-radius: 100vw;
+      border: 0.2rem solid var(--darker);
+      align-self: center;
+      margin-left: 2%;
+      cursor: pointer;
+      background: none;
+    }
+
+    #search-bar {
+      border-radius: 100vw;
+      border: 0;
+      width: 86%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      font-size: 1.15rem;
+      color: var(--darker);
+      font-weight: bold;
+      caret-color: var(--darker);
+      background: none;
+    }
+
+    #search {
+      background: url('/search-icon.svg');
+      height: 2rem;
+      width: 2rem;
+      border: 0;
+      align-self: center;
+      margin-right: 2%;
+      cursor: pointer;
+    }
+
+    nav {
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      position: fixed;
+      display: flex;
+      text-align: center;
+      border-radius: 100vw;
+      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
+      height: 3rem;
+      background: var(--white);
+      padding: 0.5rem;
+    }
+
+    .menu {
+      color: var(--darker);
+      align-self: center;
+      padding: 0.5rem 1.5rem;
+      border-radius: 100vw;
+      font-weight: bold;
+    }
+
+    .menu:hover {
+      text-decoration: none;
+      background: var(--darker);
+      color: var(--white);
+      transition: color 200ms ease-in-out;
+      font-weight: normal;
+    }
+
+    main {
+      margin: 6.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    article {
+      background: var(--gray);
+      border-radius: 25px;
+      padding: .5rem .5rem 1rem .5rem;
+      border: 0.5px solid var(--border);
+      margin: .5rem;
+    }
+
+    article>img {
+      height: 8vw;
+      border-radius: 5px;
+      display: block;
+      margin: .75rem auto;
+    }
+
+    .title {
+      color: var(--darker);
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: var(--dark);
+      font-weight: 600;
+      font-size: small;
+    }
+  </style>
+  {{!-- 
+  TODO: find a way to better present images (like the Google one for example)
+   --}}
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" />
+  </noscript>
+</head>
+
+<body>
+  <header>
+    <button id="home" aria-label="Home">
+      <div></div>
+    </button>
+    <input type="text" id="search-bar"
+      value={{query}} />
+    <button id="search" aria-label="Search"
+      onclick="search()">
+      <div></div>
+    </button>
+  </header>
+  <main>
+    {{#imgs}}
+      <article>
+        <img loading="lazy" src={{url}}
+          alt={{title}}>
+        <a href="#" class="title">{{title}}</a>
+        <br>
+        <a href="#"
+          class="subtitle">{{subtitle}}</a>
+      </article>
+    {{/imgs}}
+  </main>
+  <nav>
+    <a class="menu" href="#">All</a>
+    <a class="menu" href="#">Images</a>
+    <a class="menu" href="#">Videos</a>
+    <a class="menu" href="#">News</a>
+    <a class="menu" href="#">Maps</a>
+  </nav>
+</body>
+
+</html>
