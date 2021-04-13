@@ -16,7 +16,7 @@ export const all = async (doc: Document) => {
     }
     relatedSearchs: string[]
   } = {
-    query: doc.querySelector('title')!.textContent.split(' - ')[0], //TODO: fix for "I'm testing right now" for example, only the first word gets displayed
+    query: doc.querySelector('title')!.textContent.split(' - ')[0],
     firstResult: {},
     firstResults: [],
     results: [
@@ -34,6 +34,8 @@ export const all = async (doc: Document) => {
     },
     relatedSearchs: []
   }
+
+  //TODO: err 500 if q=uwu
 
   doc.querySelectorAll('.LC20lb.DKV0Md').forEach((el, i) => (data.results[i] = {title: el.textContent})) //results title
   doc.querySelectorAll('.aCOpRe').forEach((el, i) => (data.results[i].desc = el.textContent)) //results description

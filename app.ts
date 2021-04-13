@@ -7,6 +7,7 @@ import {images} from './src/images.ts'
 
 const search = async (params: Record<string, string>) => {
   //TODO: handle lang switch (from config or url)
+  //TODO: proxy support
   let url = 'https://google.com/search?q=' + params.q
   if (params.page != undefined) url += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
 

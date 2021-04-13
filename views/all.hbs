@@ -316,7 +316,7 @@
       <div></div>
     </button>
     <input type="text" id="search-bar"
-      value={{query}} />
+      value="{{query}}" />
     <button id="search" aria-label="Search"
       onclick="search()">
       <div></div>
@@ -325,17 +325,17 @@
   <main>
     <article>
       <a class="link-title"
-        href={{firstResult.link}}>{{firstResult.title}}</a>
+        href="{{firstResult.link}}">{{firstResult.title}}</a>
       <br />
       <a class="link"
-        href={{firstResult.link}}>{{firstResult.shownLink}}</a>
+        href="{{firstResult.link}}">{{firstResult.shownLink}}</a>
       <p class="link-text">{{firstResult.desc}}
       </p>
       <div class="sub-results">
         {{#firstResults}}
           <article>
             <a class="link-title"
-              href={{link}}>{{title}}</a>
+              href="{{link}}">{{title}}</a>
             <p class="link-text">{{desc}}</p>
           </article>
         {{/firstResults}}
@@ -345,10 +345,10 @@
     {{#results}}
       <article>
         <a class="link-title"
-          href={{link}}>{{title}}</a>
+          href="{{link}}">{{title}}</a>
         <br />
         <a class="link"
-          href={{link}}>{{shownLink}}</a>
+          href="{{link}}">{{shownLink}}</a>
         <p class="link-text">{{desc}}</p>
       </article>
     {{/results}}
@@ -445,6 +445,7 @@
     function search() {
       let params = new URLSearchParams(location.search)
       params.set('q', document.querySelector('#search-bar').value.replace(' ', '+'))
+      if(params.has('page')) params.delete('page')
       location.search = params.toString()
     }
     document.querySelector('#search-bar').addEventListener('keyup', e => event.keyCode === 13 ? search() : null)
