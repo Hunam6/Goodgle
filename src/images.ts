@@ -2,6 +2,7 @@ import {Document} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 
 export const images = async (doc: Document) => {
+  //TODO: add credit to original script author
   function imgRefs(content: string) {
     const refs = []
     const re = /\["(http.+?)",(\d+),(\d+)\]/g

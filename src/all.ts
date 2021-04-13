@@ -47,7 +47,8 @@ export const all = async (doc: Document) => {
   doc.querySelectorAll('.st').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
   doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i].link = el.parentElement!.children[0].getAttribute('href')!)) //first results link
   data.firstResults = data.firstResults.slice(0, 4) //Better visibility
-  if (doc.querySelector('.qrShPb') !== null) {
+  
+  if (doc.querySelector('.wwUB2c') !== null) {
     data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //knowledge panel title
     data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //knowledge panel subtitle
     if (doc.querySelector('.kno-rdesc')! !== null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //knowledge panel description
