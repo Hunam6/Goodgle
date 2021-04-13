@@ -1,36 +1,24 @@
 import {Application, Router, helpers, send} from 'https://deno.land/x/oak/mod.ts'
 import {existsSync} from 'https://deno.land/std/fs/mod.ts'
 import {DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
+import 'https://deno.land/x/dotenv/load.ts'
 import {all} from './src/all.ts'
 import {images} from './src/images.ts'
-
-//TODO: maybe switch to .env config
-//Default config
-let config = {
-  secure: {
-    certFile: '',
-    keyFile: ''
-  },
-  port: 8000
-}
-if (existsSync('./goodgle.config.ts')) config = await import('./goodgle.config.ts').then(res => res.config) //TODO: handle just some configs changed, like only the cert
 
 const search = async (params: Record<string, string>) => {
   //TODO: handle lang switch (from config or url)
   let url = 'https://google.com/search?q=' + params.q
   if (params.page != undefined) url += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
 
-  const getDoc = async (url: string) => {
-    return new DOMParser().parseFromString(
+  const getDoc = async (url: string) =>
+    new DOMParser().parseFromString(
       await fetch(url, {
         headers: {
-          'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41',
-          'accept-language': 'en-GB,en;q=0.9'
+          'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41'
         }
       }).then(res => res.text()),
       'text/html'
     )!
-  }
 
   //Handle tabs
   switch (params.tab) {
@@ -63,7 +51,7 @@ const router = new Router()
 app.addEventListener('listen', () => console.log('Server started'))
 router
   .get('/', ctx => {
-    ctx.response.redirect('/search') //TODO: make a home page, probably need a logo for this, a placeholder for now
+    ctx.response.redirect('/search') //TODO: make a home page, probably need a logo for this, a placeholder would do the job for now
   })
   .get('/search', async ctx => {
     ctx.response.body = await search(helpers.getQuery(ctx))
@@ -76,6 +64,16 @@ router
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-if ((config.secure.certFile || config.secure.keyFile) === '') await app.listen({port: config.port})
-else await app.listen({port: config.port, secure: true, certFile: config.secure.certFile, keyFile: config.secure.keyFile})
+const config = {
+  port: Deno.env.get('PORT') != undefined ? parseInt(Deno.env.get('PORT')!) : 8000,
+  secure: false,
+  certFile: '',
+  keyFile: ''
+}
+if ((Deno.env.get('CERT_FILE')! || Deno.env.get('KEY_FILE')! != undefined) && existsSync(Deno.env.get('CERT_FILE')!) && existsSync(Deno.env.get('KEY_FILE')!)) {
+  config.secure = true
+  config.certFile = Deno.env.get('CERT_FILE')!.toString()
+  config.keyFile = Deno.env.get('KEY_FILE')!.toString()
+}
+await app.listen(config)
 //TODO: http to https
