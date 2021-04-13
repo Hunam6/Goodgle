@@ -16,7 +16,7 @@ export const all = async (doc: Document) => {
     }
     relatedSearchs: string[]
   } = {
-    query: doc.querySelector('title')!.textContent.split(' - ')[0],
+    query: doc.querySelector('title')!.textContent.split(' - ')[0], //TODO: fix for "I'm testing right now" for example, only the first word gets displayed
     firstResult: {},
     firstResults: [],
     results: [

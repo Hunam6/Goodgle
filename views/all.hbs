@@ -12,7 +12,6 @@
     content="Goodgle search page." />
   <link rel="preconnect"
     href="https://fonts.gstatic.com" />
-  {{!-- TODO: mobile support --}}
   <style type="text/css">
     * {
       outline: 0;
@@ -43,7 +42,7 @@
       transform: translateX(-50%);
       position: fixed;
       display: flex;
-      width: 40vw;
+      width: 90%;
       text-align: center;
       border-radius: 100vw;
       box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
@@ -98,14 +97,18 @@
       height: 3rem;
       background: var(--white);
       padding: 0.5rem;
+      width: 90%;
+      overflow-x: scroll;
+      overflow-y: hidden;
     }
 
     .menu {
       color: var(--darker);
       align-self: center;
-      padding: 0.5rem 1.5rem;
+      padding: 0.5rem 1rem;
       border-radius: 100vw;
       font-weight: bold;
+      font-size: .75rem;
     }
 
     .menu:hover {
@@ -120,12 +123,12 @@
     }
 
     main {
-      margin: 6.5rem 0 2rem;
+      margin: 6.5rem 0 -1rem;
     }
 
     article {
       background: var(--gray);
-      width: 50%;
+      width: 90%;
       border-radius: 25px;
       padding: 1rem;
       margin: 1.5rem auto;
@@ -155,8 +158,8 @@
     }
 
     footer {
-      width: 50%;
-      margin: 0 auto;
+      width: 95%;
+      margin: 0 auto 3rem;
     }
 
     footer>button {
@@ -171,7 +174,7 @@
 
     #next {
       position: absolute;
-      right: 25%;
+      right: 2.5%;
     }
 
     footer>button>div {
@@ -262,6 +265,39 @@
     figcaption>a>p {
       margin: 0;
       color: var(--dark);
+    }
+
+    @media (min-width: 1024px) {
+      header {
+        width: 40vw;
+      }
+
+      article {
+        width: 50%;
+      }
+
+      nav {
+        width: auto;
+        overflow-x: auto;
+      }
+
+      main {
+        margin: 6.5rem 0 2rem;
+      }
+
+      .menu {
+        font-size: 1rem;
+        padding: 0.5rem 1.5rem;
+      }
+
+      footer {
+        width: 50%;
+        margin: 0 auto;
+      }
+
+      #next {
+        right: 25%;
+      }
     }
   </style>
   <link rel="preload"
