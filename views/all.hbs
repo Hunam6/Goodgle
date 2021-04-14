@@ -25,7 +25,7 @@
     }
 
     body {
-      margin: 0;
+      margin: 6.5rem 0 0;
     }
 
     a {
@@ -85,45 +85,37 @@
       cursor: pointer;
     }
 
-    nav {
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      position: fixed;
-      display: flex;
-      text-align: center;
-      border-radius: 100vw;
-      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
-      height: 3rem;
-      background: var(--white);
-      padding: 0.5rem;
+    aside {
+      margin: 0 auto;
+      background: var(--gray);
+      border: 0.5px solid var(--border);
       width: 90%;
-      overflow-x: scroll;
-      overflow-y: hidden;
-    }
-
-    .menu {
-      color: var(--darker);
-      align-self: center;
+      border-radius: 25px;
       padding: 0.5rem 1rem;
-      border-radius: 100vw;
-      font-weight: bold;
-      font-size: .75rem;
     }
 
-    .menu:hover {
-      text-decoration: none;
-      background: var(--dark);
-      color: var(--white);
+    h2 {
+      margin: 0;
+      color: var(--darker);
     }
 
-    #current {
-      color: var(--white);
-      background: var(--dark);
+    .subtitle {
+      margin: 0;
+      font-weight: normal;
+      color: var(--dark);
+    }
+
+    aside>p>b {
+      color: var(--darker);
+      font-weight: 600;
+    }
+
+    aside>p {
+      color: var(--dark);
     }
 
     main {
-      margin: 6.5rem 0 -1rem;
+      margin: 0 0 -1rem;
     }
 
     article {
@@ -150,7 +142,7 @@
     }
 
     .sub-results {
-      display: flex;
+      display: none;
     }
 
     .sub-results>article {
@@ -192,79 +184,41 @@
       transform: rotate(-135deg);
     }
 
-    aside {
-      background: var(--gray);
-      border: 0.5px solid var(--border);
-      width: 20%;
-      position: absolute;
-      right: 2vw;
-      top: 6.5rem;
-      border-radius: 25px;
-    }
-
-    .aside-content {
-      padding: 0.5rem 1rem;
-    }
-
-    aside>img {
-      width: 100%;
-      height: 100;
-      border-radius: 25px 25px 0 0;
-    }
-
-    h2 {
-      margin: 0;
-      color: var(--darker);
-    }
-
-    .subtitle {
-      margin: 0;
-      font-weight: normal;
-      color: var(--dark);
-    }
-
-    .aside-content>p>b {
-      color: var(--darker);
-      font-weight: 600;
-    }
-
-    .aside-content>p {
-      color: var(--dark);
-    }
-
-    h3 {
-      color: var(--darker);
-    }
-
-    .aside-content>div {
+    nav {
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      position: fixed;
       display: flex;
-    }
-
-    figure {
-      margin: 0;
-      width: 30%;
       text-align: center;
+      border-radius: 100vw;
+      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
+      height: 3rem;
+      background: var(--white);
+      padding: 0.5rem;
+      width: 90%;
+      overflow-x: scroll;
+      overflow-y: hidden;
     }
 
-    figure>img {
-      border-radius: 10px;
-      height: 100;
-      width: 100;
-    }
-
-    figcaption>a {
-      font-size: small;
-    }
-
-    h4 {
-      margin: 0;
+    .menu {
       color: var(--darker);
-      font-weight: normal;
+      align-self: center;
+      padding: 0.5rem 1rem;
+      border-radius: 100vw;
+      font-weight: bold;
+      font-size: .75rem;
     }
 
-    figcaption>a>p {
-      margin: 0;
-      color: var(--dark);
+    .menu:hover {
+      text-decoration: none;
+      background: var(--dark);
+      color: var(--white);
+    }
+
+    #current {
+      color: var(--white);
+      background: var(--dark);
     }
 
     @media (min-width: 1024px) {
@@ -272,22 +226,23 @@
         width: 40vw;
       }
 
-      article {
-        width: 50%;
-      }
-
-      nav {
-        width: auto;
-        overflow-x: auto;
+      aside {
+        width: 20%;
+        position: absolute;
+        right: 2vw;
+        top: 6.5rem;
       }
 
       main {
         margin: 6.5rem 0 2rem;
       }
 
-      .menu {
-        font-size: 1rem;
-        padding: 0.5rem 1.5rem;
+      article {
+        width: 50%;
+      }
+
+      .sub-results {
+        display: flex;
       }
 
       footer {
@@ -297,6 +252,16 @@
 
       #next {
         right: 25%;
+      }
+
+      nav {
+        width: auto;
+        overflow-x: auto;
+      }
+
+      .menu {
+        font-size: 1rem;
+        padding: 0.5rem 1.5rem;
       }
     }
   </style>
@@ -322,6 +287,18 @@
       <div></div>
     </button>
   </header>
+  {{#hasKnwlPanel}}
+    <aside>
+      <h2>{{knwlPanel.title}}</h2>
+      <p class="subtitle">
+        {{knwlPanel.subtitle}}
+      </p>
+      <p>{{knwlPanel.desc}}</p>
+      {{#knwlPanel.infos}}
+        <p><b>{{title}}</b>{{content}}</p>
+      {{/knwlPanel.infos}}
+    </aside>
+  {{/hasKnwlPanel}}
   <main>
     <article>
       <a class="link-title"
@@ -363,72 +340,6 @@
       <div></div>
     </button>
   </footer>
-  {{#hasKnwlPanel}}
-    <aside>
-      {{!-- <img
-      src="https://pbs.twimg.com/media/EyTJY06W8AAZKgg.jpg"
-      alt="Minecraft" /> --}}
-      <div class="aside-content">
-        <h2>{{knwlPanel.title}}</h2>
-        <p class="subtitle">
-          {{knwlPanel.subtitle}}
-        </p>
-        <p>{{knwlPanel.desc}}</p>
-        {{#knwlPanel.infos}}
-          <p><b>{{title}}</b>{{content}}</p>
-        {{/knwlPanel.infos}}
-        {{!--
-      TODO: find a way to get those images
-      <h3>Games</h3>
-      <div>
-        <figure>
-          <img
-            src="https://i.imgur.com/Lmu7Wd3.jpeg"
-            alt="Minecraft Dungeons" />
-          <figcaption>
-            <a href="#">
-              <h4>Minecraft Dungeons</h4>
-              <p>2020</p>
-            </a>
-          </figcaption>
-        </figure>
-        <figure>
-          <img
-            src="https://i.imgur.com/uYganI9.jpg"
-            alt="Minecraft Dungeons" />
-          <figcaption>
-            <a href="#">
-              <h4>Minecraft Earth</h4>
-              <p>2019</p>
-            </a>
-          </figcaption>
-        </figure>
-        <figure>
-          <img
-            src="https://i.imgur.com/pwNWdO1.jpeg"
-            alt="Minecraft Dungeons" />
-          <figcaption>
-            <a href="#">
-              <h4>Minecraft: Story Mode</h4>
-              <p>2015</p>
-            </a>
-          </figcaption>
-        </figure>
-        <figure>
-          <img
-            src="https://i.imgur.com/puscaYW.jpg"
-            alt="Minecraft Dungeons" />
-          <figcaption>
-            <a href="#">
-              <h4>Minecraft</h4>
-              <p>2011</p>
-            </a>
-          </figcaption>
-        </figure>
-      </div>
-    </div> --}}
-    </aside>
-  {{/hasKnwlPanel}}
   <nav>
     <a class="menu" id="current"
       href="&tab=all">All</a>
@@ -445,7 +356,7 @@
     function search() {
       let params = new URLSearchParams(location.search)
       params.set('q', document.querySelector('#search-bar').value.replace(' ', '+'))
-      if(params.has('page')) params.delete('page')
+      if (params.has('page')) params.delete('page')
       location.search = params.toString()
     }
     document.querySelector('#search-bar').addEventListener('keyup', e => event.keyCode === 13 ? search() : null)
