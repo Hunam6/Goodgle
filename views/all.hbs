@@ -12,6 +12,9 @@
     content="Goodgle search page." />
   <link rel="preconnect"
     href="https://fonts.gstatic.com" />
+  {{!--
+    TODO: maybe more colorful, check on what Google done for the inspiration/example
+  --}}
   <style type="text/css">
     * {
       outline: 0;
@@ -277,7 +280,7 @@
 
 <body>
   <header>
-    <button id="home" aria-label="Home">
+    <button id="home" aria-label="Home" onclick="home()">
       <div></div>
     </button>
     <input type="text" id="search-bar"
@@ -376,6 +379,11 @@
 
     //Menu links
     document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search.split('&')[0] + el.getAttribute('href')))
+
+    //Go home
+    function home() {
+      location.href = location.origin
+    }
   </script>
 </body>
 

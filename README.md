@@ -17,7 +17,7 @@ surely way more*
 
 ### Documentation
 
-For now just run `deno run --allow-net --allow-read --unstable app.ts`
+For now just run `deno run --allow-net --allow-read --allow-env --unstable app.ts`
 
 ### Contributing
 

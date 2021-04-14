@@ -51,16 +51,17 @@ const app = new Application()
 const router = new Router()
 app.addEventListener('listen', () => console.log('Server started'))
 router
-  .get('/', ctx => {
-    ctx.response.redirect('/search') //TODO: make a home page, probably need a logo for this, a placeholder would do the job for now
+  .get('/', async ctx => {
+    ctx.response.body = await Deno.readTextFile('./views/index.html')
   })
   .get('/search', async ctx => {
     ctx.response.body = await search(helpers.getQuery(ctx))
   })
   .get('/search-icon.svg', async ctx => {
-    await send(ctx, ctx.request.url.pathname, {
-      root: './assets'
-    })
+    await send(ctx, ctx.request.url.pathname, {root: './assets'})
+  })
+  .get('/goodgle.svg', async ctx => {
+    await send(ctx, ctx.request.url.pathname, {root: './assets'})
   })
 app.use(router.routes())
 app.use(router.allowedMethods())
@@ -78,3 +79,4 @@ if ((Deno.env.get('CERT_FILE')! || Deno.env.get('KEY_FILE')! != undefined) && ex
 }
 await app.listen(config)
 //TODO: http to https
+//TODO: PWA
