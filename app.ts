@@ -57,7 +57,7 @@ router
   .get('/search', async ctx => {
     ctx.response.body = await search(helpers.getQuery(ctx))
   })
-  .get('/search-icon.svg', async ctx => {
+  .get('/search.svg', async ctx => {
     await send(ctx, ctx.request.url.pathname, {root: './assets'})
   })
   .get('/goodgle.svg', async ctx => {
