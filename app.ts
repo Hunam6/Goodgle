@@ -66,17 +66,17 @@ router
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-const config = {
-  port: Deno.env.get('PORT') != undefined ? parseInt(Deno.env.get('PORT')!) : 8000,
-  secure: false,
-  certFile: '',
-  keyFile: ''
-}
-if ((Deno.env.get('CERT_FILE')! || Deno.env.get('KEY_FILE')! != undefined) && existsSync(Deno.env.get('CERT_FILE')!) && existsSync(Deno.env.get('KEY_FILE')!)) {
-  config.secure = true
-  config.certFile = Deno.env.get('CERT_FILE')!.toString()
-  config.keyFile = Deno.env.get('KEY_FILE')!.toString()
-}
-await app.listen(config)
+if ((Deno.env.get('CERT_FILE') || Deno.env.get('KEY_FILE')) != undefined && existsSync(Deno.env.get('CERT_FILE')!) && existsSync(Deno.env.get('KEY_FILE')!))
+  await app.listen({
+    port: Deno.env.get('PORT') == undefined ? 8000 : parseInt(Deno.env.get('PORT')!),
+    secure: true,
+    certFile: Deno.env.get('CERT_FILE')!,
+    keyFile: Deno.env.get('KEY_FILE')!
+  })
+else
+  await app.listen({
+    port: Deno.env.get('PORT') == undefined ? 8000 : parseInt(Deno.env.get('PORT')!)
+  })
+
 //TODO: http to https
 //TODO: PWA
