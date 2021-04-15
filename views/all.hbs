@@ -279,7 +279,8 @@
 
 <body>
   <header>
-    <button id="home" aria-label="Home" onclick="home()"></button>
+    <button id="home" aria-label="Home"
+      onclick="home()"></button>
     <input type="text" id="search-bar"
       value="{{query}}" />
     <button id="search" aria-label="Search"
@@ -354,10 +355,12 @@
   <script>
     //Search functionality
     function search() {
-      let params = new URLSearchParams(location.search)
-      params.set('q', document.querySelector('#search-bar').value.replace(' ', '+'))
-      if (params.has('page')) params.delete('page')
-      location.search = params.toString()
+      if (document.querySelector('#search-bar').value !== '') {
+        let params = new URLSearchParams(location.search)
+        params.set('q', document.querySelector('#search-bar').value)
+        if (params.has('page')) params.delete('page')
+        location.search = params.toString()
+      }
     }
     document.querySelector('#search-bar').addEventListener('keyup', e => event.keyCode === 13 ? search() : null)
 

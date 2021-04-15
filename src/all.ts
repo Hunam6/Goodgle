@@ -35,14 +35,9 @@ export const all = async (doc: Document) => {
     relatedSearchs: []
   }
 
-  //TODO: err 500 if q=uwu
-
   doc.querySelectorAll('.LC20lb.DKV0Md').forEach((el, i) => (data.results[i] = {title: el.textContent})) //results title
   doc.querySelectorAll('.aCOpRe').forEach((el, i) => (data.results[i].desc = el.textContent)) //results description
-  let shownLink: string[] = [] //results shown link
-  doc.querySelectorAll('.iUh30.Zu0yb').forEach(el => shownLink.push(el.textContent))
-  shownLink = [...new Set(shownLink)]
-  shownLink.forEach((el, i) => (data.results[i].shownLink = el))
+  doc.querySelectorAll('.TbwUpd.NJjxre').forEach((el, i) => (data.results[i].shownLink = el.textContent)) //results shown link
   doc.querySelectorAll('.yuRUbf').forEach((el, i) => (data.results[i].link = el.children[0].getAttribute('href')!)) //results link
   data.firstResult = data.results.shift()! //first result
   doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i] = {title: el.textContent})) //first results title
