@@ -54,14 +54,13 @@
     }
 
     #home {
-      height: 1.5rem;
-      width: 1.5rem;
-      border-radius: 100vw;
-      border: 0.2rem solid var(--darker);
+      height: 2rem;
+      width: 2rem;
+      border: none;
       align-self: center;
       margin-left: 2%;
       cursor: pointer;
-      background: none;
+      background: url('/goodgle.svg');
     }
 
     #search-bar {
@@ -280,9 +279,7 @@
 
 <body>
   <header>
-    <button id="home" aria-label="Home" onclick="home()">
-      <div></div>
-    </button>
+    <button id="home" aria-label="Home" onclick="home()"></button>
     <input type="text" id="search-bar"
       value="{{query}}" />
     <button id="search" aria-label="Search"
