@@ -70,8 +70,8 @@ if ((Deno.env.get('CERT_FILE') || Deno.env.get('KEY_FILE')) != undefined && exis
   await app.listen({
     port: Deno.env.get('PORT') == undefined ? 8000 : parseInt(Deno.env.get('PORT')!),
     secure: true,
-    certFile: Deno.env.get('CERT_FILE')!,
-    keyFile: Deno.env.get('KEY_FILE')!
+    certFile: Deno.env.get('CERT_FILE')!.toString(),
+    keyFile: Deno.env.get('KEY_FILE')!.toString()
   })
 else
   await app.listen({
