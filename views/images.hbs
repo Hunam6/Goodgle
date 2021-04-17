@@ -25,7 +25,7 @@
     }
 
     body {
-      margin: 0;
+      margin: 6.5rem 0 0;
     }
 
     a {
@@ -42,7 +42,7 @@
       transform: translateX(-50%);
       position: fixed;
       display: flex;
-      width: 40vw;
+      width: 90%;
       text-align: center;
       border-radius: 100vw;
       box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
@@ -51,14 +51,13 @@
     }
 
     #home {
-      height: 1.5rem;
-      width: 1.5rem;
-      border-radius: 100vw;
-      border: 0.2rem solid var(--darker);
+      height: 2rem;
+      width: 2rem;
+      border: none;
       align-self: center;
       margin-left: 2%;
       cursor: pointer;
-      background: none;
+      background: url('/goodgle.svg');
     }
 
     #search-bar {
@@ -85,6 +84,13 @@
       cursor: pointer;
     }
 
+    main {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+    }
+
     nav {
       bottom: 1.5rem;
       left: 50%;
@@ -97,14 +103,18 @@
       height: 3rem;
       background: var(--white);
       padding: 0.5rem;
+      width: 90%;
+      overflow-x: scroll;
+      overflow-y: hidden;
     }
 
     .menu {
       color: var(--darker);
       align-self: center;
-      padding: 0.5rem 1.5rem;
+      padding: 0.5rem 1rem;
       border-radius: 100vw;
       font-weight: bold;
+      font-size: .75rem;
     }
 
     .menu:hover {
@@ -118,36 +128,26 @@
       background: var(--dark);
     }
 
-    main {
-      margin: 6.5rem 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
+    @media (min-width: 1024px) {
+      header {
+        width: 40vw;
+      }
 
-    img {
-      height: 8vw;
-      width: 100;
-      border-radius: 5px;
-      display: block;
-      margin: .75rem auto;
-      content-visibility: auto;
-    }
+      main {
+        margin: 6.5rem 0 2rem;
+      }
 
-    .title {
-      color: var(--darker);
-      font-weight: 600;
-    }
+      nav {
+        width: auto;
+        overflow-x: auto;
+      }
 
-    .subtitle {
-      color: var(--dark);
-      font-weight: 600;
-      font-size: small;
+      .menu {
+        font-size: 1rem;
+        padding: 0.5rem 1.5rem;
+      }
     }
   </style>
-  {{!-- 
-  TODO: find a way to better present images (like the Google one for example)
-   --}}
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
     as="style"
@@ -160,21 +160,28 @@
 
 <body>
   <header>
-    <button id="home" aria-label="Home">
-      <div></div>
-    </button>
+    <button id="home" aria-label="Home"
+      onclick="home()"></button>
     <input type="text" id="search-bar"
-      value={{query}} />
+      value="{{query}}" />
     <button id="search" aria-label="Search"
       onclick="search()">
       <div></div>
     </button>
   </header>
   <main>
-    {{#imgs}}
-      <img loading="lazy" decoding="async" src={{url}}
-        alt={{title}}>
-    {{/imgs}}
+    {{#IMGs}}
+      <img
+        style="background: {{color}}; height: calc({{height}}rem / 17.5); width: calc({{width}}rem / 17.5)"
+        loading="lazy" decoding="async"
+        src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw"
+        alt="{{desc}}"
+        data-fullIMG="{{originalIMG}}"
+        data-desc="{{desc}}"
+        data-URL="{{URL}}"
+        data-title="{{title}}">
+      </img>
+    {{/IMGs}}
   </main>
   <nav>
     <a class="menu" href="&tab=all">All</a>
@@ -200,6 +207,12 @@
 
     //Menu links
     document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search.split('&')[0] + el.getAttribute('href')))
+
+    //Get images
+    document.querySelectorAll('img').forEach((el, i) => {
+      el.setAttribute('src', {{{ stringedIMGs }}}[i])
+      el.style.background = 'none'
+    })
   </script>
 </body>
 

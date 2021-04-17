@@ -49,7 +49,7 @@ const search = async (params: Record<string, string>) => {
 
 const app = new Application()
 const router = new Router()
-app.addEventListener('listen', () => console.log('Server started'))
+app.addEventListener('listen', ({secure, hostname, port}) => console.log('Listening on: ' + (secure ? 'https://' : 'http://') + (hostname ?? 'localhost') + ':' + port))
 router
   .get('/', async ctx => {
     ctx.response.body = await Deno.readTextFile('./views/index.html')
