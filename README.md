@@ -13,8 +13,6 @@
 - No ads
 - Proxy support (maybe Tor too in the future)
 - Customizable but requiring almost no or no configuration (simple to use)
-- *Todo Tree
-surely way more*
 
 ### Documentation
 

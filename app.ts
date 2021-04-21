@@ -15,11 +15,22 @@ const search = async (params: Record<string, string>) => {
     else if (params.lang != undefined) url += '&hl=' + params.lang
   }
 
+  //Random user agent
+  const rdmStr = () => Date.now().toString(36) + Math.random().toString(36).substring(2)
+  const OSs = [
+    'Windows NT;',
+    'Macintosh',
+    'X11; Linux x86_64',
+    'X11; Linux i686',
+    'X11; CrOS i686',
+    'X11; OpenBSD i386',
+    'X11; NetBSD'
+  ]
   const getDoc = async (url: string) =>
     new DOMParser().parseFromString(
       await fetch(url, {
         headers: {
-          'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41'
+          'user-agent': `Mozilla/5.0 (${OSs[~~(Math.random() * OSs.length)]} ${rdmStr()}) AppleWebKit/${rdmStr()} (KHTML, like Gecko) Chrome/${Math.floor(Math.random() * (500 - 50)) + 49} Safari/${rdmStr()} OPR/${rdmStr()}`
         }
       }).then(res => res.text()),
       'text/html'
