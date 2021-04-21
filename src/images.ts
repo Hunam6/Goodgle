@@ -20,14 +20,14 @@ export const images = async (doc: Document) => {
         color: el[1][6],
         height: el[1][2][1],
         width: el[1][2][2],
-        resizedIMG: el[1][2][0],
-        originalIMG: el[1][3][0],
+        resized: el[1][2][0],
+        original: el[1][3][0],
         desc: el[1][9]['2003'][3],
         URL: el[1][9]['2003'][2],
         title: el[1][9]['2003'][12]
       })
   )
-  data.stringedIMGs = JSON.stringify(data.IMGs.map(({resizedIMG}) => resizedIMG))
+  data.stringedIMGs = JSON.stringify(data.IMGs.map(({resized}) => resized))
 
   //TODO: ability to click on an image and get all the custom "data-" attributes displayed nicely, a popup or sidebar, or maybe a "bottom bar"
   //TODO: find a way to load additional images

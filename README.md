@@ -10,6 +10,7 @@
 - Based on Google so really good results
 - Beautiful UI and innovative UX
 - Privacy respecting (random user-agent etc)
+- No ads
 - Proxy support (maybe Tor too in the future)
 - Customizable but requiring almost no or no configuration (simple to use)
 - *Todo Tree

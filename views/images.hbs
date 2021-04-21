@@ -91,6 +91,58 @@
       align-items: center;
     }
 
+    main>img {
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+
+    aside {
+      display: none;
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--gray);
+      border-radius: 2.5rem 0 0 2.5rem;
+      border: 0.5px var(--border);
+      border-style: solid none solid solid;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      width: 32.5%;
+    }
+
+    figure {
+      border-radius: 1rem;
+      border: 0.5px solid var(--border);
+      margin: 0 auto;
+      width: max-content;
+      max-width: 80%;
+    }
+
+    figure>a>img {
+      border-radius: 1rem 1rem 0 0;
+      max-width: 100%;
+      max-height: 50vh;
+    }
+
+    figure>a>p {
+      color: var(--darker);
+      font-weight: 600;
+      margin: .5rem 0;
+    }
+
+    aside>div {
+      height: 1rem;
+      width: 1rem;
+      border: solid var(--darker);
+      border-width: 0 0 .2rem .2rem;
+      position: absolute;
+      top: 50%;
+      left: .25rem;
+      transform: translateY(-50%) rotate(-135deg);
+      cursor: pointer;
+    }
+
     nav {
       bottom: 1.5rem;
       left: 50%;
@@ -134,7 +186,7 @@
       }
 
       main {
-        margin: 6.5rem 0 2rem;
+        margin: 6.5rem 1rem 2rem;
       }
 
       nav {
@@ -176,13 +228,13 @@
         loading="lazy" decoding="async"
         src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw"
         alt="{{desc}}"
-        data-fullIMG="{{originalIMG}}"
-        data-desc="{{desc}}"
-        data-URL="{{URL}}"
+        data-original="{{original}}"
+        data-desc="{{desc}}" data-URL="{{URL}}"
         data-title="{{title}}">
       </img>
     {{/IMGs}}
   </main>
+  <aside></aside>
   <nav>
     <a class="menu" href="&tab=all">All</a>
     <a class="menu" id="current"
@@ -201,7 +253,7 @@
       params.set('q', document.querySelector('#search-bar').value.replace(' ', '+'))
       location.search = params.toString()
     }
-    document.querySelector('#search-bar').addEventListener('keyup', e => event.keyCode === 13 ? search() : null)
+    document.querySelector('#search-bar').addEventListener('keyup', e => e.keyCode === 13 ? search() : null)
 
     //TODO: when hover an other menu item then #current "un-hover" the #current element
 
@@ -211,8 +263,29 @@
     //Get images
     document.querySelectorAll('img').forEach((el, i) => {
       el.setAttribute('src', {{{ stringedIMGs }}}[i])
-      el.style.background = 'none'
+    el.style.background = 'none'
     })
+
+    //Sidebar
+    document.querySelectorAll('img').forEach(el => el.addEventListener('mouseup', () => {
+      document.querySelector('aside').innerHTML =
+        `
+        <div></div>
+        <figure>
+          <a href="${el.getAttribute('data-URL')}">
+            <img src="${el.getAttribute('data-original')}" alt="${el.getAttribute('data-desc')}">
+            <p>${el.getAttribute('data-title')}</p>
+          </a>
+        </figure>
+        <p>${el.getAttribute('data-desc')}</p>
+      `
+      document.querySelector('aside').style.display = 'unset'
+      document.querySelector('main').style.width = '65%'
+      document.querySelector('aside>div').addEventListener('mouseup', () => {
+        document.querySelector('aside').style.removeProperty('display')
+        document.querySelector('main').style.width = 'unset'
+      })
+    }))
   </script>
 </body>
 

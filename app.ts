@@ -78,5 +78,5 @@ else
     port: Deno.env.get('PORT') == undefined ? 8000 : parseInt(Deno.env.get('PORT')!)
   })
 
-//TODO: http to https
+//TODO: Remove certificate part and let the deployer manage that, like Deno Deploy or Okteto. and port can be handled by Deno.args
 //TODO: PWA
