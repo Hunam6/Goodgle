@@ -29,7 +29,6 @@ export const images = async (doc: Document) => {
   )
   data.stringedIMGs = JSON.stringify(data.IMGs.map(({resized}) => resized))
 
-  //TODO: ability to click on an image and get all the custom "data-" attributes displayed nicely, a popup or sidebar, or maybe a "bottom bar"
   //TODO: find a way to load additional images
 
   return await renderFile('./views/images.hbs', data)

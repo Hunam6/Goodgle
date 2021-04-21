@@ -1,5 +1,4 @@
 import {Application, Router, helpers, send} from 'https://deno.land/x/oak/mod.ts'
-import {existsSync} from 'https://deno.land/std/fs/mod.ts'
 import {DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import 'https://deno.land/x/dotenv/load.ts'
 import {all} from './src/all.ts'
@@ -66,17 +65,7 @@ router
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-if ((Deno.env.get('CERT_FILE') || Deno.env.get('KEY_FILE')) != undefined && existsSync(Deno.env.get('CERT_FILE')!) && existsSync(Deno.env.get('KEY_FILE')!))
-  await app.listen({
-    port: Deno.env.get('PORT') == undefined ? 8000 : parseInt(Deno.env.get('PORT')!),
-    secure: true,
-    certFile: Deno.env.get('CERT_FILE')!.toString(),
-    keyFile: Deno.env.get('KEY_FILE')!.toString()
-  })
-else
-  await app.listen({
-    port: Deno.env.get('PORT') == undefined ? 8000 : parseInt(Deno.env.get('PORT')!)
-  })
+await app.listen({port: Deno.env.get('PORT') == undefined ? 8080 : parseInt(Deno.env.get('PORT')!)})
 
 //TODO: Remove certificate part and let the deployer manage that, like Deno Deploy or Okteto. and port can be handled by Deno.args
 //TODO: PWA
