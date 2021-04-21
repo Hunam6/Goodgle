@@ -10,6 +10,8 @@
   <title>{{query}} - Goodgle</title>
   <meta name="Description"
     content="Goodgle images search page." />
+  <link rel="icon" href="/goodgle.svg" sizes="any"
+    type="image/svg+xml">
   <link rel="preconnect"
     href="https://fonts.gstatic.com" />
   <style type="text/css">
@@ -265,6 +267,11 @@
       el.setAttribute('src', {{{ stringedIMGs }}}[i])
     el.style.background = 'none'
     })
+    
+    //Go home
+    function home() {
+      location.href = location.origin
+    }
 
     //Sidebar
     document.querySelectorAll('img').forEach(el => el.addEventListener('mouseup', () => {
