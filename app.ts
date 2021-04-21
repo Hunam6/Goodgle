@@ -5,10 +5,15 @@ import {all} from './src/all.ts'
 import {images} from './src/images.ts'
 
 const search = async (params: Record<string, string>) => {
-  //TODO: handle lang switch (from config or url)
   //TODO: proxy support
   let url = 'https://google.com/search?q=' + params.q
   if (params.page != undefined) url += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
+  //Handle lang
+  if ((Deno.env.get('LANG') || params.lang) != undefined) {
+    if ((Deno.env.get('LANG') && params.lang) != undefined) url += '&hl=' + params.lang
+    else if (Deno.env.get('LANG') != undefined) url += '&hl=' + Deno.env.get('LANG')!.toString()
+    else if (params.lang != undefined) url += '&hl=' + params.lang
+  }
 
   const getDoc = async (url: string) =>
     new DOMParser().parseFromString(
@@ -41,6 +46,15 @@ const search = async (params: Record<string, string>) => {
       url += '&tbm=bks'
       //TODO: books
       break
+    case 'maps':
+      //TODO: maps
+      break
+    case 'flights':
+      //TODO: flights
+      break
+    case 'finance':
+      //TODO: finance
+      break
     default:
       return all(await getDoc(url))
   }
@@ -67,5 +81,4 @@ app.use(router.allowedMethods())
 
 await app.listen({port: Deno.env.get('PORT') == undefined ? 8080 : parseInt(Deno.env.get('PORT')!)})
 
-//TODO: Remove certificate part and let the deployer manage that, like Deno Deploy or Okteto. and port can be handled by Deno.args
 //TODO: PWA
