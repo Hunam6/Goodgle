@@ -6,6 +6,7 @@ import {images} from './src/images.ts'
 
 const search = async (params: Record<string, string>) => {
   //TODO: proxy support
+  //TODO: real-time search suggestions/autocomplete (ref: https://github.com/benbusby/whoogle-search)
   let url = 'https://google.com/search?q=' + params.q
   if (params.page != undefined) url += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
   //Handle lang

@@ -4,12 +4,28 @@ import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 export const images = async (doc: Document) => {
   const data: {
     query: string
+    proposition: Record<string, Record<string, string>>
+    hasProposition: boolean
     IMGs: Record<string, string | number>[]
     stringedIMGs: string
+    stringedAspectRatio: string
   } = {
     query: doc.querySelector('title')!.textContent.split(' - ')[0],
+    proposition: {
+      proposition: {
+        text: '',
+        link: '',
+        data: ''
+      },
+      original: {
+        text: '',
+        link: ''
+      }
+    },
+    hasProposition: true,
     IMGs: [],
-    stringedIMGs: ''
+    stringedIMGs: '',
+    stringedAspectRatio: ''
   }
 
   const baseImgs = JSON.parse(doc.querySelector('#wiz_jd')!.previousElementSibling!.textContent.slice(68, -21).split('"GRID_STATE0",null,')[1].split(',"","","')[0])
@@ -28,8 +44,17 @@ export const images = async (doc: Document) => {
       })
   )
   data.stringedIMGs = JSON.stringify(data.IMGs.map(({resized}) => resized))
+  data.stringedAspectRatio = JSON.stringify(data.IMGs.map(({height, width}) => [height, width]))
 
   //TODO: find a way to load additional images
+
+  if (doc.querySelector('.hWrGN') != null) {
+    data.proposition.proposition.text = doc.querySelector('.WxYNlf')!.textContent.slice(0, -doc.querySelector('.TADXpd')!.textContent.length)
+    data.proposition.proposition.data = doc.querySelector('.TADXpd')!.textContent
+    data.proposition.proposition.link = '/search/?q=' + data.proposition.proposition.data
+    data.proposition.original.text = doc.querySelector('.KtvGCc')!.textContent.slice(0, -doc.querySelectorAll('.TADXpd')![1].textContent.length).toLocaleLowerCase()
+    data.proposition.original.link = '/search/?q=' + data.proposition.proposition.data + '&trueSpelling=1'
+  } else data.hasProposition = false
 
   return await renderFile('./views/images.hbs', data)
 }
