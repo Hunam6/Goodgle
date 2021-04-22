@@ -27,7 +27,7 @@ metadata:
 spec:
   type: ClusterIP  
   ports:
-  - name: "Goodgle"
+  - name: "goodgle"
     port: 8080
   selector:
     app: goodgle
