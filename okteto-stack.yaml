@@ -1,0 +1,11 @@
+name: goodgle
+services:
+  goodgle:
+    public: true
+    build: .
+    replicas: 1
+    ports:
+      - 8080
+    resources:
+      cpu: 100m
+      memory: 128Mi
