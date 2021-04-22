@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goodgle
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goodgle
+  template:
+    metadata:
+      labels:
+        app: goodgle
+    spec:
+      containers:
+      - image: okteto/goodgle:deno
+        name: goodgle
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodgle
+  annotations:
+    dev.okteto.com/auto-ingress: "true"
+spec:
+  type: ClusterIP  
+  ports:
+  - name: "Goodgle"
+    port: 8080
+  selector:
+    app: goodgle
