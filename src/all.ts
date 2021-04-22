@@ -4,6 +4,8 @@ import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 export const all = async (doc: Document) => {
   let data: {
     query: string
+    proposition: Record<string, Record<string, string>>
+    hasProposition: boolean
     firstResult: Record<string, string>
     firstResults: Record<string, string>[]
     results: Record<string, string>[]
@@ -17,6 +19,18 @@ export const all = async (doc: Document) => {
     relatedSearchs: string[]
   } = {
     query: doc.querySelector('title')!.textContent.split(' - ')[0],
+    proposition: {
+      proposition: {
+        text: '',
+        link: '',
+        data: ''
+      },
+      original: {
+        text: '',
+        link: ''
+      }
+    },
+    hasProposition: true,
     firstResult: {},
     firstResults: [],
     results: [
@@ -44,8 +58,8 @@ export const all = async (doc: Document) => {
   doc.querySelectorAll('.st').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
   doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i].link = el.parentElement!.children[0].getAttribute('href')!)) //first results link
   data.firstResults = data.firstResults.slice(0, 4) //Better visibility
-  
-  if (doc.querySelector('.wwUB2c') !== null) {
+
+  if (doc.querySelector('.wwUB2c') != null) {
     data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //knowledge panel title
     data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //knowledge panel subtitle
     if (doc.querySelector('.kno-rdesc')! !== null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //knowledge panel description
@@ -53,6 +67,14 @@ export const all = async (doc: Document) => {
     doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.replace(' - Disclaimer', '').replace(', MORE', '').replace('%)', '%)\n'))) //knowledge panel infos content
     //TODO: remove unwanted elements from knowledge panel infos (eg: q=toyota)
   } else data.hasKnwlPanel = false
+
+  if (doc.querySelector('.spell_orig') != null) {
+    data.proposition.proposition.text = doc.querySelector('.gL9Hy')!.textContent
+    data.proposition.proposition.data = doc.querySelectorAll('.gL9Hy')![1].textContent
+    data.proposition.proposition.link = '/search/?q=' + data.proposition.proposition.data
+    data.proposition.original.text = doc.querySelector('.spell_orig')!.textContent.toLocaleLowerCase()
+    data.proposition.original.link = '/search/?q=' + data.proposition.proposition.data + '&trueSpelling=1'
+  } else data.hasProposition = false
 
   return await renderFile('./views/all.hbs', data)
 }

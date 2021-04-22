@@ -33,6 +33,17 @@
       margin: 6.5rem 0 0;
     }
 
+    body>p {
+      width: 90%;
+      margin: 0 auto 1.5rem auto;
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    body>p>a {
+      color: var(--darker);
+    }
+
     a {
       text-decoration: none;
     }
@@ -238,9 +249,10 @@
       }
 
       main {
-        margin: 6.5rem 0 2rem;
+        margin: 0 0 2rem;
       }
 
+      body>p,
       article {
         width: 50%;
       }
@@ -280,6 +292,13 @@
 </head>
 
 <body>
+  {{#hasProposition}}
+    <p>{{proposition.proposition.text}} <a
+        href="{{proposition.proposition.link}}">{{proposition.proposition.data}}</a>,
+      {{proposition.original.text}} <a
+        href="{{proposition.original.link}}">{{query}}</a>
+    </p>
+  {{/hasProposition}}
   <header>
     <button id="home" aria-label="Home"
       onclick="home()"></button>

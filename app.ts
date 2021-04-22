@@ -14,6 +14,7 @@ const search = async (params: Record<string, string>) => {
     else if (Deno.env.get('LANG') != undefined) url += '&hl=' + Deno.env.get('LANG')!.toString()
     else if (params.lang != undefined) url += '&hl=' + params.lang
   }
+  if (params.trueSpelling != undefined) url += '&nfpr=' + params.trueSpelling //Handle spelling suggestion
 
   //Random user agent
   const rdmStr = () => Date.now().toString(36) + Math.random().toString(36).substring(2)
