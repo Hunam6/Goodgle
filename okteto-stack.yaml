@@ -1,0 +1,7 @@
+name: goodgle
+services:
+  goodgle:
+    public: true
+    build: .
+    ports:
+      - 8080
