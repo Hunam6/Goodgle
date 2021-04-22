@@ -51,9 +51,9 @@ export const images = async (doc: Document) => {
   if (doc.querySelector('.hWrGN') != null) {
     data.proposition.proposition.text = doc.querySelector('.WxYNlf')!.textContent.slice(0, -doc.querySelector('.TADXpd')!.textContent.length)
     data.proposition.proposition.data = doc.querySelector('.TADXpd')!.textContent
-    data.proposition.proposition.link = '/search/?q=' + data.proposition.proposition.data
+    data.proposition.proposition.link = '/search/?tab=images&q=' + data.proposition.proposition.data
     data.proposition.original.text = doc.querySelector('.KtvGCc')!.textContent.slice(0, -doc.querySelectorAll('.TADXpd')![1].textContent.length).toLocaleLowerCase()
-    data.proposition.original.link = '/search/?q=' + data.proposition.proposition.data + '&trueSpelling=1'
+    data.proposition.original.link = '/search/?tab=images&q=' + data.proposition.proposition.data + '&trueSpelling=1'
   } else data.hasProposition = false
 
   return await renderFile('./views/images.hbs', data)
