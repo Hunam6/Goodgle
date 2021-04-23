@@ -1,9 +1,0 @@
-name: goodgle
-autocreate: true
-image: hayd/ubuntu-deno:1.9.0
-command: bash
-sync:
-  - .:/usr/src/app
-forward:
-  - 8080:8080
-  - 9229:9229
