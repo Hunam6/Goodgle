@@ -10,24 +10,17 @@ const search = async (params: Record<string, string>) => {
   let url = 'https://google.com/search?q=' + params.q
   if (params.page != undefined) url += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
   //Handle lang
+  let lang = 'en-US'
   if ((Deno.env.get('LANG') || params.lang) != undefined) {
-    if ((Deno.env.get('LANG') && params.lang) != undefined) url += '&hl=' + params.lang
-    else if (Deno.env.get('LANG') != undefined) url += '&hl=' + Deno.env.get('LANG')!.toString()
-    else if (params.lang != undefined) url += '&hl=' + params.lang
+    if ((Deno.env.get('LANG') && params.lang) != undefined || params.lang != undefined) lang = params.lang
+    else lang = Deno.env.get('LANG')!.toString()
+    url += '&hl=' + lang
   }
   if (params.trueSpelling != undefined) url += '&nfpr=' + params.trueSpelling //Handle spelling suggestion
 
   //Random user agent
   const rdmStr = () => Date.now().toString(36) + Math.random().toString(36).substring(2)
-  const OSs = [
-    'Windows NT;',
-    'Macintosh',
-    'X11; Linux x86_64',
-    'X11; Linux i686',
-    'X11; CrOS i686',
-    'X11; OpenBSD i386',
-    'X11; NetBSD'
-  ]
+  const OSs = ['Windows NT;', 'Macintosh', 'X11; Linux x86_64', 'X11; Linux i686', 'X11; CrOS i686', 'X11; OpenBSD i386', 'X11; NetBSD']
   const getDoc = async (url: string) =>
     new DOMParser().parseFromString(
       await fetch(url, {
@@ -42,7 +35,7 @@ const search = async (params: Record<string, string>) => {
   switch (params.tab) {
     case 'images':
       url += '&tbm=isch'
-      return images(await getDoc(url))
+      return images(await getDoc(url), lang)
     case 'videos':
       url += '&tbm=vid'
       //TODO: videos
@@ -69,7 +62,7 @@ const search = async (params: Record<string, string>) => {
       //TODO: finance
       break
     default:
-      return all(await getDoc(url))
+      return all(await getDoc(url), lang)
   }
 }
 

@@ -22,7 +22,7 @@ Run `deno run --allow-net --allow-read --allow-env --unstable app.ts`
 
 ### On Okteto
 
-Click [![Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?repository=https://github.com/Hunam6/Goodgle)
+Click on [![Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?repository=https://github.com/Hunam6/Goodgle)
 
 ## Contributing
 

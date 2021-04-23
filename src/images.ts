@@ -1,8 +1,9 @@
 import {Document} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 
-export const images = async (doc: Document) => {
+export const images = async (doc: Document, lang: string) => {
   const data: {
+    lang: string
     query: string
     proposition: Record<string, Record<string, string>>
     hasProposition: boolean
@@ -10,6 +11,7 @@ export const images = async (doc: Document) => {
     stringedIMGs: string
     stringedAspectRatio: string
   } = {
+    lang: lang,
     query: doc.querySelector('title')!.textContent.split(' - ')[0],
     proposition: {
       proposition: {

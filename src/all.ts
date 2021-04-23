@@ -1,8 +1,9 @@
 import {Document} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 
-export const all = async (doc: Document) => {
+export const all = async (doc: Document, lang: string) => {
   let data: {
+    lang: string
     query: string
     proposition: Record<string, Record<string, string>>
     hasProposition: boolean
@@ -18,6 +19,7 @@ export const all = async (doc: Document) => {
     }
     relatedSearchs: string[]
   } = {
+    lang: lang,
     query: doc.querySelector('title')!.textContent.split(' - ')[0],
     proposition: {
       proposition: {

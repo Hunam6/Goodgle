@@ -102,7 +102,7 @@
     <script>
       //Search functionality
       function search() {
-        if (document.querySelector('#search-bar').value !== '') location.href = 'search/?q=' + document.querySelector('#search-bar').value
+        if (document.querySelector('#search-bar').value !== '') location.href = 'search?q=' + document.querySelector('#search-bar').value
       }
       document.querySelector('#search-bar').addEventListener('keyup', e => (event.keyCode === 13 ? search() : null))
     </script>
