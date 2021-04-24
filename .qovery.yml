@@ -1,0 +1,11 @@
+---
+application:
+  name: "goodgle"
+  project: "goodgle"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-goodgle"
+  routes:
+  - application_name: "goodgle"
+    paths:
+    - "/*"
