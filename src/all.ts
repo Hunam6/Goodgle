@@ -18,7 +18,13 @@ export const all = async (doc: Document, lang: string) => {
       subtitle: string
       desc: string
       infos: Record<string, string>[]
+      additionalInfos: {
+        title: string
+        infos: Record<string, string>[]
+      }
     }
+    IMGs: string[][]
+    stringedIMGs: string
   } = {
     lang: lang,
     query: doc.querySelector('title')!.textContent.split(' - ')[0],
@@ -49,8 +55,14 @@ export const all = async (doc: Document, lang: string) => {
       title: '',
       subtitle: '',
       desc: '',
-      infos: []
-    }
+      infos: [],
+      additionalInfos: {
+        title: '',
+        infos: []
+      }
+    },
+    IMGs: [],
+    stringedIMGs: ''
   }
 
   //Get menu infos
@@ -91,6 +103,16 @@ export const all = async (doc: Document, lang: string) => {
     doc.querySelectorAll('.w8qArf').forEach((el, i) => (data.knwlPanel.infos[i] = {title: el.children[0].textContent + ': '})) //knowledge panel infos title
     doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.replace(' - Disclaimer', '').replace(', MORE', '').replace('%)', '%)\n'))) //knowledge panel infos content
     //TODO: remove unwanted elements from knowledge panel infos (eg: q=toyota)
+    if (doc.querySelector('.VLkRKc') != null) data.knwlPanel.additionalInfos.title = doc.querySelector('.VLkRKc')!.textContent
+    else data.knwlPanel.additionalInfos.title = doc.querySelector('.Ss2Faf')!.textContent
+    if (doc.querySelectorAll('.kno-vrt-t') != null) {
+      doc.querySelectorAll('.kno-vrt-t').forEach((el, i) => i < 4 ? data.knwlPanel.additionalInfos.infos.push({
+        link: el.children[0].getAttribute('href')!.slice(7).split('&')[0],
+        ID: el.children[0].children[0].children[0].children[0].getAttribute('id')!,
+        title: el.children[0].children[1].textContent,
+        subtitle: el.children[0].children[2] != null ? el.children[0].children[2].textContent : ''
+      }) : null)
+    }
   } else data.hasKnwlPanel = false
 
   //Spelling check
@@ -101,6 +123,19 @@ export const all = async (doc: Document, lang: string) => {
     data.proposition.original.text = doc.querySelector('.spell_orig')!.textContent.toLocaleLowerCase()
     data.proposition.original.link = '/search/?q=' + data.proposition.proposition.data + '&trueSpelling=1'
   } else data.hasProposition = false
+
+  //Get images
+  doc.querySelectorAll('script').forEach(el => {
+    if (el.textContent.includes('{var s')) {
+      data.IMGs.push([
+        el.textContent.slice(19).split("'")[0].replaceAll('\\x3d', '='), //Image base64
+        el.textContent.split("['")[1].split("'")[0] //Image ID
+      ])
+    }
+  })
+  data.stringedIMGs = JSON.stringify(data.IMGs)
+
+  console.log(data.knwlPanel.additionalInfos)
 
   return await renderFile('./views/all.hbs', data)
 }

@@ -49,7 +49,7 @@
     }
 
     a:hover {
-      text-decoration: underline;
+      text-decoration: underline var(--darker);
     }
 
     header {
@@ -127,6 +127,40 @@
 
     aside>p {
       color: var(--dark);
+    }
+
+    aside>h3 {
+      color: var(--darker);
+      font-weight: bold;
+    }
+
+    aside>div {
+      display: flex;
+    }
+
+    .additional-infos {
+      max-width: 25%;
+      text-align: center;
+    }
+
+    .additional-infos > img {
+      max-width: 90%;
+    }
+
+    .additional-infos > h4,
+    .additional-infos > h5 {
+      font-weight: normal;
+      color: var(--dark);
+      margin: 0;
+    }
+
+    .additional-infos > h4 {
+      font-size: small;
+      line-height: 90%;
+    }
+
+    .additional-infos > h5 {
+      font-size: smaller;
     }
 
     main {
@@ -314,6 +348,18 @@
       {{#knwlPanel.infos}}
         <p><b>{{title}}</b>{{content}}</p>
       {{/knwlPanel.infos}}
+      <h3>{{knwlPanel.additionalInfos.title}}</h3>
+      <div>
+        {{#knwlPanel.additionalInfos.infos}}
+          <a href="{{link}}" class="additional-infos">
+            <img
+              src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw"
+              alt="{{title}}" id="{{ID}}">
+            <h4>{{title}}</h4>
+            <h5>{{subtitle}}</h5>
+          </a>
+        {{/knwlPanel.additionalInfos.infos}}
+      </div>
     </aside>
   {{/hasKnwlPanel}}
   <main>
@@ -396,6 +442,10 @@
     function home() {
       location.href = location.origin
     }
+
+    //Get images
+    const IMGs = {{{ stringedIMGs }}}
+    IMGs.forEach(el => document.querySelector('#' + el[1]) != null ? document.querySelector('#' + el[1]).setAttribute('src', el[0]) : null)
   </script>
 </body>
 
