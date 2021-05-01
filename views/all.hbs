@@ -231,11 +231,6 @@
       color: var(--white);
     }
 
-    #current {
-      color: var(--white);
-      background: var(--dark);
-    }
-
     @media (min-width: 1024px) {
       header {
         width: 40vw;
@@ -271,8 +266,8 @@
       }
 
       nav {
-        width: auto;
-        overflow-x: auto;
+        width: unset;
+        overflow-x: unset;
       }
 
       .menu {
@@ -363,15 +358,11 @@
     </button>
   </footer>
   <nav>
-    <a class="menu" id="current"
-      href="&tab=all">All</a>
-    <a class="menu" href="&tab=images">Images</a>
-    <a class="menu" href="&tab=videos">Videos</a>
-    <a class="menu" href="&tab=news">News</a>
-    <a class="menu"
-      href="&tab=shopping">Shopping</a>
-    <a class="menu" href="&tab=books">Books</a>
-    <a class="menu" href="&tab=maps">Maps</a>
+    {{#shownMenu}}
+      <a class="menu"
+        href="&tab={{id}}">{{value}}</a>
+    {{/shownMenu}}
+    <div></div>
   </nav>
   <script>
     //Search functionality
