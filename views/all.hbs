@@ -22,10 +22,10 @@
       outline: 0;
       box-sizing: border-box;
       font-family: 'Open Sans', sans-serif;
-      --white: hsla(0, 0%, 96%, 0.98);
+      --white: hsla(0, 0%, 96%, .98);
       --gray: hsl(0, 0%, 96%);
-      --dark: hsla(0, 0%, 10%, 0.7);
-      --darker: hsl(0, 0%, 10%, 0.9);
+      --dark: hsla(0, 0%, 10%, .7);
+      --darker: hsl(0, 0%, 10%, .9);
       --border: hsl(0, 0%, 60%);
     }
 
@@ -61,9 +61,10 @@
       width: 90%;
       text-align: center;
       border-radius: 100vw;
-      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06);
       height: 3rem;
       background: var(--white);
+      z-index: 1;
     }
 
     #home {
@@ -103,10 +104,10 @@
     aside {
       margin: 0 auto;
       background: var(--gray);
-      border: 0.5px solid var(--border);
+      border: .5px solid var(--border);
       width: 90%;
       border-radius: 25px;
-      padding: 0.5rem 1rem;
+      padding: .5rem 1rem;
     }
 
     h2 {
@@ -143,23 +144,24 @@
       text-align: center;
     }
 
-    .additional-infos > img {
-      max-width: 90%;
+    .additional-infos>img {
+      width: 90%;
+      height: attr(width);
     }
 
-    .additional-infos > h4,
-    .additional-infos > h5 {
+    .additional-infos>h4,
+    .additional-infos>h5 {
       font-weight: normal;
       color: var(--dark);
       margin: 0;
     }
 
-    .additional-infos > h4 {
+    .additional-infos>h4 {
       font-size: small;
       line-height: 90%;
     }
 
-    .additional-infos > h5 {
+    .additional-infos>h5 {
       font-size: smaller;
     }
 
@@ -173,10 +175,11 @@
       border-radius: 25px;
       padding: 1rem;
       margin: 1.5rem auto;
-      border: 0.5px solid var(--border);
+      border: .5px solid var(--border);
     }
 
-    .link-title {
+    .link-title,
+    .quick-answers-question {
       color: var(--darker);
       font-weight: 600;
     }
@@ -196,6 +199,50 @@
 
     .sub-results>article {
       margin: 1rem;
+    }
+
+    .quick-answers {
+      display: grid;
+      grid-template-columns: 1.5rem 1fr;
+      grid-gap: .25rem;
+      padding: 1rem .125rem;
+    }
+
+    .quick-answers-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: x-large;
+      width: 1.5rem;
+      height: 1.5rem;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      line-height: 0;
+    }
+
+    .quick-answers-question {
+      display: inline;
+      margin: 0;
+    }
+
+    .quick-answers-answer {
+      grid-column: 1 / 3;
+      border: .5px solid var(--border);
+      border-radius: 25px;
+    }
+
+    .quick-answers-answer * {
+      font-size: small;
+      color: var(--darker);
+    }
+
+    .quick-answers-answer *:not(b) {
+      font-weight: normal;
+    }
+
+    .quick-answers-answer b {
+      font-weight: 600;
     }
 
     footer {
@@ -241,10 +288,10 @@
       display: flex;
       text-align: center;
       border-radius: 100vw;
-      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06);
       height: 3rem;
       background: var(--white);
-      padding: 0.5rem;
+      padding: .5rem;
       width: 90%;
       overflow-x: scroll;
       overflow-y: hidden;
@@ -253,7 +300,7 @@
     .menu {
       color: var(--darker);
       align-self: center;
-      padding: 0.5rem 1rem;
+      padding: .5rem 1rem;
       border-radius: 100vw;
       font-weight: bold;
       font-size: .75rem;
@@ -290,6 +337,14 @@
         display: flex;
       }
 
+      .quick-answers {
+        padding: 1rem .5rem;
+      }
+
+      .quick-answers-answer * {
+        font-size: unset;
+      }
+
       footer {
         width: 50%;
         margin: 0 auto;
@@ -306,7 +361,7 @@
 
       .menu {
         font-size: 1rem;
-        padding: 0.5rem 1.5rem;
+        padding: .5rem 1.5rem;
       }
     }
   </style>
@@ -351,7 +406,8 @@
       <h3>{{knwlPanel.additionalInfos.title}}</h3>
       <div>
         {{#knwlPanel.additionalInfos.infos}}
-          <a href="{{link}}" class="additional-infos">
+          <a href="{{link}}"
+            class="additional-infos">
             <img
               src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw"
               alt="{{title}}" id="{{ID}}">
@@ -381,7 +437,20 @@
         {{/firstResults}}
       </div>
     </article>
-
+    {{#hasQuickAnswers}}
+      <article class="quick-answers">
+        {{#quickAnswers}}
+          <button
+            class="quick-answers-btn">+</button>
+          <p class="quick-answers-question">
+            {{question}}
+          </p>
+          <div class="quick-answers-answer">
+            {{{answer}}}
+          </div>
+        {{/quickAnswers}}
+      </article>
+    {{/hasQuickAnswers}}
     {{#results}}
       <article>
         <a class="link-title"
@@ -446,6 +515,30 @@
     //Get images
     const IMGs = {{{ stringedIMGs }}}
     IMGs.forEach(el => document.querySelector('#' + el[1]) != null ? document.querySelector('#' + el[1]).setAttribute('src', el[0]) : null)
+
+    //Quick answers
+    document.querySelectorAll('.u9iNfb').forEach(el => el.remove())
+    document.querySelectorAll('.quick-answers-answer').forEach(el => {
+      el.style.visibility = 'hidden'
+      el.style.height = '0'
+    })
+    document.querySelectorAll('.quick-answers-btn').forEach(el => el.addEventListener('mouseup', () => {
+      const responseStyle = el.nextElementSibling.nextElementSibling.style
+      if (responseStyle.visibility !== 'unset') {
+        responseStyle.visibility = 'unset'
+        responseStyle.height = 'unset'
+        responseStyle.padding = '1rem'
+        responseStyle.margin = '1rem'
+        el.textContent = '-'
+      }
+      else {
+        responseStyle.visibility = 'hidden'
+        responseStyle.height = '0'
+        responseStyle.padding = '0'
+        responseStyle.margin = '0'
+        el.textContent = '+'
+      }
+    }))
   </script>
 </body>
 

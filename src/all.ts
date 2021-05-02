@@ -1,4 +1,4 @@
-import {Document} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
+import {Document, DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 
 export const all = async (doc: Document, lang: string) => {
@@ -7,10 +7,12 @@ export const all = async (doc: Document, lang: string) => {
     query: string
     shownMenu: Record<string, string>[]
     hiddenMenu: Record<string, string>[]
-    proposition: Record<string, Record<string, string>>
     hasProposition: boolean
+    proposition: Record<string, Record<string, string>>
     firstResult: Record<string, string>
     firstResults: Record<string, string>[]
+    hasQuickAnswers: boolean
+    quickAnswers: Record<string, string>[]
     results: Record<string, string>[]
     hasKnwlPanel: boolean
     knwlPanel: {
@@ -30,6 +32,7 @@ export const all = async (doc: Document, lang: string) => {
     query: doc.querySelector('title')!.textContent.split(' - ')[0],
     shownMenu: [],
     hiddenMenu: [],
+    hasProposition: true,
     proposition: {
       proposition: {
         text: '',
@@ -41,13 +44,15 @@ export const all = async (doc: Document, lang: string) => {
         link: ''
       }
     },
-    hasProposition: true,
     firstResult: {},
     firstResults: [],
+    hasQuickAnswers: true,
+    quickAnswers: [],
     results: [
       {
         title: 'No results',
         desc: 'Try searching for something else...'
+        //TODO: use sentences from Google
       }
     ],
     hasKnwlPanel: true,
@@ -65,12 +70,15 @@ export const all = async (doc: Document, lang: string) => {
     stringedIMGs: ''
   }
 
+  //Get the big fat JS tag containing a lot of messy information
+  let bigFatJS = ''
+  doc.querySelectorAll('script').forEach(el => el.textContent.includes('(function(){var u=') ? bigFatJS = el.textContent : null)
+
   //Get menu infos
-  let str = ''
-  doc.querySelectorAll('script').forEach(el => el.textContent.includes('(function(){var u=') ? str = el.textContent.split('var m=[')[1].split(';')[0] : null)
+  const raw1 = bigFatJS.split('var m=[')[1].split(';')[0]
   const menuIDs = ['WEB', 'IMAGES', 'VIDEOS', 'NEWS', 'SHOPPING', 'BOOKS', 'MAPS', 'FLIGHTS', 'FINANCE']
   const baseMenu: any[] = []
-  menuIDs.forEach((_, i) => baseMenu.push([str.indexOf(menuIDs[i]), str.split(menuIDs[i])[0].split('\\x22')[str.split(menuIDs[i])[0].split('\\x22').length - 3].split('\\x22')[0]]))
+  menuIDs.forEach((_, i) => baseMenu.push([raw1.indexOf(menuIDs[i]), raw1.split(menuIDs[i])[0].split('\\x22')[raw1.split(menuIDs[i])[0].split('\\x22').length - 3].split('\\x22')[0]]))
   baseMenu.sort((a, b) => a[0] > b[0] ? 1 : -1)
   baseMenu.forEach((el, i) =>
     i < 5 ?
@@ -82,7 +90,8 @@ export const all = async (doc: Document, lang: string) => {
         id: menuIDs[i],
         value: el[1]
       }))
-  //TODO: Implement "hiddenMenu" aka "more" on google.com to access others menus
+  //TODO: Implement data.hiddenMenu aka "more" on google.com to access others menus
+  //TODO: maybe remove some any types
 
   //Results
   doc.querySelectorAll('.LC20lb.DKV0Md').forEach((el, i) => (data.results[i] = {title: el.textContent})) //results title
@@ -94,6 +103,21 @@ export const all = async (doc: Document, lang: string) => {
   doc.querySelectorAll('.st').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
   doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i].link = el.parentElement!.children[0].getAttribute('href')!)) //first results link
   data.firstResults = data.firstResults.slice(0, 4) //Better visibility
+
+  //Quick answers
+  if (doc.querySelector('.JolIg') != null) {
+  const raw2 = bigFatJS.split("');})();(function(){window.jsl.dh('")
+  const formatted: string[] = []
+  raw2.forEach(el => (el.includes('v i') || el.includes('wDYxhc')) ? formatted.push(JSON.parse('"' + el.slice(el.indexOf(',')+2).replaceAll('\\x', '\\u00') + '"')) : null)
+  let i = 0
+  formatted.forEach(el => {
+    const doc = new DOMParser().parseFromString(el, 'text/html')!
+    if (el.includes('v i')) data.quickAnswers.push({
+      question: doc.querySelector('.iOBnre')!.textContent.split(': ')[1]
+    })
+    else data.quickAnswers[i++].answer = doc.querySelector('.wDYxhc')!.innerHTML
+  })
+  } else data.hasQuickAnswers = false
 
   //Knowledge panel
   if (doc.querySelector('.wwUB2c') != null) {
@@ -123,6 +147,7 @@ export const all = async (doc: Document, lang: string) => {
     data.proposition.original.text = doc.querySelector('.spell_orig')!.textContent.toLocaleLowerCase()
     data.proposition.original.link = '/search/?q=' + data.proposition.proposition.data + '&trueSpelling=1'
   } else data.hasProposition = false
+  //TODO: fix for q=fdgdgdfgfdfd
 
   //Get images
   doc.querySelectorAll('script').forEach(el => {
@@ -134,8 +159,6 @@ export const all = async (doc: Document, lang: string) => {
     }
   })
   data.stringedIMGs = JSON.stringify(data.IMGs)
-
-  console.log(data.knwlPanel.additionalInfos)
 
   return await renderFile('./views/all.hbs', data)
 }

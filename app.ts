@@ -88,3 +88,6 @@ app.use(router.allowedMethods())
 await app.listen({port: Deno.env.get('PORT') == undefined ? 8080 : parseInt(Deno.env.get('PORT')!)})
 
 //TODO: PWA
+//TODO: Deno Deploy support
+//TODO: Qovery support
+//TODO: VSCode config
