@@ -78,20 +78,23 @@ export const all = async (doc: Document, lang: string) => {
   const raw1 = bigFatJS.split('var m=[')[1].split(';')[0]
   const menuIDs = ['WEB', 'IMAGES', 'VIDEOS', 'NEWS', 'SHOPPING', 'BOOKS', 'MAPS', 'FLIGHTS', 'FINANCE']
   const baseMenu: any[] = []
-  menuIDs.forEach((_, i) => baseMenu.push([raw1.indexOf(menuIDs[i]), raw1.split(menuIDs[i])[0].split('\\x22')[raw1.split(menuIDs[i])[0].split('\\x22').length - 3].split('\\x22')[0]]))
+  menuIDs.forEach((_, i) => baseMenu.push([
+    raw1.indexOf(menuIDs[i]),
+    raw1.split(menuIDs[i])[0].split('\\x22')[raw1.split(menuIDs[i])[0].split('\\x22').length - 3].split('\\x22')[0],
+    menuIDs[i] !== 'WEB' ? menuIDs[i].toLowerCase() : 'all'
+  ]))
   baseMenu.sort((a, b) => a[0] > b[0] ? 1 : -1)
   baseMenu.forEach((el, i) =>
     i < 5 ?
       data.shownMenu.push({
-        id: menuIDs[i] !== 'WEB' ? menuIDs[i].toLowerCase() : 'all',
+        id: el[2],
         value: el[1]
       })
       : data.hiddenMenu.push({
-        id: menuIDs[i],
+        id: el[2],
         value: el[1]
       }))
   //TODO: Implement data.hiddenMenu aka "more" on google.com to access others menus
-  //TODO: maybe remove some any types
 
   //Results
   doc.querySelectorAll('.LC20lb.DKV0Md').forEach((el, i) => (data.results[i] = {title: el.textContent})) //results title
