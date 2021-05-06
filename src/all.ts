@@ -75,12 +75,12 @@ export const all = async (doc: Document, lang: string) => {
   doc.querySelectorAll('script').forEach(el => el.textContent.includes('(function(){var u=') ? bigFatJS = el.textContent : null)
 
   //Get menu infos
-  const raw1 = bigFatJS.split('var m=[')[1].split(';')[0]
+  const raw = bigFatJS.split('var m=[')[1].split(';')[0]
   const menuIDs = ['WEB', 'IMAGES', 'VIDEOS', 'NEWS', 'SHOPPING', 'BOOKS', 'MAPS', 'FLIGHTS', 'FINANCE']
   const baseMenu: any[] = []
   menuIDs.forEach((_, i) => baseMenu.push([
-    raw1.indexOf(menuIDs[i]),
-    raw1.split(menuIDs[i])[0].split('\\x22')[raw1.split(menuIDs[i])[0].split('\\x22').length - 3].split('\\x22')[0],
+    raw.indexOf(menuIDs[i]),
+    raw.split(menuIDs[i])[0].split('\\x22')[raw.split(menuIDs[i])[0].split('\\x22').length - 3].split('\\x22')[0],
     menuIDs[i] !== 'WEB' ? menuIDs[i].toLowerCase() : 'all'
   ]))
   baseMenu.sort((a, b) => a[0] > b[0] ? 1 : -1)
@@ -109,37 +109,42 @@ export const all = async (doc: Document, lang: string) => {
 
   //Quick answers
   if (doc.querySelector('.JolIg') != null) {
-  const raw2 = bigFatJS.split("');})();(function(){window.jsl.dh('")
-  const formatted: string[] = []
-  raw2.forEach(el => (el.includes('v i') || el.includes('wDYxhc')) ? formatted.push(JSON.parse('"' + el.slice(el.indexOf(',')+2).replaceAll('\\x', '\\u00') + '"')) : null)
-  let i = 0
-  formatted.forEach(el => {
-    const doc = new DOMParser().parseFromString(el, 'text/html')!
-    if (el.includes('v i')) data.quickAnswers.push({
-      question: doc.querySelector('.iOBnre')!.textContent.split(': ')[1]
+    const formatted: string[] = []
+    bigFatJS.split("');})();(function(){window.jsl.dh('").forEach(el => el.includes('iOBnre') || el.includes('wDYxhc') ? formatted.push(JSON.parse('"' + el.slice(el.indexOf(',') + 2).replaceAll('\\x', '\\u00') + '"')) : null)
+    let i = 0
+    formatted.forEach(el => {
+      const doc = new DOMParser().parseFromString(el, 'text/html')!
+      if (el.includes('iOBnre')) {
+        data.quickAnswers.push({
+          question: doc.querySelector('.iOBnre')!.textContent.split(': ')[1]
+        })
+        i++
+      }
+      else data.quickAnswers[i - 1] != undefined ? data.quickAnswers[i - 1].answer = doc.querySelector('.wDYxhc')!.innerHTML : null
     })
-    else data.quickAnswers[i++].answer = doc.querySelector('.wDYxhc')!.innerHTML
-  })
   } else data.hasQuickAnswers = false
 
   //Knowledge panel
   if (doc.querySelector('.wwUB2c') != null) {
     data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //knowledge panel title
     data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //knowledge panel subtitle
-    if (doc.querySelector('.kno-rdesc')! !== null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //knowledge panel description
-    doc.querySelectorAll('.w8qArf').forEach((el, i) => (data.knwlPanel.infos[i] = {title: el.children[0].textContent + ': '})) //knowledge panel infos title
-    doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.replace(' - Disclaimer', '').replace(', MORE', '').replace('%)', '%)\n'))) //knowledge panel infos content
-    //TODO: remove unwanted elements from knowledge panel infos (eg: q=toyota)
-    if (doc.querySelector('.VLkRKc') != null) data.knwlPanel.additionalInfos.title = doc.querySelector('.VLkRKc')!.textContent
-    else data.knwlPanel.additionalInfos.title = doc.querySelector('.Ss2Faf')!.textContent
-    if (doc.querySelectorAll('.kno-vrt-t') != null) {
-      doc.querySelectorAll('.kno-vrt-t').forEach((el, i) => i < 4 ? data.knwlPanel.additionalInfos.infos.push({
-        link: el.children[0].getAttribute('href')!.slice(7).split('&')[0],
-        ID: el.children[0].children[0].children[0].children[0].getAttribute('id')!,
-        title: el.children[0].children[1].textContent,
-        subtitle: el.children[0].children[2] != null ? el.children[0].children[2].textContent : ''
-      }) : null)
+    if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //knowledge panel description
+    if (doc.querySelector('.w8qArf')! != null) {
+      doc.querySelectorAll('.w8qArf').forEach((el, i) => (data.knwlPanel.infos[i] = {title: el.children[0].textContent + ': '})) //knowledge panel infos title
+      doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.replace(' - Disclaimer', '').replace(', MORE', '').replace('%)', '%)\n'))) //knowledge panel infos content
+      //TODO: remove unwanted elements from knowledge panel infos (eg: q=toyota)
+      if (doc.querySelector('.VLkRKc') != null) data.knwlPanel.additionalInfos.title = doc.querySelector('.VLkRKc')!.textContent
+      else data.knwlPanel.additionalInfos.title = doc.querySelector('.Ss2Faf')!.textContent
+      if (doc.querySelectorAll('.kno-vrt-t') != null) {
+        doc.querySelectorAll('.kno-vrt-t').forEach((el, i) => i < 4 ? data.knwlPanel.additionalInfos.infos.push({
+          link: el.children[0].getAttribute('href')!.slice(7).split('&')[0],
+          ID: el.children[0].children[0].children[0].children[0].getAttribute('id')!,
+          title: el.children[0].children[1].textContent,
+          subtitle: el.children[0].children[2] != null ? el.children[0].children[2].textContent : ''
+        }) : null)
+      }
     }
+
   } else data.hasKnwlPanel = false
 
   //Spelling check
