@@ -88,19 +88,19 @@ export const all = async (doc: Document, lang: string) => {
         id: el[2],
         value: el[1]
       }))
-  //TODO: Implement data.hiddenMenu aka "more" on google.com to access others menus
+  //TODO: Implement data.hiddenMenu aka "more" on google.com to access others tabs
 
   //No results
-  if (doc.querySelector('.card-section') != null) {
+  if (doc.querySelector('.card-section:not(.KDCVqf)') != null) {
     data.results[0] = {
-      title: doc.querySelector('.card-section')!.textContent.split('(')[0],
-      desc: ''
+      title: doc.querySelector('.card-section')!.textContent.split('(')[0]
     }
     doc.querySelectorAll('ul')![3].textContent.split('.').forEach((el, i) => {
-      if (i === 0) data.results[0].desc += el + ', '
+      if (i === 0) data.results[0].desc = el + ', '
       if (i === 1) data.results[0].desc += el.toLocaleLowerCase() + ', '
       if (i === 2) data.results[0].desc += el.toLocaleLowerCase() + '.'
     })
+    data.results[0].link = '/search?q=' + data.results[0].title.split(': ')[1]
   }
 
   //Results
@@ -117,7 +117,7 @@ export const all = async (doc: Document, lang: string) => {
   //Quick answers
   if (doc.querySelector('.JolIg') != null) {
     const formatted: string[] = []
-    bigFatJS.split("');})();(function(){window.jsl.dh('").forEach(el => el.includes('iOBnre') || el.includes('wDYxhc') ? formatted.push(JSON.parse('"' + el.slice(el.indexOf(',') + 2).replaceAll('\\x', '\\u00') + '"')) : null)
+    bigFatJS.split("');})();(function(){window.jsl.dh('").forEach(el => el.includes('iOBnre') || el.includes('wDYxhc') && !el.includes('NFQFxe') ? formatted.push(JSON.parse('"' + el.slice(el.indexOf(',') + 2).replaceAll('\\x', '\\u00') + '"')) : null)
     let i = 0
     formatted.forEach(el => {
       const doc = new DOMParser().parseFromString(el, 'text/html')!
@@ -138,8 +138,7 @@ export const all = async (doc: Document, lang: string) => {
     if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //knowledge panel description
     if (doc.querySelector('.w8qArf')! != null) {
       doc.querySelectorAll('.w8qArf').forEach((el, i) => (data.knwlPanel.infos[i] = {title: el.children[0].textContent + ': '})) //knowledge panel infos title
-      doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.replace(' - Disclaimer', '').replace(', MORE', '').replace('%)', '%)\n'))) //knowledge panel infos content
-      //TODO: remove unwanted elements from knowledge panel infos (eg: q=toyota)
+      doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.split(' - ')[0])) //knowledge panel infos content
       if (doc.querySelector('.VLkRKc') != null) data.knwlPanel.additionalInfos.title = doc.querySelector('.VLkRKc')!.textContent
       else data.knwlPanel.additionalInfos.title = doc.querySelector('.Ss2Faf')!.textContent
       if (doc.querySelectorAll('.kno-vrt-t') != null) {
@@ -159,10 +158,9 @@ export const all = async (doc: Document, lang: string) => {
     data.proposition.proposition.text = doc.querySelector('.gL9Hy')!.textContent
     data.proposition.proposition.data = doc.querySelectorAll('.gL9Hy')![1].textContent
     data.proposition.proposition.link = '/search?q=' + data.proposition.proposition.data
-    data.proposition.original.text = doc.querySelector('.spell_orig')!.textContent.toLocaleLowerCase()
-    data.proposition.original.link = '/search?q=' + data.proposition.proposition.data + '&trueSpelling=1'
+    data.proposition.original.text = doc.querySelector('.spell_orig')!.innerHTML.split('<')[0].toLocaleLowerCase()
+    data.proposition.original.link = '/search?q=' + data.query + '&trueSpelling=1'
   } else data.hasProposition = false
-  //TODO: fix for q=fdgdgdfgfdfd
 
   //Get images
   doc.querySelectorAll('script').forEach(el => {
