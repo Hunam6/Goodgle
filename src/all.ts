@@ -48,13 +48,7 @@ export const all = async (doc: Document, lang: string) => {
     firstResults: [],
     hasQuickAnswers: true,
     quickAnswers: [],
-    results: [
-      {
-        title: 'No results',
-        desc: 'Try searching for something else...'
-        //TODO: use sentences from Google
-      }
-    ],
+    results: [],
     hasKnwlPanel: true,
     knwlPanel: {
       title: '',
@@ -95,6 +89,19 @@ export const all = async (doc: Document, lang: string) => {
         value: el[1]
       }))
   //TODO: Implement data.hiddenMenu aka "more" on google.com to access others menus
+
+  //No results
+  if (doc.querySelector('.card-section') != null) {
+    data.results[0] = {
+      title: doc.querySelector('.card-section')!.textContent.split('(')[0],
+      desc: ''
+    }
+    doc.querySelectorAll('ul')![3].textContent.split('.').forEach((el, i) => {
+      if (i === 0) data.results[0].desc += el + ', '
+      if (i === 1) data.results[0].desc += el.toLocaleLowerCase() + ', '
+      if (i === 2) data.results[0].desc += el.toLocaleLowerCase() + '.'
+    })
+  }
 
   //Results
   doc.querySelectorAll('.LC20lb.DKV0Md').forEach((el, i) => (data.results[i] = {title: el.textContent})) //results title
@@ -151,9 +158,9 @@ export const all = async (doc: Document, lang: string) => {
   if (doc.querySelector('.spell_orig') != null) {
     data.proposition.proposition.text = doc.querySelector('.gL9Hy')!.textContent
     data.proposition.proposition.data = doc.querySelectorAll('.gL9Hy')![1].textContent
-    data.proposition.proposition.link = '/search/?q=' + data.proposition.proposition.data
+    data.proposition.proposition.link = '/search?q=' + data.proposition.proposition.data
     data.proposition.original.text = doc.querySelector('.spell_orig')!.textContent.toLocaleLowerCase()
-    data.proposition.original.link = '/search/?q=' + data.proposition.proposition.data + '&trueSpelling=1'
+    data.proposition.original.link = '/search?q=' + data.proposition.proposition.data + '&trueSpelling=1'
   } else data.hasProposition = false
   //TODO: fix for q=fdgdgdfgfdfd
 
