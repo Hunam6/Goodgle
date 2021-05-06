@@ -221,6 +221,7 @@
     .quick-answers-question {
       display: inline;
       margin: 0;
+      cursor: pointer;
     }
 
     .quick-answers-answer {
@@ -336,6 +337,10 @@
 
       .quick-answers {
         padding: 1rem .5rem;
+      }
+
+      .quick-answers-question {
+        user-select: none;
       }
 
       .quick-answers-answer * {
@@ -519,23 +524,25 @@
       el.style.visibility = 'hidden'
       el.style.height = '0'
     })
-    document.querySelectorAll('.quick-answers-btn').forEach(el => el.addEventListener('mouseup', () => {
-      const responseStyle = el.nextElementSibling.nextElementSibling.style
+    function toggle(el, which) {
+      let responseStyle = ''
+      which === 0 ? responseStyle = el.nextElementSibling.nextElementSibling.style : responseStyle = el.nextElementSibling.style
       if (responseStyle.visibility !== 'unset') {
         responseStyle.visibility = 'unset'
         responseStyle.height = 'unset'
         responseStyle.padding = '1rem'
         responseStyle.margin = '1rem'
-        el.textContent = '-'
-      }
-      else {
+        which === 0 ? el.textContent = '-' : el.previousElementSibling.textContent = '-'
+      } else {
         responseStyle.visibility = 'hidden'
         responseStyle.height = '0'
         responseStyle.padding = '0'
         responseStyle.margin = '0'
-        el.textContent = '+'
+        which === 0 ? el.textContent = '+' : el.previousElementSibling.textContent = '+'
       }
-    }))
+    }
+    document.querySelectorAll('.quick-answers-btn').forEach(el => el.addEventListener('mouseup', () => toggle(el, 0)))
+    document.querySelectorAll('.quick-answers-question').forEach(el => el.addEventListener('mouseup', () => toggle(el, 1)))
   </script>
 </body>
 
