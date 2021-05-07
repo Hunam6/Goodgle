@@ -61,7 +61,7 @@
       box-shadow: 0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06);
       height: 3rem;
       background: var(--white);
-      z-index: 1;
+      z-index: 2;
     }
 
     #home {
@@ -96,6 +96,47 @@
       align-self: center;
       margin-right: 2%;
       cursor: pointer;
+    }
+
+    #autocomplete {
+      padding: 3.5rem .5rem .5rem .5rem;
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      position: fixed;
+      width: 90%;
+      z-index: 1;
+      box-shadow: 0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06);
+      background: var(--white);
+      display: none;
+      border-radius: 1.5rem;
+    }
+
+    #autocomplete>a {
+      display: block;
+      padding: .1875rem 1rem;
+      text-decoration: none;
+      color: var(--darker);
+      border: transparent solid .5px;
+      border-radius: 1.5rem;
+      font-weight: 600;
+    }
+
+    #autocomplete>a:hover {
+      border: var(--border) solid .5px;
+    }
+
+      {
+        {
+         !-- #autocomplete>div {
+          height: 1px;
+          width: 80%;
+          margin: 0 auto;
+          background: var(--darker);
+        }
+
+        --
+      }
     }
 
     aside {
@@ -311,7 +352,9 @@
     }
 
     @media (min-width: 1024px) {
-      header {
+
+      header,
+      #autocomplete {
         width: 40vw;
       }
 
@@ -389,12 +432,13 @@
     <button id="home" aria-label="Home"
       onclick="home()"></button>
     <input type="text" id="search-bar"
-      value="{{query}}" />
+      value="{{query}}" spellcheck="false" />
     <button id="search" aria-label="Search"
       onclick="search()">
       <div></div>
     </button>
   </header>
+  <div id="autocomplete"></div>
   {{#hasKnwlPanel}}
     <aside>
       <h2>{{knwlPanel.title}}</h2>
@@ -482,16 +526,19 @@
     <div></div>
   </nav>
   <script>
+    const searchbar = document.querySelector('#search-bar')
+    const autocomplete = document.querySelector('#autocomplete')
+
     //Search functionality
     function search() {
-      if (document.querySelector('#search-bar').value !== '') {
+      if (searchbar.value !== '') {
         let params = new URLSearchParams(location.search)
-        params.set('q', document.querySelector('#search-bar').value)
+        params.set('q', searchbar.value)
         if (params.has('page')) params.delete('page')
         location.search = params.toString()
       }
     }
-    document.querySelector('#search-bar').addEventListener('keyup', e => event.keyCode === 13 ? search() : null)
+    searchbar.addEventListener('keyup', e => event.keyCode === 13 ? search() : null)
 
     //Previous & next buttons
     function prev() {
@@ -500,8 +547,6 @@
     function next() {
       location.search = 'q=' + (new URLSearchParams(location.search).get('q')) + '&page=' + ((new URLSearchParams(location.search).has('page')) ? parseInt((new URLSearchParams(location.search).get('page'))) + 1 : 2)
     }
-
-    //Manage the visibility of the previous button
     if (new URLSearchParams(location.search).has('page') && (new URLSearchParams(location.search).get('page')) === '1' || !new URLSearchParams(location.search).has('page')) document.querySelector('#prev').style.visibility = 'hidden'
 
     //TODO: when hover an other menu item then #current "un-hover" the #current element
@@ -543,6 +588,69 @@
     }
     document.querySelectorAll('.quick-answers-btn').forEach(el => el.addEventListener('mouseup', () => toggle(el, 0)))
     document.querySelectorAll('.quick-answers-question').forEach(el => el.addEventListener('mouseup', () => toggle(el, 1)))
+
+    //Autocomplete
+    function hide() {
+      autocomplete.style.display = 'none'
+      document.querySelector('header').style.boxShadow = '0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06)'
+    }
+    function show() {
+      autocomplete.style.display = 'unset'
+      document.querySelector('header').style.boxShadow = 'unset'
+    }
+    function suggestions() {
+      if (searchbar.value !== '') fetch(location.origin + '/autocomplete?q=' + searchbar.value)
+        .then(res => res.json())
+        .then(res => {
+          autocomplete.innerHTML = ''
+          show()
+          res.forEach(el => autocomplete.innerHTML += '<a href="?=' + el + '">' + el + '</a>')
+          if (res.length === 0) hide()
+        })
+      else hide()
+    }
+    searchbar.addEventListener('input', () => suggestions())
+    searchbar.addEventListener('focus', () => suggestions())
+    searchbar.addEventListener('blur', () => hide())
+    //Key control
+    let i = -1
+    searchbar.addEventListener('keydown', e => {
+      function unselect() {
+        autocomplete.children[i].style.border = 'transparent solid .5px'
+      }
+      function select() {
+        autocomplete.children[i].style.border = 'var(--border) solid .5px'
+      }
+      //Up key
+      if (e.keyCode === 38) {
+        if (i === -1) {
+          i = autocomplete.children.length - 1
+          select()
+        } else {
+          unselect()
+          if (i !== 0) {
+            i--
+            select()
+          } else {
+            i = autocomplete.children.length - 1
+            select()
+          }
+        }
+      }
+      //Down key
+      if (e.keyCode === 40) {
+        if (i !== -1) unselect()
+        if (i !== autocomplete.children.length - 1) {
+          i++
+          select()
+        } else {
+          i = 0
+          select()
+        }
+      }
+      //Enter key
+      if (e.keyCode === 27) hide()
+    })
   </script>
 </body>
 

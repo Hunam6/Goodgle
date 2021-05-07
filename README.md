@@ -3,7 +3,7 @@
 
 ---
 
-## This project is at a very early stage!
+## This project is at an early stage!
 
 ## Goals
 
@@ -13,6 +13,8 @@
 - No ads
 - Proxy support (maybe Tor too in the future)
 - Optional customization
+
+<i><b>Non-goal</b>: support old browsers</i>
 
 ## Usage
 
@@ -33,3 +35,15 @@ Hi and welcome! Contributing is very welcome! Every type of contribution is welc
 ## License
 
 This project is licensed under the [Mozilla Public License 2.0](./LICENSE).
+
+## Credits
+
+[Whoogle](https://github.com/benbusby/whoogle-search) by [@benbusby](https://github.com/benbusby): the original idea and the logic behind the autocomplete search script.
+
+[Oak](https://github.com/oakserver/oak) by [@kitsonk](https://github.com/kitsonk): the web framework/middleware.
+
+[Deno DOM](https://github.com/b-fuze/deno-dom) by [@b-fuze](https://github.com/b-fuze): the DOM parser.
+
+[Dotenv](https://github.com/pietvanzoen/deno-dotenv) by [@bpietvanzoen](https://github.com/pietvanzoen): the .env file handler.
+
+[Mustache.ts](https://github.com/fabrv/mustache.ts) by [@fabrv](https://github.com/fabrv): the template engine.

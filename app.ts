@@ -5,8 +5,8 @@ import {all} from './src/all.ts'
 import {images} from './src/images.ts'
 
 const search = async (params: Record<string, string>) => {
-  //TODO: proxy support
-  //TODO: real-time search suggestions/autocomplete (ref: https://github.com/benbusby/whoogle-search)
+  //TODO: proxy support (maybe use https://proxyscrape.com/free-proxy-list)
+  //TODO: maybe use opensearch (ref: https://github.com/benbusby/whoogle-search/blob/a7bf9728e30f53a5cfc3b295b5354dcfbf6440c0/app/routes.py#L138)
   let url = 'https://google.com/search?q=' + params.q
   if (params.page != undefined) url += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
   //Handle lang
@@ -75,6 +75,15 @@ router
   })
   .get('/search', async ctx => {
     ctx.response.body = await search(helpers.getQuery(ctx))
+  })
+  .get('/autocomplete', async ctx => {
+    ctx.response.body = await fetch('https://suggestqueries.google.com/complete/search?client=toolbar&q=' + helpers.getQuery(ctx).q)
+      .then(res => res.text())
+      .then(res => {
+        const suggestions = res.split('"').filter((_, b) => b % 2 !== 0)
+        suggestions.shift()
+        return suggestions
+      })
   })
   .get('/search.svg', async ctx => {
     await send(ctx, ctx.request.url.pathname, {root: './assets'})
