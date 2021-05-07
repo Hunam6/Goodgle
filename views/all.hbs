@@ -126,19 +126,6 @@
       border: var(--border) solid .5px;
     }
 
-      {
-        {
-         !-- #autocomplete>div {
-          height: 1px;
-          width: 80%;
-          margin: 0 auto;
-          background: var(--darker);
-        }
-
-        --
-      }
-    }
-
     aside {
       margin: 0 auto;
       background: var(--gray);
@@ -604,14 +591,19 @@
         .then(res => {
           autocomplete.innerHTML = ''
           show()
-          res.forEach(el => autocomplete.innerHTML += '<a href="?=' + el + '">' + el + '</a>')
+          res.forEach(el => autocomplete.innerHTML += '<a href="?q=' + el + '">' + el + '</a>')
           if (res.length === 0) hide()
         })
       else hide()
     }
     searchbar.addEventListener('input', () => suggestions())
-    searchbar.addEventListener('focus', () => suggestions())
-    searchbar.addEventListener('blur', () => hide())
+    document.addEventListener('click', e => {
+      if (e.target === searchbar) {
+        show()
+        suggestions()
+      }
+      else if (e.target.tagName !== 'a') hide()
+    })
     //Key control
     let i = -1
     searchbar.addEventListener('keydown', e => {
