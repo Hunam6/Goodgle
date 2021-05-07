@@ -90,6 +90,7 @@ export const all = async (doc: Document, lang: string) => {
       }))
   //TODO: Implement data.hiddenMenu aka "more" on google.com to access others tabs
   //TODO: bug when q=fsf
+  //TODO: bug when q=ssff
 
   //No results
   if (doc.querySelector('.card-section:not(.KDCVqf)') != null) {
