@@ -89,11 +89,24 @@ export const all = async (doc: Document, lang: string) => {
         value: el[1]
       }))
   //TODO: Implement data.hiddenMenu aka "more" on google.com to access others tabs
-  //TODO: bug when q=fsf
-  //TODO: bug when q=ssff
+
+  //Spelling check
+  if (doc.querySelector('.spell_orig') != null) {
+    data.proposition.proposition.text = doc.querySelector('.gL9Hy')!.textContent
+    data.proposition.proposition.data = doc.querySelectorAll('.gL9Hy')![1].textContent
+    data.proposition.proposition.link = '/search?q=' + data.proposition.proposition.data
+    data.proposition.original.text = doc.querySelector('.spell_orig')!.innerHTML.split('<')[0].toLocaleLowerCase()
+    data.proposition.original.link = '/search?q=' + data.query + '&trueSpelling=1'
+  } else data.hasProposition = false
 
   //No results
-  if (doc.querySelector('.card-section:not(.KDCVqf)') != null) {
+  if (doc.querySelector('#result-stats') != null && doc.querySelector('#result-stats')!.textContent.split(/\s/g)[1] === '0') {
+    data.results[0] = {
+      title: doc.querySelector('.spell_orig')!.textContent
+    }
+    data.hasProposition = false
+  }
+  if (doc.querySelector('.mnr-c') != null) {
     data.results[0] = {
       title: doc.querySelector('.card-section')!.textContent.split('(')[0]
     }
@@ -154,15 +167,6 @@ export const all = async (doc: Document, lang: string) => {
     }
 
   } else data.hasKnwlPanel = false
-
-  //Spelling check
-  if (doc.querySelector('.spell_orig') != null) {
-    data.proposition.proposition.text = doc.querySelector('.gL9Hy')!.textContent
-    data.proposition.proposition.data = doc.querySelectorAll('.gL9Hy')![1].textContent
-    data.proposition.proposition.link = '/search?q=' + data.proposition.proposition.data
-    data.proposition.original.text = doc.querySelector('.spell_orig')!.innerHTML.split('<')[0].toLocaleLowerCase()
-    data.proposition.original.link = '/search?q=' + data.query + '&trueSpelling=1'
-  } else data.hasProposition = false
 
   //Get images
   doc.querySelectorAll('script').forEach(el => {
