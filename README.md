@@ -1,9 +1,11 @@
-<h1 align='center'><ins>Goodgle</ins></h1>
+<h1 align='center'><img src="./assets/goodgle.svg" height="24" width="24"/> <ins>Goodgle</ins></h1>
 <p align='center'><strong>A metasearch engine based on Google written in Deno 🦕</strong></p>
 
 ---
 
-## This project is at an early stage!
+<img src="https://siasky.net/nABA-Ukp_nBB_fUeqg7uFfK6Rtmw2s03ZVfqnp5uZOYgpg"/>
+
+### *This project is at an early stage!*
 
 ## Goals
 
@@ -14,13 +16,14 @@
 - Proxy support (maybe Tor too in the future)
 - Optional customization
 
-<i><b>Non-goal</b>: support old browsers</i>
+<i><b>Non-goal</b>: support old or even so old browsers</i>
 
 ## Usage
 
 ### Locally
 
-Run `deno run --allow-net --allow-read --allow-env --unstable app.ts`
+    git clone https://github.com/Hunam6/Goodgle & cd Goodgle
+    deno run --allow-net --allow-read --allow-env --unstable app.ts
 
 ### On Okteto
 
@@ -30,7 +33,9 @@ Click on [![Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto
 
 Hi and welcome! Contributing is very welcome! Every type of contribution is welcomed, just remember to follow the [GitHub Community Guidelines](https://docs.github.com/articles/github-community-guidelines).
 
-*PS: if you don't know where to start look at all the "TODO" comments (I recommend Todo Tree for VSCode).*
+If you want to make a PR please follow styling rules indicated in `.editorconfig` and `.vscode/settings.json`. If you use VSCode you just need to press <kbd>F1</kbd> and search for <kbd>Start Format Files: Workspace</kbd>.
+
+*PS: if you don't know where to start look at all the "TODO" comments (I recommend [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) for VSCode).*
 
 ## License
 

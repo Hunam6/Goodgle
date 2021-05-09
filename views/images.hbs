@@ -3,17 +3,12 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible"
-    content="IE=edge">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{query}} - Goodgle</title>
-  <meta name="Description"
-    content="Goodgle images search page." />
-  <link rel="icon" href="/goodgle.svg" sizes="any"
-    type="image/svg+xml">
-  <link rel="preconnect"
-    href="https://fonts.gstatic.com" />
+  <meta name="Description" content="Goodgle images search page." />
+  <link rel="icon" href="/goodgle.svg" sizes="any" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
   <style type="text/css">
     * {
       outline: 0;
@@ -108,9 +103,12 @@
       margin: .5rem .25rem;
       cursor: pointer;
       max-width: 40%;
-      {{!--
-      TODO: min-width for too small images
-      --}}
+
+        {
+          {
+           !-- TODO: min-width for too small images --
+        }
+      }
     }
 
     aside {
@@ -243,64 +241,46 @@
       }
     }
   </style>
-  <link rel="preload"
-    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
-    as="style"
-    onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript>
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" />
   </noscript>
 </head>
 
 <body>
   {{#hasProposition}}
-    <p>{{proposition.proposition.text}} <a
-        href="{{proposition.proposition.link}}">{{proposition.proposition.data}}</a>,
-      {{proposition.original.text}} <a
-        href="{{proposition.original.link}}">{{query}}</a>
+    <p>{{proposition.proposition.text}} <a href="{{proposition.proposition.link}}">{{proposition.proposition.data}}</a>,
+      {{proposition.original.text}} <a href="{{proposition.original.link}}">{{query}}</a>
     </p>
   {{/hasProposition}}
   <header>
-    <button id="home" aria-label="Home"
-      onclick="home()"></button>
-    <input type="text" id="search-bar"
-      value="{{query}}" />
-    <button id="search" aria-label="Search"
-      onclick="search()">
+    <button id="home" aria-label="Home" onclick="home()"></button>
+    <input type="text" id="search-bar" value="{{query}}" />
+    <button id="search" aria-label="Search" onclick="search()">
       <div></div>
     </button>
   </header>
   <main>
     {{#IMGs}}
-      <img
-        style="background: {{color}}"
-        loading="lazy" decoding="async"
-        src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw"
-        alt="{{desc}}"
-        data-original="{{original}}"
-        data-desc="{{desc}}" data-URL="{{URL}}"
-        data-title="{{title}}">
+      <img style="background: {{color}}" loading="lazy" decoding="async" src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{desc}}" data-original="{{original}}" data-desc="{{desc}}" data-URL="{{URL}}" data-title="{{title}}">
       </img>
     {{/IMGs}}
   </main>
   <aside></aside>
   <nav>
     <a class="menu" href="&tab=all">All</a>
-    <a class="menu" id="current"
-      href="&tab=images">Images</a>
+    <a class="menu" id="current" href="&tab=images">Images</a>
     <a class="menu" href="&tab=videos">Videos</a>
     <a class="menu" href="&tab=news">News</a>
-    <a class="menu"
-      href="&tab=shopping">Shopping</a>
+    <a class="menu" href="&tab=shopping">Shopping</a>
     <a class="menu" href="&tab=books">Books</a>
     <a class="menu" href="&tab=maps">Maps</a>
   </nav>
   <script>
     //For desktops
-    const aspectRatios = {{{stringedAspectRatio}}}
-    document.querySelector('style').innerHTML = document.querySelector('style').innerHTML.slice(0,-8)
-    aspectRatios.forEach((el, i) => document.querySelector('style').innerHTML +=`
+    const aspectRatios = {{{ stringedAspectRatio }}}
+    document.querySelector('style').innerHTML = document.querySelector('style').innerHTML.slice(0, -8)
+    aspectRatios.forEach((el, i) => document.querySelector('style').innerHTML += `
       main img:nth-child(${i + 1}) {
         height: calc(${el[0]}rem / 17.5);
         width: calc(${el[1]}rem / 17.5);
@@ -326,7 +306,7 @@
       el.setAttribute('src', {{{ stringedIMGs }}}[i])
     el.style.background = 'none'
     })
-    
+
     //Go home
     function home() {
       location.href = location.origin
@@ -346,7 +326,7 @@
         <p>${el.getAttribute('data-desc')}</p>
       `
       document.querySelector('aside').style.display = 'unset'
-      if(window.innerWidth >= 1024) document.querySelector('main').style.width = '65%'
+      if (window.innerWidth >= 1024) document.querySelector('main').style.width = '65%'
       document.querySelector('aside>div').addEventListener('mouseup', () => {
         document.querySelector('aside').style.removeProperty('display')
         document.querySelector('main').style.width = 'unset'

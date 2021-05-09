@@ -1,3 +1,4 @@
+//deno-lint-ignore-file no-explicit-any
 import {Document} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 
@@ -34,16 +35,16 @@ export const images = async (doc: Document, lang: string) => {
   baseImgs.forEach((el: any[], i: number) => (el[0] !== 1 ? baseImgs.splice(i, 1) : null))
   baseImgs.forEach(
     (el: any[], i: number) =>
-      (data.IMGs[i] = {
-        color: el[1][6],
-        height: el[1][2][1],
-        width: el[1][2][2],
-        resized: el[1][2][0],
-        original: el[1][3][0],
-        desc: el[1][9]['2003'][3],
-        URL: el[1][9]['2003'][2],
-        title: el[1][9]['2003'][12]
-      })
+    (data.IMGs[i] = {
+      color: el[1][6],
+      height: el[1][2][1],
+      width: el[1][2][2],
+      resized: el[1][2][0],
+      original: el[1][3][0],
+      desc: el[1][9]['2003'][3],
+      URL: el[1][9]['2003'][2],
+      title: el[1][9]['2003'][12]
+    })
   )
   data.stringedIMGs = JSON.stringify(data.IMGs.map(({resized}) => resized))
   data.stringedAspectRatio = JSON.stringify(data.IMGs.map(({height, width}) => [height, width]))

@@ -1,8 +1,9 @@
+//deno-lint-ignore-file no-explicit-any
 import {Document, DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 
 export const all = async (doc: Document, lang: string) => {
-  let data: {
+  const data: {
     lang: string
     query: string
     shownMenu: Record<string, string>[]

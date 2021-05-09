@@ -1,4 +1,5 @@
 import {Application, Router, helpers, send} from 'https://deno.land/x/oak/mod.ts'
+import {exists} from 'https://deno.land/std/fs/mod.ts'
 import {DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
 import 'https://deno.land/x/dotenv/load.ts'
 import {all} from './src/all.ts'
@@ -85,14 +86,15 @@ router
         return suggestions
       })
   })
-  .get('/search.svg', async ctx => {
-    await send(ctx, ctx.request.url.pathname, {root: './assets'})
-  })
-  .get('/goodgle.svg', async ctx => {
-    await send(ctx, ctx.request.url.pathname, {root: './assets'})
-  })
 app.use(router.routes())
 app.use(router.allowedMethods())
+app.use(async ctx => {
+  if (await exists('./assets' + ctx.request.url.pathname)) await send(ctx, ctx.request.url.pathname, {root: './assets'})
+  else {
+    ctx.response.body = 'error 404' //TODO: make a good looking 404 page
+    ctx.response.status = 404
+  }
+})
 
 await app.listen({port: Deno.env.get('PORT') == undefined ? 8080 : parseInt(Deno.env.get('PORT')!)})
 

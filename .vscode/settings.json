@@ -1,0 +1,19 @@
+{
+  "typescript.format.semicolons": "remove",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.formatOnSave": true
+  },
+  "deno.enable": true,
+  "deno.unstable": true,
+  "markdownlint.config": {
+    "default": true,
+    "no-inline-html": {
+      "allowed_elements": ["h1", "img", "p", "strong", "i", "b", "ins", "kbd"]
+    }
+  },
+  "html.format.wrapLineLength": 0
+}

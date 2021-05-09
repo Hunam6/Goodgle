@@ -3,17 +3,12 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible"
-    content="IE=edge" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{query}} - Goodgle</title>
-  <meta name="Description"
-    content="Goodgle search page." />
-  <link rel="icon" href="/goodgle.svg" sizes="any"
-    type="image/svg+xml">
-  <link rel="preconnect"
-    href="https://fonts.gstatic.com" />
+  <meta name="Description" content="Goodgle search page." />
+  <link rel="icon" href="/goodgle.svg" sizes="any" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
   <style type="text/css">
     * {
       outline: 0;
@@ -397,31 +392,22 @@
       }
     }
   </style>
-  <link rel="preload"
-    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
-    as="style"
-    onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript>
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" />
   </noscript>
 </head>
 
 <body>
   {{#hasProposition}}
-    <p>{{proposition.proposition.text}} <a
-        href="{{proposition.proposition.link}}">{{proposition.proposition.data}}</a>,
-      {{proposition.original.text}} <a
-        href="{{proposition.original.link}}">{{query}}</a>
+    <p>{{proposition.proposition.text}} <a href="{{proposition.proposition.link}}">{{proposition.proposition.data}}</a>,
+      {{proposition.original.text}} <a href="{{proposition.original.link}}">{{query}}</a>
     </p>
   {{/hasProposition}}
   <header>
-    <button id="home" aria-label="Home"
-      onclick="home()"></button>
-    <input type="text" id="search-bar"
-      value="{{query}}" spellcheck="false" />
-    <button id="search" aria-label="Search"
-      onclick="search()">
+    <button id="home" aria-label="Home" onclick="home()"></button>
+    <input type="text" id="search-bar" value="{{query}}" spellcheck="false" />
+    <button id="search" aria-label="Search" onclick="search()">
       <div></div>
     </button>
   </header>
@@ -439,11 +425,8 @@
       <h3>{{knwlPanel.additionalInfos.title}}</h3>
       <div>
         {{#knwlPanel.additionalInfos.infos}}
-          <a href="{{link}}"
-            class="additional-infos">
-            <img
-              src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw"
-              alt="{{title}}" id="{{ID}}">
+          <a href="{{link}}" class="additional-infos">
+            <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{title}}" id="{{ID}}">
             <h4>{{title}}</h4>
             <h5>{{subtitle}}</h5>
           </a>
@@ -453,18 +436,15 @@
   {{/hasKnwlPanel}}
   <main>
     <article>
-      <a class="link-title"
-        href="{{firstResult.link}}">{{firstResult.title}}</a>
+      <a class="link-title" href="{{firstResult.link}}">{{firstResult.title}}</a>
       <br />
-      <a class="link"
-        href="{{firstResult.link}}">{{firstResult.shownLink}}</a>
+      <a class="link" href="{{firstResult.link}}">{{firstResult.shownLink}}</a>
       <p class="link-text">{{firstResult.desc}}
       </p>
       <div class="sub-results">
         {{#firstResults}}
           <article>
-            <a class="link-title"
-              href="{{link}}">{{title}}</a>
+            <a class="link-title" href="{{link}}">{{title}}</a>
             <p class="link-text">{{desc}}</p>
           </article>
         {{/firstResults}}
@@ -473,8 +453,7 @@
     {{#hasQuickAnswers}}
       <article class="quick-answers">
         {{#quickAnswers}}
-          <button
-            class="quick-answers-btn">+</button>
+          <button class="quick-answers-btn">+</button>
           <p class="quick-answers-question">
             {{question}}
           </p>
@@ -486,29 +465,24 @@
     {{/hasQuickAnswers}}
     {{#results}}
       <article>
-        <a class="link-title"
-          href="{{link}}">{{title}}</a>
+        <a class="link-title" href="{{link}}">{{title}}</a>
         <br />
-        <a class="link"
-          href="{{link}}">{{shownLink}}</a>
+        <a class="link" href="{{link}}">{{shownLink}}</a>
         <p class="link-text">{{desc}}</p>
       </article>
     {{/results}}
   </main>
   <footer>
-    <button id="prev" aria-label="previous"
-      onclick="prev()">
+    <button id="prev" aria-label="previous" onclick="prev()">
       <div></div>
     </button>
-    <button id="next" aria-label="next"
-      onclick="next()">
+    <button id="next" aria-label="next" onclick="next()">
       <div></div>
     </button>
   </footer>
   <nav>
     {{#shownMenu}}
-      <a class="menu"
-        href="&tab={{id}}">{{value}}</a>
+      <a class="menu" href="&tab={{id}}">{{value}}</a>
     {{/shownMenu}}
     <div></div>
   </nav>
