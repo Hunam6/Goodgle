@@ -72,7 +72,7 @@ const router = new Router()
 app.addEventListener('listen', ({secure, hostname, port}) => console.log('Listening on: ' + (secure ? 'https://' : 'http://') + (hostname ?? 'localhost') + ':' + port))
 router
   .get('/', async ctx => {
-    ctx.response.body = await Deno.readTextFile('./views/index.html')
+    ctx.response.body = await Deno.readTextFile('./pages/index.html')
   })
   .get('/search', async ctx => {
     ctx.response.body = await search(helpers.getQuery(ctx))

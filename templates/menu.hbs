@@ -1,0 +1,57 @@
+<style type="text/css">
+  nav {
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+    display: flex;
+    text-align: center;
+    border-radius: 100vw;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06);
+    height: 3rem;
+    background: var(--white);
+    padding: .5rem;
+    width: 90%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
+  .menu {
+    color: var(--darker);
+    align-self: center;
+    padding: .5rem 1rem;
+    border-radius: 100vw;
+    font-weight: bold;
+    font-size: .75rem;
+  }
+
+  .menu:hover {
+    text-decoration: none;
+    background: var(--dark);
+    color: var(--white);
+  }
+
+  @media (min-width: 1024px) {
+    nav {
+      width: unset;
+      overflow-x: unset;
+    }
+
+    .menu {
+      font-size: 1rem;
+      padding: .5rem 1.5rem;
+    }
+  }
+</style>
+<nav>
+  {{#shownMenu}}
+    <a class="menu" href="&tab={{id}}">{{value}}</a>
+  {{/shownMenu}}
+  <div></div>
+</nav>
+<script>
+  //TODO: when hover an other menu item then #current "un-hover" the #current element
+
+  //Menu links
+  document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search.split('&')[0] + el.getAttribute('href')))
+</script>

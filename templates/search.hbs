@@ -1,0 +1,177 @@
+<style type="text/css">
+  header {
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+    display: flex;
+    width: 90%;
+    text-align: center;
+    border-radius: 100vw;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06);
+    height: 3rem;
+    background: var(--white);
+    z-index: 2;
+  }
+
+  #home {
+    height: 2rem;
+    width: 2rem;
+    border: none;
+    align-self: center;
+    margin-left: 2%;
+    cursor: pointer;
+    background: url('/goodgle.svg');
+  }
+
+  #search-bar {
+    border-radius: 100vw;
+    border: 0;
+    width: 86%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 1.15rem;
+    color: var(--darker);
+    font-weight: bold;
+    caret-color: var(--darker);
+    background: none;
+  }
+
+  #search {
+    background: url('/search.svg');
+    height: 2rem;
+    width: 2rem;
+    border: 0;
+    align-self: center;
+    margin-right: 2%;
+    cursor: pointer;
+  }
+
+  #autocomplete {
+    padding: 3.5rem .5rem .5rem .5rem;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+    width: 90%;
+    z-index: 1;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06);
+    background: var(--white);
+    display: none;
+    border-radius: 1.5rem;
+  }
+
+  #autocomplete>a {
+    display: block;
+    padding: .1875rem 1rem;
+    text-decoration: none;
+    color: var(--darker);
+    border: transparent solid .5px;
+    border-radius: 1.5rem;
+    font-weight: 600;
+  }
+
+  #autocomplete>a:hover {
+    border: var(--border) solid .5px;
+  }
+
+  @media (min-width: 1024px) {
+
+    header,
+    #autocomplete {
+      width: 40vw;
+    }
+  }
+</style>
+<header>
+  <button id="home" aria-label="Home" onclick="home()"></button>
+  <input type="text" id="search-bar" value="{{query}}" spellcheck="false" />
+  <button id="search" aria-label="Search">
+    <div></div>
+  </button>
+</header>
+<div id="autocomplete"></div>
+<script>
+  const searchbar = document.querySelector('#search-bar')
+  const autocomplete = document.querySelector('#autocomplete')
+
+  //Search functionality
+  function search(query) {
+    if (searchbar.value !== '') location.search = 'q=' + query + (location.search.includes('tab=') ? '&tab=' + location.search.split('tab=')[1].split('&')[0] : '')
+  }
+
+  //Go home
+  document.querySelector('#home').addEventListener('mouseup', () => location.href = location.origin)
+  document.querySelector('#search').addEventListener('mouseup', () => search(searchbar.value))
+
+  //Autocomplete
+  function hide() {
+    autocomplete.style.display = 'none'
+    document.querySelector('header').style.boxShadow = '0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06)'
+  }
+  function show() {
+    autocomplete.style.display = 'unset'
+    document.querySelector('header').style.boxShadow = 'unset'
+  }
+  function suggestions() {
+    if (searchbar.value !== '') fetch(location.origin + '/autocomplete?q=' + searchbar.value)
+      .then(res => res.json())
+      .then(res => {
+        autocomplete.innerHTML = ''
+        show()
+        res.forEach(el => autocomplete.innerHTML += '<a href="?q=' + el + '">' + el + '</a>')
+        if (res.length === 0) hide()
+      })
+    else hide()
+  }
+  searchbar.addEventListener('input', () => suggestions())
+  document.addEventListener('click', e => {
+    if (e.target === searchbar) {
+      show()
+      suggestions()
+    }
+    else if (e.target.tagName !== 'a') hide()
+  })
+  //Key control
+  let i = -1
+  searchbar.addEventListener('keydown', e => {
+    function unselect() {
+      autocomplete.children[i].style.border = 'transparent solid .5px'
+    }
+    function select() {
+      autocomplete.children[i].style.border = 'var(--border) solid .5px'
+    }
+    //Up key
+    if (e.keyCode === 38) {
+      if (i === -1) {
+        i = autocomplete.children.length - 1
+        select()
+      } else {
+        unselect()
+        if (i !== 0) {
+          i--
+          select()
+        } else {
+          i = autocomplete.children.length - 1
+          select()
+        }
+      }
+    }
+    //Down key
+    if (e.keyCode === 40) {
+      if (i !== -1) unselect()
+      if (i !== autocomplete.children.length - 1) {
+        i++
+        select()
+      } else {
+        i = 0
+        select()
+      }
+    }
+    //Enter key
+    if (e.keyCode === 13) i !== -1 ? search(autocomplete.children[i].getAttribute('href').substring(3)) : search(searchbar.value)
+    //Escape key
+    if (e.keyCode === 27) hide()
+  })
+</script>

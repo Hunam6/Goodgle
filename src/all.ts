@@ -3,32 +3,9 @@ import {Document, DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts
 import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 
 export const all = async (doc: Document, lang: string) => {
-  const data: {
-    lang: string
-    query: string
-    shownMenu: Record<string, string>[]
-    hiddenMenu: Record<string, string>[]
-    hasProposition: boolean
-    proposition: Record<string, Record<string, string>>
-    firstResult: Record<string, string>
-    firstResults: Record<string, string>[]
-    hasQuickAnswers: boolean
-    quickAnswers: Record<string, string>[]
-    results: Record<string, string>[]
-    hasKnwlPanel: boolean
-    knwlPanel: {
-      title: string
-      subtitle: string
-      desc: string
-      infos: Record<string, string>[]
-      additionalInfos: {
-        title: string
-        infos: Record<string, string>[]
-      }
-    }
-    IMGs: string[][]
-    stringedIMGs: string
-  } = {
+  const data: any = {
+    search: '',
+    menu: '',
     lang: lang,
     query: doc.querySelector('title')!.textContent.split(' - ')[0],
     shownMenu: [],
@@ -180,5 +157,14 @@ export const all = async (doc: Document, lang: string) => {
   })
   data.stringedIMGs = JSON.stringify(data.IMGs)
 
-  return await renderFile('./views/all.hbs', data)
+  //Templates
+  data.search = await renderFile('./templates/search.hbs', {
+    query: data.query
+  })
+  data.menu = await renderFile('./templates/menu.hbs', {
+    shownMenu: data.shownMenu,
+    hiddenMenu: data.hiddenMenu
+  })
+
+  return await renderFile('./pages/all.hbs', data)
 }

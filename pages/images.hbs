@@ -14,101 +14,47 @@
       outline: 0;
       box-sizing: border-box;
       font-family: 'Open Sans', sans-serif;
-      --white: #f5f5f5fa;
-      --gray: #f5f5f5;
-      --dark: hsla(0, 0%, 10%, 0.7);
-      --darker: hsl(0, 0%, 10%, 0.9);
-      --border: #999999;
+      --white: hsla(0, 0%, 96%, .98);
+      --gray: hsl(0, 0%, 96%);
+      --dark: hsla(0, 0%, 10%, .7);
+      --darker: hsl(0, 0%, 10%, .9);
+      --border: hsl(0, 0%, 60%)
     }
 
     body {
-      margin: 6.5rem 0 0;
+      margin: 6.5rem 0 0
     }
 
     body>p {
       width: 90%;
       margin: 0 auto 1.5rem auto;
       color: var(--dark);
-      font-weight: 600;
+      font-weight: 600
     }
 
     body>p>a {
-      color: var(--darker);
+      color: var(--darker)
     }
 
     a {
-      text-decoration: none;
+      text-decoration: none
     }
 
     a:hover {
-      text-decoration: underline;
-    }
-
-    header {
-      top: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      position: fixed;
-      display: flex;
-      width: 90%;
-      text-align: center;
-      border-radius: 100vw;
-      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
-      height: 3rem;
-      background: var(--white);
-    }
-
-    #home {
-      height: 2rem;
-      width: 2rem;
-      border: none;
-      align-self: center;
-      margin-left: 2%;
-      cursor: pointer;
-      background: url('/goodgle.svg');
-    }
-
-    #search-bar {
-      border-radius: 100vw;
-      border: 0;
-      width: 86%;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: center;
-      font-size: 1.15rem;
-      color: var(--darker);
-      font-weight: bold;
-      caret-color: var(--darker);
-      background: none;
-    }
-
-    #search {
-      background: url('/search.svg');
-      height: 2rem;
-      width: 2rem;
-      border: 0;
-      align-self: center;
-      margin-right: 2%;
-      cursor: pointer;
+      text-decoration: underline
     }
 
     main {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
-      align-items: center;
+      align-items: center
     }
 
     main>img {
       margin: .5rem .25rem;
       cursor: pointer;
-      max-width: 40%;
-
-        {
-          {
-           !-- TODO: min-width for too small images --
-        }
-      }
+      max-width: 40%
     }
 
     aside {
@@ -123,7 +69,7 @@
       padding: 2.5rem 1rem;
       text-align: center;
       width: 100%;
-      height: 85vh;
+      height: 85vh
     }
 
     figure {
@@ -131,19 +77,19 @@
       border: 0.5px solid var(--border);
       margin: 0 auto;
       width: max-content;
-      max-width: 80%;
+      max-width: 80%
     }
 
     figure>a>img {
       border-radius: 1rem 1rem 0 0;
       max-width: 100%;
-      max-height: 50vh;
+      max-height: 50vh
     }
 
     figure>a>p {
       color: var(--darker);
       font-weight: 600;
-      margin: .5rem 0;
+      margin: .5rem 0
     }
 
     aside>div {
@@ -155,62 +101,21 @@
       top: .25rem;
       left: 50%;
       transform: translateX(-50%) rotate(-45deg);
-      cursor: pointer;
-    }
-
-    nav {
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      position: fixed;
-      display: flex;
-      text-align: center;
-      border-radius: 100vw;
-      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.14), 0px 2px 12px rgba(0, 0, 0, 0.06);
-      height: 3rem;
-      background: var(--white);
-      padding: 0.5rem;
-      width: 90%;
-      overflow-x: scroll;
-      overflow-y: hidden;
-    }
-
-    .menu {
-      color: var(--darker);
-      align-self: center;
-      padding: 0.5rem 1rem;
-      border-radius: 100vw;
-      font-weight: bold;
-      font-size: .75rem;
-    }
-
-    .menu:hover {
-      text-decoration: none;
-      background: var(--dark);
-      color: var(--white);
-    }
-
-    #current {
-      color: var(--white);
-      background: var(--dark);
+      cursor: pointer
     }
 
     @media (min-width: 1024px) {
       body>p {
         width: unset;
-        margin: 0 1rem 1.5rem;
-      }
-
-      header {
-        width: 40vw;
+        margin: 0 1rem 1.5rem
       }
 
       main {
-        margin: 0 1rem 2rem;
+        margin: 0 1rem 2rem
       }
 
       main>img {
-        max-width: unset;
+        max-width: unset
       }
 
       aside {
@@ -221,23 +126,13 @@
         transform: translateY(-50%);
         border-radius: 2.5rem 0 0 2.5rem;
         width: 32.5%;
-        height: 75vh;
+        height: 75vh
       }
 
       aside>div {
         top: 50%;
         left: 1rem;
-        transform: translateX(-50%) rotate(-135deg);
-      }
-
-      nav {
-        width: auto;
-        overflow-x: auto;
-      }
-
-      .menu {
-        font-size: 1rem;
-        padding: 0.5rem 1.5rem;
+        transform: translateX(-50%) rotate(-135deg)
       }
     }
   </style>
@@ -253,29 +148,14 @@
       {{proposition.original.text}} <a href="{{proposition.original.link}}">{{query}}</a>
     </p>
   {{/hasProposition}}
-  <header>
-    <button id="home" aria-label="Home" onclick="home()"></button>
-    <input type="text" id="search-bar" value="{{query}}" />
-    <button id="search" aria-label="Search" onclick="search()">
-      <div></div>
-    </button>
-  </header>
+  {{{search}}}
   <main>
     {{#IMGs}}
-      <img style="background: {{color}}" loading="lazy" decoding="async" src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{desc}}" data-original="{{original}}" data-desc="{{desc}}" data-URL="{{URL}}" data-title="{{title}}">
-      </img>
+      <img style="background: {{color}}" loading="lazy" decoding="async" src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{desc}}" data-original="{{original}}" data-desc="{{desc}}" data-URL="{{URL}}" data-title="{{title}}"></img>
     {{/IMGs}}
   </main>
   <aside></aside>
-  <nav>
-    <a class="menu" href="&tab=all">All</a>
-    <a class="menu" id="current" href="&tab=images">Images</a>
-    <a class="menu" href="&tab=videos">Videos</a>
-    <a class="menu" href="&tab=news">News</a>
-    <a class="menu" href="&tab=shopping">Shopping</a>
-    <a class="menu" href="&tab=books">Books</a>
-    <a class="menu" href="&tab=maps">Maps</a>
-  </nav>
+  {{{menu}}}
   <script>
     //For desktops
     const aspectRatios = {{{ stringedAspectRatio }}}
@@ -283,34 +163,16 @@
     aspectRatios.forEach((el, i) => document.querySelector('style').innerHTML += `
       main img:nth-child(${i + 1}) {
         height: calc(${el[0]}rem / 17.5);
-        width: calc(${el[1]}rem / 17.5);
+        width: calc(${el[1]}rem / 17.5)
       }
     `)
     document.querySelector('style').innerHTML += '}'
-
-    //Search functionality
-    function search() {
-      let params = new URLSearchParams(location.search)
-      params.set('q', document.querySelector('#search-bar').value.replace(' ', '+'))
-      location.search = params.toString()
-    }
-    document.querySelector('#search-bar').addEventListener('keyup', e => e.keyCode === 13 ? search() : null)
-
-    //TODO: when hover an other menu item then #current "un-hover" the #current element
-
-    //Menu links
-    document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search.split('&')[0] + el.getAttribute('href')))
 
     //Get images
     document.querySelectorAll('img').forEach((el, i) => {
       el.setAttribute('src', {{{ stringedIMGs }}}[i])
     el.style.background = 'none'
     })
-
-    //Go home
-    function home() {
-      location.href = location.origin
-    }
 
     //View full image
     document.querySelectorAll('img').forEach(el => el.addEventListener('mouseup', () => {

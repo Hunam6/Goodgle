@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{query}} - Goodgle</title>
+  <meta name="Description" content="Goodgle search page." />
+  <link rel="icon" href="/goodgle.svg" sizes="any" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <style type="text/css">
+    * {
+      outline: 0;
+      box-sizing: border-box;
+      font-family: 'Open Sans', sans-serif;
+      --white: hsla(0, 0%, 96%, .98);
+      --gray: hsl(0, 0%, 96%);
+      --dark: hsla(0, 0%, 10%, .7);
+      --darker: hsl(0, 0%, 10%, .9);
+      --border: hsl(0, 0%, 60%)
+    }
+
+    body {
+      margin: 6.5rem 0 0
+    }
+
+    body>p {
+      width: 90%;
+      margin: 0 auto 1.5rem auto;
+      color: var(--dark);
+      font-weight: 600
+    }
+
+    body>p>a {
+      color: var(--darker)
+    }
+
+    a {
+      text-decoration: none
+    }
+
+    a:hover {
+      text-decoration: underline var(--darker)
+    }
+
+    aside {
+      margin: 0 auto;
+      background: var(--gray);
+      border: .5px solid var(--border);
+      width: 90%;
+      border-radius: 25px;
+      padding: .5rem 1rem
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--darker)
+    }
+
+    .subtitle {
+      margin: 0;
+      font-weight: normal;
+      color: var(--dark)
+    }
+
+    aside>p>b {
+      color: var(--darker);
+      font-weight: 600
+    }
+
+    aside>p {
+      color: var(--dark)
+    }
+
+    aside>h3 {
+      color: var(--darker);
+      font-weight: bold
+    }
+
+    aside>div {
+      display: flex
+    }
+
+    .additional-infos {
+      max-width: 25%;
+      text-align: center
+    }
+
+    .additional-infos>img {
+      width: 90%;
+      height: attr(width)
+    }
+
+    .additional-infos>h4,
+    .additional-infos>h5 {
+      font-weight: normal;
+      color: var(--dark);
+      margin: 0
+    }
+
+    .additional-infos>h4 {
+      font-size: small;
+      line-height: 90%
+    }
+
+    .additional-infos>h5 {
+      font-size: smaller
+    }
+
+    main {
+      margin: 0 0 -1rem
+    }
+
+    article {
+      background: var(--gray);
+      width: 90%;
+      border-radius: 25px;
+      padding: 1rem;
+      margin: 1.5rem auto;
+      border: .5px solid var(--border)
+    }
+
+    .link-title,
+    .quick-answers>p {
+      color: var(--darker);
+      font-weight: 600
+    }
+
+    .link {
+      color: var(--dark);
+      font-weight: 600
+    }
+
+    .link-text {
+      color: var(--dark)
+    }
+
+    .sub-results {
+      display: none
+    }
+
+    .sub-results>article {
+      margin: 1rem
+    }
+
+    .quick-answers {
+      display: grid;
+      grid-template-columns: 1.5rem 1fr;
+      grid-gap: .25rem;
+      padding: 1rem .125rem
+    }
+
+    .quick-answers>button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: x-large;
+      width: 1.5rem;
+      height: 1.5rem;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      line-height: 0
+    }
+
+    .quick-answers>p {
+      display: inline;
+      margin: 0;
+      cursor: pointer
+    }
+
+    .quick-answers>div {
+      grid-column: 1 / 3;
+      border: .5px solid var(--border);
+      border-radius: 25px
+    }
+
+    .quick-answers>div * {
+      font-size: small;
+      color: var(--darker)
+    }
+
+    .quick-answers>div *:not(b) {
+      font-weight: normal
+    }
+
+    .quick-answers>div b {
+      font-weight: 600
+    }
+
+    footer {
+      width: 95%;
+      margin: 0 auto 3rem
+    }
+
+    footer>button {
+      height: 2rem;
+      width: 2rem;
+      border: none;
+      background: none;
+      padding: .5rem;
+      cursor: pointer;
+      margin: 0 .5rem 2rem
+    }
+
+    #next {
+      position: absolute;
+      right: 2.5%
+    }
+
+    footer>button>div {
+      height: .8rem;
+      width: .8rem;
+      border: 0 solid var(--darker);
+      border-width: 0 0 .2rem .2rem
+    }
+
+    #prev>div {
+      transform: rotate(45deg)
+    }
+
+    #next>div {
+      transform: rotate(-135deg)
+    }
+
+    @media (min-width: 1024px) {
+      aside {
+        width: 20%;
+        position: absolute;
+        right: 2vw;
+        top: 6.5rem
+      }
+
+      main {
+        margin: 0 0 2rem
+      }
+
+      body>p,
+      article {
+        width: 50%
+      }
+
+      .sub-results {
+        display: flex
+      }
+
+      .quick-answers {
+        padding: 1rem .5rem
+      }
+
+      .quick-answers>p {
+        user-select: none
+      }
+
+      .quick-answers>div * {
+        font-size: unset
+      }
+
+      footer {
+        width: 50%;
+        margin: 0 auto
+      }
+
+      #next {
+        right: 25%
+      }
+    }
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" />
+  </noscript>
+</head>
+
+<body>
+  {{#hasProposition}}
+    <p>{{proposition.proposition.text}} <a href="{{proposition.proposition.link}}">{{proposition.proposition.data}}</a>, {{proposition.original.text}} <a href="{{proposition.original.link}}">{{query}}</a></p>
+  {{/hasProposition}}
+  {{{search}}}
+  {{#hasKnwlPanel}}
+    <aside>
+      <h2>{{knwlPanel.title}}</h2>
+      <p class="subtitle">{{knwlPanel.subtitle}}</p>
+      <p>{{knwlPanel.desc}}</p>
+      {{#knwlPanel.infos}}
+        <p><b>{{title}}</b>{{content}}</p>
+      {{/knwlPanel.infos}}
+      <h3>{{knwlPanel.additionalInfos.title}}</h3>
+      <div>
+        {{#knwlPanel.additionalInfos.infos}}
+          <a href="{{link}}" class="additional-infos">
+            <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{title}}" id="{{ID}}">
+            <h4>{{title}}</h4>
+            <h5>{{subtitle}}</h5>
+          </a>
+        {{/knwlPanel.additionalInfos.infos}}
+      </div>
+    </aside>
+  {{/hasKnwlPanel}}
+  <main>
+    <article>
+      <a class="link-title" href="{{firstResult.link}}">{{firstResult.title}}</a>
+      <br />
+      <a class="link" href="{{firstResult.link}}">{{firstResult.shownLink}}</a>
+      <p class="link-text">{{firstResult.desc}}
+      </p>
+      <div class="sub-results">
+        {{#firstResults}}
+          <article>
+            <a class="link-title" href="{{link}}">{{title}}</a>
+            <p class="link-text">{{desc}}</p>
+          </article>
+        {{/firstResults}}
+      </div>
+    </article>
+    {{#hasQuickAnswers}}
+      <article class="quick-answers">
+        {{#quickAnswers}}
+          <button>+</button>
+          <p>{{question}}</p>
+          <div>{{{answer}}}</div>
+        {{/quickAnswers}}
+      </article>
+    {{/hasQuickAnswers}}
+    {{#results}}
+      <article>
+        <a class="link-title" href="{{link}}">{{title}}</a>
+        <br />
+        <a class="link" href="{{link}}">{{shownLink}}</a>
+        <p class="link-text">{{desc}}</p>
+      </article>
+    {{/results}}
+  </main>
+  {{{menu}}}
+  <footer>
+    <button id="prev" aria-label="previous" onclick="prev()">
+      <div></div>
+    </button>
+    <button id="next" aria-label="next" onclick="next()">
+      <div></div>
+    </button>
+  </footer>
+  <script>
+    //Previous & next buttons
+    function prev() {
+      location.search = 'q=' + (new URLSearchParams(location.search).get('q')) + '&page=' + (parseInt((new URLSearchParams(location.search).get('page'))) - 1)
+    }
+    function next() {
+      location.search = 'q=' + (new URLSearchParams(location.search).get('q')) + '&page=' + ((new URLSearchParams(location.search).has('page')) ? parseInt((new URLSearchParams(location.search).get('page'))) + 1 : 2)
+    }
+    if (new URLSearchParams(location.search).has('page') === false || new URLSearchParams(location.search).get('page') === '1') document.querySelector('#prev').style.visibility = 'hidden'
+    if (document.querySelector('main').children.length === 1) document.querySelector('#next').style.visibility = 'hidden'
+
+    //Get images
+    const IMGs = {{{ stringedIMGs }}}
+    IMGs.forEach(el => document.querySelector('#' + el[1]) != null ? document.querySelector('#' + el[1]).setAttribute('src', el[0]) : null)
+
+    //Quick answers
+    document.querySelectorAll('.u9iNfb').forEach(el => el.remove())
+    document.querySelectorAll('.quick-answers>div').forEach(el => {
+      el.style.visibility = 'hidden'
+      el.style.height = '0'
+    })
+    function toggle(el, which) {
+      let responseStyle = ''
+      which === 0 ? responseStyle = el.nextElementSibling.nextElementSibling.style : responseStyle = el.nextElementSibling.style
+      if (responseStyle.visibility !== 'unset') {
+        responseStyle.visibility = 'unset'
+        responseStyle.height = 'unset'
+        responseStyle.padding = '1rem'
+        responseStyle.margin = '1rem'
+        which === 0 ? el.textContent = '-' : el.previousElementSibling.textContent = '-'
+      } else {
+        responseStyle.visibility = 'hidden'
+        responseStyle.height = '0'
+        responseStyle.padding = '0'
+        responseStyle.margin = '0'
+        which === 0 ? el.textContent = '+' : el.previousElementSibling.textContent = '+'
+      }
+    }
+    document.querySelectorAll('.quick-answers>button').forEach(el => el.addEventListener('mouseup', () => toggle(el, 0)))
+    document.querySelectorAll('.quick-answers>p').forEach(el => el.addEventListener('mouseup', () => toggle(el, 1)))
+  </script>
+</body>
+
+</html>
