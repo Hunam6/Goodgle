@@ -1,4 +1,4 @@
-<style type="text/css">
+<style>
   header {
     top: 1.5rem;
     left: 50%;
@@ -98,7 +98,7 @@
 
   //Search functionality
   function search(query) {
-    if (searchbar.value !== '') location.search = 'q=' + query + (location.search.includes('tab=') ? '&tab=' + location.search.split('tab=')[1].split('&')[0] : '')
+    if (searchbar.value !== '') location.href = location.origin + '/search?q=' + query + (location.search.includes('tab=') ? '&tab=' + location.search.split('tab=')[1].split('&')[0] : '')
   }
 
   //Go home
@@ -120,8 +120,8 @@
       .then(res => {
         autocomplete.innerHTML = ''
         show()
-        res.forEach(el => autocomplete.innerHTML += '<a href="?q=' + el + '">' + el + '</a>')
-        if (res.length === 0) hide()
+        res[1].forEach(el => autocomplete.innerHTML += '<a href="/search?q=' + el + '">' + el + '</a>')
+        if (res[1].length === 0) hide()
       })
     else hide()
   }

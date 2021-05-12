@@ -1,13 +1,22 @@
 import {Application, Router, helpers, send} from 'https://deno.land/x/oak/mod.ts'
 import {exists} from 'https://deno.land/std/fs/mod.ts'
 import {DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
+import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 import 'https://deno.land/x/dotenv/load.ts'
 import {all} from './src/all.ts'
 import {images} from './src/images.ts'
 
+const rdmUA = () => {
+  const rdmStr = () => Date.now().toString(36) + Math.random().toString(36).substring(2)
+  const OSs = ['Windows NT;', 'Macintosh', 'X11; Linux x86_64', 'X11; Linux i686', 'X11; CrOS i686', 'X11; OpenBSD i386', 'X11; NetBSD']
+  return `Mozilla/5.0 (${OSs[~~(Math.random() * OSs.length)]} ${rdmStr()}) AppleWebKit/${rdmStr()} (KHTML, like Gecko) Chrome/${Math.floor(Math.random() * (500 - 50)) + 49} Safari/${rdmStr()} OPR/${rdmStr()}`
+}
+
 const search = async (params: Record<string, string>) => {
   //TODO: proxy support (maybe use https://proxyscrape.com/free-proxy-list)
-  //TODO: maybe use opensearch (ref: https://github.com/benbusby/whoogle-search/blob/a7bf9728e30f53a5cfc3b295b5354dcfbf6440c0/app/routes.py#L138)
+  //TODO: popup or something to explain how to add the search engine to the browser
+  //TODO: Edge (chromium) support, it's strange it doesn't work for now whereas it should
+  //TODO: Maybe add instructions for Safari, it seems not possible without a dirty workaround be we'll see
   let url = 'https://google.com/search?q=' + params.q
   if (params.page != undefined) url += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
   //Handle lang
@@ -20,13 +29,12 @@ const search = async (params: Record<string, string>) => {
   if (params.trueSpelling != undefined) url += '&nfpr=' + params.trueSpelling //Handle spelling suggestion
 
   //Random user agent
-  const rdmStr = () => Date.now().toString(36) + Math.random().toString(36).substring(2)
-  const OSs = ['Windows NT;', 'Macintosh', 'X11; Linux x86_64', 'X11; Linux i686', 'X11; CrOS i686', 'X11; OpenBSD i386', 'X11; NetBSD']
+
   const getDoc = async (url: string) =>
     new DOMParser().parseFromString(
       await fetch(url, {
         headers: {
-          'user-agent': `Mozilla/5.0 (${OSs[~~(Math.random() * OSs.length)]} ${rdmStr()}) AppleWebKit/${rdmStr()} (KHTML, like Gecko) Chrome/${Math.floor(Math.random() * (500 - 50)) + 49} Safari/${rdmStr()} OPR/${rdmStr()}`
+          'user-agent': rdmUA()
         }
       }).then(res => res.text()),
       'text/html'
@@ -72,19 +80,28 @@ const router = new Router()
 app.addEventListener('listen', ({secure, hostname, port}) => console.log('Listening on: ' + (secure ? 'https://' : 'http://') + (hostname ?? 'localhost') + ':' + port))
 router
   .get('/', async ctx => {
-    ctx.response.body = await Deno.readTextFile('./pages/index.html')
+    ctx.response.body = await renderFile('./pages/home.hbs', {search: await renderFile('./templates/search.hbs', {query: ''})})
   })
   .get('/search', async ctx => {
     ctx.response.body = await search(helpers.getQuery(ctx))
   })
   .get('/autocomplete', async ctx => {
-    ctx.response.body = await fetch('https://suggestqueries.google.com/complete/search?client=toolbar&q=' + helpers.getQuery(ctx).q)
+    ctx.response.body = await fetch('https://suggestqueries.google.com/complete/search?client=toolbar&q=' + helpers.getQuery(ctx).q, {
+      headers: {
+        'user-agent': rdmUA()
+      }
+    })
       .then(res => res.text())
       .then(res => {
-        const suggestions = res.split('"').filter((_, b) => b % 2 !== 0)
-        suggestions.shift()
+        const suggestions: [string, string[]] = [helpers.getQuery(ctx).q, res.split('"').filter((_, b) => b % 2 !== 0)]
+        suggestions[1].shift()
+        suggestions[1].forEach((el, i) => suggestions[1][i] = el.replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(dec)))
         return suggestions
       })
+  })
+  .get('/opensearch.xml', async ctx => {
+    ctx.response.headers.set('Content-Type', 'application/opensearchdescription+xml')
+    ctx.response.body = new TextEncoder().encode(await (await Deno.readTextFile('./assets/opensearch.xml')).replaceAll('{URL}', ctx.request.url.origin))
   })
 app.use(router.routes())
 app.use(router.allowedMethods())

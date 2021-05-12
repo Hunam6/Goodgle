@@ -35,7 +35,7 @@ Hi and welcome! Contributing is very welcome! Every type of contribution is welc
 
 If you want to make a PR please follow styling rules indicated in `.editorconfig` and `.vscode/settings.json`. If you use VSCode you just need to press <kbd>F1</kbd> and search for <kbd>Start Format Files: Workspace</kbd>.
 
-*PS: if you don't know where to start look at all the "TODO" comments (I recommend [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) for VSCode).*
+*__PS__: if you don't know where to start look at all the "TODO" comments (I recommend [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) for VSCode).*
 
 ## License
 

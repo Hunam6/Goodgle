@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+  xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>Goodgle</ShortName>
+  <Description>Goodgle - A metasearch engine based on Google written in Deno 🦕</Description>
+  <Tags>goodgle search-engine google privacy oak metasearch metasearch-engine deno</Tags>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="50" height="50" type="image/svg+xml">{URL}/goodgle.svg</Image>
+  <Url type="text/html" method="get" template="{URL}/search?q={searchTerms}" />
+  <Url type="application/x-suggestions+json" template="{URL}/autocomplete?q={searchTerms}" />
+  <Url type="application/json" rel="suggestions" template="{URL}/autocomplete?q={searchTerms}" />
+  <Url type="application/opensearchdescription+xml" rel="self" template="{URL}/opensearch.xml" />
+  <moz:SearchForm>{URL}/search</moz:SearchForm>
+  <Developer>Hunam (https://github.com/Hunam6)</Developer>
+</OpenSearchDescription>
