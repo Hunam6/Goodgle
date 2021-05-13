@@ -12,6 +12,7 @@
     height: 3rem;
     background: var(--white);
     z-index: 2;
+    height: 15vw;
   }
 
   #home {
@@ -82,6 +83,10 @@
     #autocomplete {
       width: 40vw;
     }
+
+    header {
+      height: 3.2rem;
+    }
   }
 </style>
 <header>
@@ -108,11 +113,11 @@
   //Autocomplete
   function hide() {
     autocomplete.style.display = 'none'
-    document.querySelector('header').style.boxShadow = '0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06)'
+    if (window.innerWidth >= 1024) document.querySelector('header').style.boxShadow = '0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06)'
   }
   function show() {
     autocomplete.style.display = 'unset'
-    document.querySelector('header').style.boxShadow = 'unset'
+    if (window.innerWidth >= 1024) document.querySelector('header').style.boxShadow = 'unset'
   }
   function suggestions() {
     if (searchbar.value !== '') fetch(location.origin + '/autocomplete?q=' + searchbar.value)
@@ -126,12 +131,27 @@
     else hide()
   }
   searchbar.addEventListener('input', () => suggestions())
-  document.addEventListener('click', e => {
+  document.addEventListener('mouseup', e => {
     if (e.target === searchbar) {
+      if (window.innerWidth <= 1024) {
+        document.querySelector('header').style.width = '100%'
+        document.querySelector('header').style.borderRadius = '0 0 1.5rem 1.5rem'
+        document.querySelector('header').style.setProperty('top', '0', 'important')
+        autocomplete.style.setProperty('top', '0', 'important')
+        autocomplete.style.width = '100%'
+      }
       show()
       suggestions()
     }
-    else if (e.target.tagName !== 'a') hide()
+    else if (e.target.tagName !== 'a') {
+      if (window.innerWidth <= 1024) {
+        document.querySelector('header').style.width = '90%'
+        document.querySelector('header').style.borderRadius = '1.5rem'
+        document.querySelector('header').style.top = '1.5rem'
+        autocomplete.style.width = '90%'
+      }
+      hide()
+    }
   })
   //Key control
   let i = -1

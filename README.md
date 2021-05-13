@@ -33,7 +33,7 @@ Click on [![Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto
 
 Hi and welcome! Contributing is very welcome! Every type of contribution is welcomed, just remember to follow the [GitHub Community Guidelines](https://docs.github.com/articles/github-community-guidelines).
 
-If you want to make a PR please follow styling rules indicated in `.editorconfig` and `.vscode/settings.json`. If you use VSCode you just need to press <kbd>F1</kbd> and search for <kbd>Start Format Files: Workspace</kbd>.
+If you want to make a PR please follow the styling rules indicated in `.editorconfig` and `.vscode/settings.json`. If you use VSCode you just need to press <kbd>F1</kbd> and search for <kbd>Start Format Files: Workspace</kbd>.
 
 *__PS__: if you don't know where to start look at all the "TODO" comments (I recommend [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) for VSCode).*
 

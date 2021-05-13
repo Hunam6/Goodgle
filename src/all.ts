@@ -42,6 +42,8 @@ export const all = async (doc: Document, lang: string) => {
     stringedIMGs: ''
   }
 
+  //TODO: fix q=plex
+
   //Get the big fat JS tag containing a lot of messy information
   let bigFatJS = ''
   doc.querySelectorAll('script').forEach(el => el.textContent.includes('(function(){var u=') ? bigFatJS = el.textContent : null)
