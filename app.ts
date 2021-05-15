@@ -101,7 +101,7 @@ router
   })
   .get('/opensearch.xml', async ctx => {
     ctx.response.headers.set('Content-Type', 'application/opensearchdescription+xml')
-    ctx.response.body = new TextEncoder().encode(await (await Deno.readTextFile('./assets/opensearch.xml')).replaceAll('{URL}', ctx.request.url.origin))
+    ctx.response.body = new TextEncoder().encode((await Deno.readTextFile('./assets/opensearch.xml')).replaceAll('{URL}', ctx.request.url.origin))
   })
 app.use(router.routes())
 app.use(router.allowedMethods())

@@ -35,22 +35,92 @@
       text-decoration: underline
     }
 
-    img {
+    code {
+      padding: .125rem .5rem;
+      border-radius: 10px;
+      border: .5px solid var(--border);
+      color: var(--darker);
+    }
+
+    #add {
+      z-index: 3;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1.5rem;
+      text-align: center
+    }
+
+    #add>div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #add>div>div {
+      background: var(--gray);
+      padding: .5rem;
+      margin: .5rem auto;
+      border-radius: 25px;
+      border: .5px solid var(--border)
+    }
+
+    #add>div>div>p {
+      font-size: 1rem;
+      margin: .5rem;
+      line-height: 150%;
+    }
+
+    picture>img {
+      width: 80vw
+    }
+
+    #add>button {
+      width: 70%;
+      margin: .5rem auto 1rem auto;
+      background: var(--dark);
+      color: var(--white);
+      padding: .5rem 1rem;
+      border: none;
+      border-radius: 100vw;
+      font-weight: bold;
+      font-size: .75rem;
+      cursor: pointer
+    }
+
+    #logo {
       width: 30%;
       position: absolute;
       top: 30%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%)
     }
 
     header,
     #autocomplete {
-      top: 50% !important;
+      top: 50% !important
     }
 
     @media (min-width: 1024px) {
-      img {
-        width: 7.5vw;
+      #add {
+        position: absolute;
+        top: 50%;
+        left: unset;
+        right: 1rem;
+        transform: translateY(-50%)
+      }
+
+      #add>div>div {
+        width: 22.5vw
+      }
+
+      #add>button {
+        width: 50%;
+        padding: .5rem 0;
+        font-size: 1rem
+      }
+
+      #logo {
+        width: 7.5vw
       }
     }
   </style>
@@ -61,8 +131,40 @@
 </head>
 
 <body>
-  <img src="/goodgle.svg" alt="Goodgle logo" />
+  <img id="logo" src="/goodgle.svg" alt="Goodgle logo" />
   {{{search}}}
+  <script>
+    //Set Goodgle as default search engine
+    if (localStorage.getItem('instructions') && !localStorage.getItem('added')) {
+      const add = document.createElement('div')
+      add.setAttribute('id', 'add')
+      const instructions = localStorage.getItem('instructions').split('.,')
+      const browser = localStorage.getItem('browser')
+      add.innerHTML = '<div>'
+      instructions.forEach((el, i) => {
+        i++
+        add.children[0].innerHTML += `
+          <div>
+            <p>${el}</p>
+            <picture>
+              <source srcset="/${browser + '/' + i}.avif" type="image/avif"/>
+              <source srcset="/${browser + '/' + i}.webp" type="image/webp"/>
+              <img src="/${browser + '/' + i}.png" alt="Step ${i}"/>
+            </picture>
+          </div>
+      `})
+      add.innerHTML += '<button>Done</button>'
+      document.body.prepend(add)
+      document.querySelector('body>img').style.display = 'none'
+      document.querySelector('header').style.display = 'none'
+      document.querySelector('#add>button').addEventListener('mouseup', () => {
+        add.style.display = 'none'
+        document.querySelector('body>img').style.display = 'unset'
+        document.querySelector('header').style.display = 'unset'
+        localStorage.setItem('added', true)
+      })
+    }
+  </script>
 </body>
 
 </html>
