@@ -89,7 +89,7 @@
 
     #logo {
       width: 30%;
-      position: absolute;
+      position: fixed;
       top: 30%;
       left: 50%;
       transform: translateX(-50%)
@@ -102,15 +102,17 @@
 
     @media (min-width: 1024px) {
       #add {
-        position: absolute;
-        top: 50%;
         left: unset;
         right: 1rem;
-        transform: translateY(-50%)
+        transform: unset
       }
 
       #add>div>div {
         width: 22.5vw
+      }
+
+      picture>img {
+        width: 80%
       }
 
       #add>button {
@@ -155,8 +157,10 @@
       `})
       add.innerHTML += '<button>Done</button>'
       document.body.prepend(add)
-      document.querySelector('body>img').style.display = 'none'
-      document.querySelector('header').style.display = 'none'
+      if (window.innerWidth <= 1024) {
+        document.querySelector('body>img').style.display = 'none'
+        document.querySelector('header').style.display = 'none'
+      }
       document.querySelector('#add>button').addEventListener('mouseup', () => {
         add.style.display = 'none'
         document.querySelector('body>img').style.display = 'unset'
