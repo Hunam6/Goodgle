@@ -16,7 +16,7 @@
 - Proxy support (maybe Tor too in the future)
 - Optional customization
 
-<i><b>Non-goal</b>: support old or even so old browsers</i>
+<i><b>Non-goal</b>: support old, or even not so old, browsers</i>
 
 ## Usage
 
