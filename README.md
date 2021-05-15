@@ -20,6 +20,10 @@
 
 ## Usage
 
+### Quickly test it
+
+You can quickly test it on my instance, just remember to only use it for testing proposes: <https://goodgle-hunam6.cloud.okteto.net>.
+
 ### Locally
 
     git clone https://github.com/Hunam6/Goodgle & cd Goodgle
