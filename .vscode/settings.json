@@ -9,6 +9,7 @@
   },
   "deno.enable": true,
   "deno.unstable": true,
+  "deno.importMap": "./IM.json",
   "markdownlint.config": {
     "default": true,
     "no-inline-html": {

@@ -1,6 +1,6 @@
 //deno-lint-ignore-file no-explicit-any
-import {Document, DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
-import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
+import {Document, DOMParser} from 'deno_dom'
+import {renderFile} from 'mustache_ts'
 
 export const all = async (doc: Document, lang: string) => {
   const data: any = {
@@ -107,6 +107,7 @@ export const all = async (doc: Document, lang: string) => {
     doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i] = {title: el.textContent})) //first results title
     doc.querySelectorAll('.st').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
     doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i].link = el.parentElement!.children[0].getAttribute('href')!)) //first results link
+    data.firstResults = data.firstResults.slice(0, 4) //Limit to 4 first results
   }
 
   //Quick answers

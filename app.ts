@@ -1,7 +1,8 @@
-import {Application, Router, helpers, send} from 'https://deno.land/x/oak/mod.ts'
+//deno-lint-ignore-file
+import {Application, Router, helpers, send} from 'oak'
+import {DOMParser} from 'deno_dom'
+import {renderFile} from 'mustache_ts'
 import {exists} from 'https://deno.land/std/fs/mod.ts'
-import {DOMParser} from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts'
-import {renderFile} from 'https://deno.land/x/mustache_ts/mustache.ts'
 import 'https://deno.land/x/dotenv/load.ts'
 import {all} from './src/all.ts'
 import {images} from './src/images.ts'
