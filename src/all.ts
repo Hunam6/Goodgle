@@ -67,6 +67,7 @@ export const all = async (doc: Document, lang: string) => {
         value: el[1]
       }))
   //TODO: Implement data.hiddenMenu aka "more" on google.com to access others tabs
+  //TODO: error 500 with q=&
 
   //Spelling check
   if (doc.querySelector('.spell_orig') != null) {
@@ -102,10 +103,11 @@ export const all = async (doc: Document, lang: string) => {
   doc.querySelectorAll('.TbwUpd.NJjxre').forEach((el, i) => (data.results[i].shownLink = el.textContent)) //results shown link
   doc.querySelectorAll('.yuRUbf').forEach((el, i) => (data.results[i].link = el.children[0].getAttribute('href')!)) //results link
   data.firstResult = data.results.shift()! //first result
-  doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i] = {title: el.textContent})) //first results title
-  doc.querySelectorAll('.st').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
-  doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i].link = el.parentElement!.children[0].getAttribute('href')!)) //first results link
-  data.firstResults = data.firstResults.slice(0, 4) //Better visibility
+  if (doc.querySelectorAll('.st').length !== 1) {
+    doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i] = {title: el.textContent})) //first results title
+    doc.querySelectorAll('.st').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
+    doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i].link = el.parentElement!.children[0].getAttribute('href')!)) //first results link
+  }
 
   //Quick answers
   if (doc.querySelector('.JolIg') != null) {
