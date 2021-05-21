@@ -116,4 +116,3 @@ await app.listen({port: Deno.env.get('PORT') == undefined ? 8080 : parseInt(Deno
 //TODO: PWA
 //TODO: Deno Deploy support
 //TODO: Qovery support
-//TODO: VSCode config

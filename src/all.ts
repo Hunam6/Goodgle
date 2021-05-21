@@ -86,7 +86,7 @@ export const all = async (doc: Document, lang: string) => {
     }
     data.hasProposition = false
   }
-  if (doc.querySelector('.mnr-c:not(.g)') != null) {
+  if (doc.querySelector('.mnr-c:not(.g):not(.pla-unit)') != null) {
     data.results[0] = {
       title: doc.querySelector('.card-section')!.textContent.split('(')[0]
     }
