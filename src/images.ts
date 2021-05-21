@@ -1,6 +1,6 @@
 //deno-lint-ignore-file no-explicit-any
-import {Document} from 'deno_dom'
 import {renderFile} from 'mustache_ts'
+import type {Document} from 'deno_dom'
 
 export const images = async (doc: Document, lang: string) => {
   const data: any = {

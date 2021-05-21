@@ -27,7 +27,7 @@ You can quickly test it on my instance, just remember to only use it for testing
 ### Locally
 
     git clone https://github.com/Hunam6/Goodgle & cd Goodgle
-    deno run --allow-net --allow-read --allow-env --unstable app.ts
+    deno run --allow-net --allow-read --allow-env --unstable --import-map=IM.json app.ts
 
 ### On Okteto
 

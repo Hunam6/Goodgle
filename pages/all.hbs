@@ -422,6 +422,7 @@
         else if (UA.includes('Mobile')) browser = 'Firefox Mobile'
         else browser = 'Firefox'
       }
+      else browser = 'unknown'
       //TODO: Vivaldi detection (doesn't seems possible)
       //TODO: Samsung mobile detection
       //TODO: Safari
@@ -465,6 +466,9 @@
           'Click on the top-right three dots the search-bar and click on <code>Add "Goodgle"</code>.',
           'Go to <code>about:preferences#search</code> and select Goodgle from the dropdown list.'
         ],
+        'unknown': [
+          'Your browser may be supported but Goodgle doesn\'t recognize it, so Goodgle cannot show you instructions.'
+        ]
       }
       //Set as default search engine button
       fetch('https://cors.hunam.workers.dev', {

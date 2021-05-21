@@ -15,9 +15,6 @@ const rdmUA = () => {
 
 const search = async (params: Record<string, string>) => {
   //TODO: proxy support (maybe use https://proxyscrape.com/free-proxy-list)
-  //TODO: popup or something to explain how to add the search engine to the browser
-  //TODO: Edge (chromium) support, it's strange it doesn't work for now whereas it should
-  //TODO: Maybe add instructions for Safari, it seems not possible without a dirty workaround be we'll see
   let url = 'https://google.com/search?q=' + params.q
   if (params.page != undefined) url += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
   //Handle lang

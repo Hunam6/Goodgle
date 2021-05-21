@@ -160,14 +160,15 @@
   <script>
     //For desktops
     const aspectRatios = {{{ stringedAspectRatio }}}
-    document.querySelector('style').innerHTML = document.querySelector('style').innerHTML.slice(0, -8)
-    aspectRatios.forEach((el, i) => document.querySelector('style').innerHTML += `
+    const style = document.querySelector('style').innerHTML
+    style = style.slice(0, -8)
+    aspectRatios.forEach((el, i) => style += `
       main img:nth-child(${i + 1}) {
         height: calc(${el[0]}rem / 17.5);
         width: calc(${el[1]}rem / 17.5)
       }
     `)
-    document.querySelector('style').innerHTML += '}'
+    style += '}'
 
     //Get images
     document.querySelectorAll('img').forEach((el, i) => {
