@@ -150,8 +150,13 @@
       font-weight: 600
     }
 
-    .link-text {
+    .link-text,
+    .link-text>a {
       color: var(--dark)
+    }
+
+    .link-text>a {
+      font-weight: 600
     }
 
     .sub-results {
@@ -300,9 +305,7 @@
 </head>
 
 <body>
-  {{#hasProposition}}
-    <p>{{proposition.proposition.text}} <a href="{{proposition.proposition.link}}">{{proposition.proposition.data}}</a>, {{proposition.original.text}} <a href="{{proposition.original.link}}">{{query}}</a></p>
-  {{/hasProposition}}
+  <p>{{{proposition}}}</p>
   {{{search}}}
   {{#hasKnwlPanel}}
     <aside>
@@ -329,7 +332,7 @@
       <a class="link-title" href="{{firstResult.link}}">{{firstResult.title}}</a>
       <br />
       <a class="link" href="{{firstResult.link}}">{{firstResult.shownLink}}</a>
-      <p class="link-text">{{firstResult.desc}}
+      <p class="link-text">{{{firstResult.desc}}}
       </p>
       <div class="sub-results">
         {{#firstResults}}

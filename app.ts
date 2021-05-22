@@ -16,6 +16,7 @@ const rdmUA = () => {
 const search = async (params: Record<string, string>) => {
   //TODO: proxy support (maybe use https://proxyscrape.com/free-proxy-list)
   //TODO: add tests like with no results etc
+  //TODO: blacklist sites
   let url = 'https://google.com/search?q=' + params.q
   if (params.page != undefined) url += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
   //Handle lang

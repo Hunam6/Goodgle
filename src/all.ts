@@ -11,18 +11,7 @@ export const all = async (doc: Document, lang: string) => {
     query: doc.querySelector('title')!.textContent.split(' - ')[0],
     shownMenu: [],
     hiddenMenu: [],
-    hasProposition: true,
-    proposition: {
-      proposition: {
-        text: '',
-        link: '',
-        data: ''
-      },
-      original: {
-        text: '',
-        link: ''
-      }
-    },
+    proposition: '',
     firstResult: {},
     firstResults: [],
     hasQuickAnswers: true,
@@ -43,8 +32,10 @@ export const all = async (doc: Document, lang: string) => {
     stringedIMGs: ''
   }
 
-  //Get the big fat JS tag containing a lot of messy information
   let bigFatJS = ''
+  let noFirstResult = false
+
+  //Get the big fat JS tag containing a lot of messy information
   doc.querySelectorAll('script').forEach(el => el.textContent.includes('(function(){var u=') ? bigFatJS = el.textContent : null)
 
   //Get menu infos
@@ -70,32 +61,71 @@ export const all = async (doc: Document, lang: string) => {
   //TODO: Implement data.hiddenMenu aka "more" on google.com to access others tabs
   //TODO: error 500 with q=&
 
-  //Spelling check
-  if (doc.querySelector('.spell_orig') != null) {
-    data.proposition.proposition.text = doc.querySelector('.gL9Hy')!.textContent
-    data.proposition.proposition.data = doc.querySelectorAll('.gL9Hy')![1].textContent
-    data.proposition.proposition.link = '/search?q=' + data.proposition.proposition.data
-    data.proposition.original.text = doc.querySelector('.spell_orig')!.innerHTML.split('<')[0].toLocaleLowerCase()
-    data.proposition.original.link = '/search?q=' + data.query + '&trueSpelling=1'
-  } else data.hasProposition = false
-
-  //No results
-  if (doc.querySelector('#result-stats') != null && doc.querySelector('#result-stats')!.textContent.split(/\s/g)[1] === '0') {
-    data.results[0] = {
-      title: doc.querySelector('.spell_orig')!.textContent
+  //Spell check / No results
+  //eg: q=minecraftg
+  if (doc.querySelector('#fprs')) data.proposition =
+    doc.querySelector('.gL9Hy')!.textContent
+    + ' <a href="/search?q='
+    + doc.querySelectorAll('.gL9Hy')![1].textContent
+    + '">'
+    + doc.querySelectorAll('.gL9Hy')![1].textContent
+    + '</a>, '
+    + doc.querySelector('.spell_orig')!.innerHTML.split('<')[0].toLocaleLowerCase()
+    + ' <a href="/search?q='
+    + data.query
+    + '&trueSpelling=1">'
+    + data.query
+    + '</a>'
+  //eg: q=minecraft+fdsfdsfsffdgfdgdfgdsqdsqdsqdsq+dsqd+sd+sqd+sqd+sd+sq+sqdq
+  if (doc.querySelector('.gqLncc') && doc.querySelector('.uzjuFc')) {
+    noFirstResult = true
+    const divParts = doc.querySelector('.gqLncc')!.textContent.split(':')
+    data.firstResult = {
+      title: doc.querySelector('.v3jTId')!.textContent,
+      desc:
+        divParts[0]
+        + ': <a href="/search?q='
+        + divParts[1]
+        + '">'
+        + divParts[1]
+        + '</a><br>'
+        + doc.querySelector('.Cy9gW')!.textContent.replace('.', '.<br>')
     }
-    data.hasProposition = false
   }
-  if (doc.querySelector('.mnr-c:not(.g):not(.pla-unit)') != null) {
-    data.results[0] = {
+  //eg: q=minecraft+fdsfdsfsffdgfdgdfgdsqdsqdsqdsq+dsqd+sd+sqd+sqd+sd+sq
+  if (!doc.querySelector('.gqLncc') && doc.querySelector('.uzjuFc')) {
+    noFirstResult = true
+    data.firstResult = {
+      title: doc.querySelector('.v3jTId')!.textContent,
+      desc: doc.querySelector('.Cy9gW')!.textContent
+    }
+  }
+  //eg: q=minecraft+hhjhjhjhjhjhjh
+  if (doc.querySelector('.gqLncc') && !doc.querySelector('.uzjuFc')) data.proposition =
+    doc.querySelector('.gL9Hy')!.textContent
+    + ' <a href="/search?q='
+    + doc.querySelectorAll('.gL9Hy')![1].textContent
+    + '">'
+    + doc.querySelectorAll('.gL9Hy')![1].textContent
+    + '</a>'
+  //eg: q=minecraft+fdsfdsfsffdgfdgdfgdsqdsqdsqdsq+dsqdsqhdsqhdhsqbdshqbdsqdbsqhdb
+  if (doc.querySelector('.card-section:not(.KDCVqf)')) {
+    noFirstResult = true
+    data.firstResult = {
       title: doc.querySelector('.card-section')!.textContent.split('(')[0]
     }
     doc.querySelectorAll('ul')![3].textContent.split('.').forEach((el, i) => {
-      if (i === 0) data.results[0].desc = el + ', '
-      if (i === 1) data.results[0].desc += el.toLocaleLowerCase() + ', '
-      if (i === 2) data.results[0].desc += el.toLocaleLowerCase() + '.'
+      if (i === 0) data.firstResult.desc = el + ', '
+      if (i === 1) data.firstResult.desc += el.toLocaleLowerCase() + ', '
+      if (i === 2) data.firstResult.desc += el.toLocaleLowerCase() + '.'
     })
-    data.results[0].link = '/search?q=' + data.results[0].title.split(': ')[1]
+  }
+  //eg: q=abc+dsqddsqddsqdsqdsdsqdsqddsqsqdsqdsqdsqdsqd
+  if (doc.querySelector('#result-stats')) if (doc.querySelector('#result-stats')!.textContent.split(/\s/g)[1] === '0') {
+    noFirstResult = true
+    data.firstResult = {
+      title: '0 ' + doc.querySelector('#result-stats')!.textContent.split(/\s/g)[2]
+    }
   }
 
   //Results
@@ -103,7 +133,7 @@ export const all = async (doc: Document, lang: string) => {
   doc.querySelectorAll('.aCOpRe').forEach((el, i) => (data.results[i].desc = el.textContent)) //results description
   doc.querySelectorAll('.TbwUpd.NJjxre').forEach((el, i) => (data.results[i].shownLink = el.textContent)) //results shown link
   doc.querySelectorAll('.yuRUbf').forEach((el, i) => (data.results[i].link = el.children[0].getAttribute('href')!)) //results link
-  data.firstResult = data.results.shift()! //first result
+  if (!noFirstResult) data.firstResult = data.results.shift() //first result
   if (doc.querySelectorAll('.st').length !== 1) {
     doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i] = {title: el.textContent})) //first results title
     doc.querySelectorAll('.st').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
