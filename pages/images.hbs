@@ -160,7 +160,7 @@
   <script>
     //For desktops
     const aspectRatios = {{{ stringedAspectRatio }}}
-    const style = document.querySelector('style').innerHTML
+    let style = document.querySelector('style').innerHTML
     style = style.slice(0, -8)
     aspectRatios.forEach((el, i) => style += `
       main img:nth-child(${i + 1}) {
