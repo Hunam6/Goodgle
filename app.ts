@@ -103,6 +103,14 @@ router
     ctx.response.headers.set('Content-Type', 'application/opensearchdescription+xml')
     ctx.response.body = new TextEncoder().encode((await Deno.readTextFile('./assets/opensearch.xml')).replaceAll('{URL}', ctx.request.url.origin))
   })
+  .get('/cors', async ctx => {
+    ctx.response.body = await fetch(helpers.getQuery(ctx).url, {
+      headers: {
+        'user-agent': rdmUA()
+      }
+    }).then(res => res.blob())
+    ctx.response.headers.set('Access-Control-Allow-Origin', '*')
+  })
 app.use(router.routes())
 app.use(router.allowedMethods())
 app.use(async ctx => {

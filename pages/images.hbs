@@ -183,7 +183,7 @@
         <div></div>
         <figure>
           <a href="${el.getAttribute('data-URL')}">
-            <img src="${el.getAttribute('data-original')}" alt="${el.getAttribute('data-desc')}">
+            <img src="${location.origin + '/cors?url=' + el.getAttribute('data-original')}" alt="${el.getAttribute('data-desc')}">
             <p>${el.getAttribute('data-title')}</p>
           </a>
         </figure>

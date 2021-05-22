@@ -9,7 +9,7 @@
 
 ## Goals
 
-- Based on Google so really good results
+- Based on Google to get best results
 - Beautiful UI and innovative UX
 - Privacy respecting (no cookies, no link-tracking, random user-agent, etc.)
 - No ads
@@ -47,12 +47,12 @@ This project is licensed under the [Mozilla Public License 2.0](./LICENSE).
 
 ## Credits
 
-[Whoogle](https://github.com/benbusby/whoogle-search) by [@benbusby](https://github.com/benbusby): the original idea and the logic behind the autocomplete search script.
+[Whoogle](https://github.com/benbusby/whoogle-search) by [@benbusby](https://github.com/benbusby): the original idea
 
-[Oak](https://github.com/oakserver/oak) by [@kitsonk](https://github.com/kitsonk): the web framework/middleware.
+[Oak](https://github.com/oakserver/oak) by [@kitsonk](https://github.com/kitsonk): the web framework/middleware
 
-[Deno DOM](https://github.com/b-fuze/deno-dom) by [@b-fuze](https://github.com/b-fuze): the DOM parser.
+[Deno DOM](https://github.com/b-fuze/deno-dom) by [@b-fuze](https://github.com/b-fuze): the DOM parser
 
-[Dotenv](https://github.com/pietvanzoen/deno-dotenv) by [@bpietvanzoen](https://github.com/pietvanzoen): the .env file handler.
+[Dotenv](https://github.com/pietvanzoen/deno-dotenv) by [@bpietvanzoen](https://github.com/pietvanzoen): the .env file handler
 
-[Mustache.ts](https://github.com/fabrv/mustache.ts) by [@fabrv](https://github.com/fabrv): the template engine.
+[Mustache.ts](https://github.com/fabrv/mustache.ts) by [@fabrv](https://github.com/fabrv): the template engine

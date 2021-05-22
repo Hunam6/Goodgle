@@ -474,10 +474,7 @@
         ]
       }
       //Set as default search engine button
-      fetch('https://cors.hunam.workers.dev', {
-        method: 'POST',
-        body: 'https://support.google.com/websearch/answer/464?hl='+'{{lang}}'
-      })
+      fetch(location.origin + '/cors?url=https://support.google.com/websearch/answer/464?hl=' + '{{lang}}')
         .then(res => res.text())
         .then(res => {
           const el = document.createElement('div')
