@@ -144,11 +144,7 @@
 </head>
 
 <body>
-  {{#hasProposition}}
-    <p>{{proposition.proposition.text}} <a href="{{proposition.proposition.link}}">{{proposition.proposition.data}}</a>,
-      {{proposition.original.text}} <a href="{{proposition.original.link}}">{{query}}</a>
-    </p>
-  {{/hasProposition}}
+  <p>{{{proposition}}}</p>
   {{{search}}}
   <main>
     {{#IMGs}}
