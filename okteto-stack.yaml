@@ -1,4 +1,4 @@
-name: goodgletesting
+name: goodgle
 services:
   goodgle:
     public: true
