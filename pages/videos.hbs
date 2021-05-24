@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{query}} - Goodgle</title>
+  <meta name="Description" content="Goodgle search page." />
+  <link rel="icon" href="/goodgle.svg" sizes="any" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <style>
+    * {
+      outline: 0;
+      box-sizing: border-box;
+      overflow-wrap: break-word;
+      font-family: 'Open Sans', sans-serif;
+      --white: hsla(0, 0%, 96%, .98);
+      --gray: hsl(0, 0%, 96%);
+      --dark: hsla(0, 0%, 10%, .7);
+      --darker: hsl(0, 0%, 10%, .9);
+      --border: hsl(0, 0%, 60%)
+    }
+
+    body {
+      margin: 6.5rem 0 0
+    }
+
+    body>p {
+      width: 90%;
+      margin: 0 auto 1.5rem auto;
+      color: var(--dark);
+      font-weight: 600
+    }
+
+    body>p>a {
+      color: var(--darker)
+    }
+
+    a {
+      text-decoration: none
+    }
+
+    a:hover {
+      text-decoration: underline var(--darker)
+    }
+
+    main {
+      margin: 0 0 -1rem
+    }
+
+    article {
+      background: var(--gray);
+      width: 90%;
+      border-radius: 25px;
+      padding: 1rem;
+      margin: 1.5rem auto;
+      border: .5px solid var(--border)
+    }
+
+    article>div {
+      margin-top: .75rem;
+      display: grid;
+      grid-template-columns: 1fr auto
+    }
+
+    .title {
+      color: var(--darker);
+      font-weight: 600
+    }
+
+    article>div>a {
+      display: flex;
+      align-items: center;
+    }
+
+    div>a>img {
+      width: calc(116*0.075rem);
+      height: calc(65*0.075rem);
+      border-radius: .5rem
+    }
+
+    .infos,
+    .desc {
+      color: var(--dark)
+    }
+
+    .infos {
+      margin-left: .5rem;
+      font-size: .85rem
+    }
+
+    .desc {
+      font-size: .95rem;
+      grid-column: 1/3;
+      margin: .5rem 0
+    }
+
+    footer {
+      width: 95%;
+      margin: 0 auto 3rem
+    }
+
+    footer>button {
+      height: 2rem;
+      width: 2rem;
+      border: none;
+      background: none;
+      padding: .5rem;
+      cursor: pointer;
+      margin: 0 .5rem 2rem
+    }
+
+    #next {
+      position: absolute;
+      right: 2.5%
+    }
+
+    footer>button>div {
+      height: .8rem;
+      width: .8rem;
+      border: 0 solid var(--darker);
+      border-width: 0 0 .2rem .2rem
+    }
+
+    #prev>div {
+      transform: rotate(45deg)
+    }
+
+    #next>div {
+      transform: rotate(-135deg)
+    }
+
+    @media (min-width: 1024px) {
+
+      main {
+        margin: 0 0 2rem
+      }
+
+      body>p,
+      article {
+        width: 50%
+      }
+
+      article>div {
+        grid-template-columns: auto 1fr
+      }
+
+      article>div>a {
+        margin-right: 1rem;
+        grid-row: 1/3
+      }
+
+      .infos {
+        margin: 0
+      }
+
+      .desc {
+        grid-column: unset
+      }
+
+      footer {
+        width: 50%;
+        margin: 0 auto
+      }
+
+      #next {
+        right: 25%
+      }
+    }
+  </style>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" />
+  </noscript>
+</head>
+
+<body>
+  <p>{{{proposition}}}</p>
+  {{{search}}}
+  <main>
+    {{#results}}
+      <article>
+        <a class="title" href="{{link}}">{{title}}</a>
+        <div>
+          <a href="{{link}}">
+            <img id="{{id}}" src="/no_image.svg" alt="{{title}}" loading="lazy" decoding="async">
+          </a>
+          <p class="infos">{{infos}}</p>
+          <p class="desc">{{desc}}</p>
+        </div>
+      </article>
+    {{/results}}
+  </main>
+  {{{menu}}}
+  <footer>
+    <button id="prev" aria-label="previous" onclick="prev()">
+      <div></div>
+    </button>
+    <button id="next" aria-label="next" onclick="next()">
+      <div></div>
+    </button>
+  </footer>
+  <script>
+    //Previous & next buttons
+    function prev() {
+      location.search = 'q=' + (new URLSearchParams(location.search).get('q')) + '&page=' + (parseInt((new URLSearchParams(location.search).get('page'))) - 1)
+    }
+    function next() {
+      location.search = 'q=' + (new URLSearchParams(location.search).get('q')) + '&page=' + ((new URLSearchParams(location.search).has('page')) ? parseInt((new URLSearchParams(location.search).get('page'))) + 1 : 2)
+    }
+    if (new URLSearchParams(location.search).has('page') === false || new URLSearchParams(location.search).get('page') === '1') document.querySelector('#prev').style.visibility = 'hidden'
+    if (document.querySelector('main').children.length === 1) document.querySelector('#next').style.visibility = 'hidden'
+
+    //Get images
+    const IMGs = {{{ stringedIMGs }}}
+    IMGs.forEach(el => document.querySelector('#' + el[1]) != null ? document.querySelector('#' + el[1]).setAttribute('src', el[0]) : null)
+  </script>
+</body>
+
+</html>

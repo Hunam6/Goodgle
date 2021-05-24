@@ -6,6 +6,7 @@ import {exists} from 'https://deno.land/std/fs/mod.ts'
 import 'https://deno.land/x/dotenv/load.ts'
 import {all} from './src/all.ts'
 import {images} from './src/images.ts'
+import {videos} from './src/videos.ts'
 
 const rdmUA = () => {
   const rdmStr = () => Date.now().toString(36) + Math.random().toString(36).substring(2)
@@ -47,7 +48,7 @@ const search = async (params: Record<string, string>) => {
       return images(await getDoc(url), lang)
     case 'videos':
       url += '&tbm=vid'
-      //TODO: videos
+      return videos(await getDoc(url), lang)
       break
     case 'news':
       url += '&tbm=nws'

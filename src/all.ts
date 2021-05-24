@@ -66,9 +66,9 @@ export const all = async (doc: Document, lang: string) => {
   if (doc.querySelector('#fprs')) data.proposition =
     doc.querySelector('.gL9Hy')!.textContent
     + ' <a href="/search?q='
-    + doc.querySelectorAll('.gL9Hy')![1].textContent
+    + doc.querySelectorAll('.gL9Hy')[1].textContent
     + '">'
-    + doc.querySelectorAll('.gL9Hy')![1].textContent
+    + doc.querySelectorAll('.gL9Hy')[1].textContent
     + '</a>, '
     + doc.querySelector('.spell_orig')!.innerHTML.split('<')[0].toLocaleLowerCase()
     + ' <a href="/search?q='

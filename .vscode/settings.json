@@ -4,9 +4,9 @@
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
   "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
+  "editor.formatOnSave": true,
   "deno.enable": true,
   "deno.unstable": true,
   "deno.importMap": "./IM.json",
