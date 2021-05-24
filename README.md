@@ -22,7 +22,7 @@
 
 ### Quickly test it
 
-You can quickly test it on my instance, just remember to only use it for testing proposes: <https://goodgle-hunam6.cloud.okteto.net>.
+You can quickly test it on my instance, just remember to only use it for testing proposes as it may be unavailable during some dev sessions: <https://goodgle-hunam6.cloud.okteto.net>.
 
 ### Locally
 

@@ -74,38 +74,36 @@
       color: var(--dark)
     }
 
-    aside>h3 {
+    aside>div>h3 {
       color: var(--darker);
       font-weight: bold
     }
 
-    aside>div {
+    aside>div>div>div {
       display: flex
     }
 
-    .additional-infos {
-      max-width: 25%;
+    .additional-infos>a {
+      width: 25%;
       text-align: center
     }
 
-    .additional-infos>img {
+    .additional-infos>a>img {
       width: 90%;
       height: attr(width)
     }
 
-    .additional-infos>h4,
-    .additional-infos>h5 {
+    .additional-infos>a>h4,
+    .additional-infos>a>h5 {
       font-weight: normal;
       color: var(--dark);
-      margin: 0
-    }
-
-    .additional-infos>h4 {
+      margin: 0;
       font-size: small;
-      line-height: 90%
+      line-height: 110%;
+      text-align: center
     }
 
-    .additional-infos>h5 {
+    .additional-infos>a>h5 {
       font-size: smaller
     }
 
@@ -315,16 +313,28 @@
       {{#knwlPanel.infos}}
         <p><b>{{title}}</b>{{content}}</p>
       {{/knwlPanel.infos}}
-      <h3>{{knwlPanel.additionalInfos.title}}</h3>
-      <div>
-        {{#knwlPanel.additionalInfos.infos}}
-          <a href="{{link}}" class="additional-infos">
-            <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{title}}" id="{{ID}}">
-            <h4>{{title}}</h4>
-            <h5>{{subtitle}}</h5>
-          </a>
-        {{/knwlPanel.additionalInfos.infos}}
-      </div>
+      {{#knwlPanel.additionalInfos}}
+        <div>
+          <h3>{{title}}</h3>
+          <div>
+            <div class="additional-infos">
+              {{#elements}}
+                <a href="{{link}}">
+                  <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{title}}" id="{{ID}}">
+                </a>
+              {{/elements}}
+            </div>
+            <div class="additional-infos">
+              {{#elements}}
+                <a href="{{link}}">
+                  <h4>{{title}}</h4>
+                  <h5>{{subtitle}}</h5>
+                </a>
+              {{/elements}}
+            </div>
+          </div>
+        </div>
+      {{/knwlPanel.additionalInfos}}
     </aside>
   {{/hasKnwlPanel}}
   <main>

@@ -23,10 +23,7 @@ export const all = async (doc: Document, lang: string) => {
       subtitle: '',
       desc: '',
       infos: [],
-      additionalInfos: {
-        title: '',
-        infos: []
-      }
+      additionalInfos: []
     },
     IMGs: [],
     stringedIMGs: ''
@@ -160,24 +157,25 @@ export const all = async (doc: Document, lang: string) => {
 
   //Knowledge panel
   if (doc.querySelector('.wwUB2c') != null) {
-    data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //knowledge panel title
-    data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //knowledge panel subtitle
-    if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //knowledge panel description
-    if (doc.querySelector('.w8qArf')! != null) {
-      doc.querySelectorAll('.w8qArf').forEach((el, i) => (data.knwlPanel.infos[i] = {title: el.children[0].textContent + ': '})) //knowledge panel infos title
-      doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.split(' - ')[0])) //knowledge panel infos content
-      if (doc.querySelector('.VLkRKc') != null) data.knwlPanel.additionalInfos.title = doc.querySelector('.VLkRKc')!.textContent
-      else data.knwlPanel.additionalInfos.title = doc.querySelector('.Ss2Faf')!.textContent
-      if (doc.querySelectorAll('.kno-vrt-t') != null) {
-        doc.querySelectorAll('.kno-vrt-t').forEach((el, i) => i < 4 ? data.knwlPanel.additionalInfos.infos.push({
-          link: el.children[0].getAttribute('href')!.slice(7).split('&')[0],
-          ID: el.children[0].children[0].children[0].children[0].getAttribute('id')!,
-          title: el.children[0].children[1].textContent,
-          subtitle: el.children[0].children[2] != null ? el.children[0].children[2].textContent : ''
-        }) : null)
+    data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //title
+    data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //subtitle
+    if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //description
+    doc.querySelectorAll('.w8qArf').forEach((el, i) => (data.knwlPanel.infos[i] = {title: el.children[0].textContent + ': '})) //infos title
+    doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.split(' - ')[0])) //infos content
+    if (doc.querySelector('.Ss2Faf')) doc.querySelectorAll('.Ss2Faf').forEach((el, i) => {
+      if (el.children[0]) {
+        if (el.children[0].nodeName === 'DIV') data.knwlPanel.additionalInfos[i] = {title: el.children[0].children[0].textContent}
+        else data.knwlPanel.additionalInfos[i] = {title: el.textContent}
       }
-    }
-
+      else data.knwlPanel.additionalInfos[i] = {title: el.textContent}
+      data.knwlPanel.additionalInfos[i].elements = []
+      el.parentElement!.children[1].childNodes.forEach((el, j) => j < 4 ? data.knwlPanel.additionalInfos[i].elements.push({
+        title: el.children[0].children[1] ? el.children[0].children[1].textContent : el.textContent, //additional info title
+        subtitle: el.children[0].children[2] ? el.children[0].children[2].textContent : null, //additional info subtitle
+        link: el.parentElement!.children[j].querySelector('a')!.getAttribute('href')!.startsWith('/') ? el.parentElement!.children[j].querySelector('a')!.getAttribute('href')!.split('&')[0] : el.parentElement!.children[j].querySelector('a')!.getAttribute('href'), //additional info link
+        ID: el.children[0].querySelector('img')!.getAttribute('id') //additional info image ID
+      }) : null)
+    })
   } else data.hasKnwlPanel = false
 
   //Get images
