@@ -46,14 +46,6 @@
     color: var(--darker)
   }
 
-  a {
-    text-decoration: none
-  }
-
-  a:hover {
-    text-decoration: underline var(--darker)
-  }
-
   main {
     margin: 0 0 -1rem
   }
@@ -105,41 +97,6 @@
     margin: .5rem 0
   }
 
-  footer {
-    width: 95%;
-    margin: 0 auto 3rem
-  }
-
-  footer>button {
-    height: 2rem;
-    width: 2rem;
-    border: none;
-    background: none;
-    padding: .5rem;
-    cursor: pointer;
-    margin: 0 .5rem 2rem
-  }
-
-  #next {
-    position: absolute;
-    right: 2.5%
-  }
-
-  footer>button>div {
-    height: .8rem;
-    width: .8rem;
-    border: 0 solid var(--darker);
-    border-width: 0 0 .2rem .2rem
-  }
-
-  #prev>div {
-    transform: rotate(45deg)
-  }
-
-  #next>div {
-    transform: rotate(-135deg)
-  }
-
   @media (min-width: 1024px) {
 
     main {
@@ -166,15 +123,6 @@
 
     .desc {
       grid-column: unset
-    }
-
-    footer {
-      width: 50%;
-      margin: 0 auto
-    }
-
-    #next {
-      right: 25%
     }
   }
 </style>
