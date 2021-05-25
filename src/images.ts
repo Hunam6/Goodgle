@@ -1,46 +1,14 @@
 //deno-lint-ignore-file no-explicit-any
-import {renderFile} from 'mustache_ts'
+import {rendSearch, rendMenu, rendPage} from '../src/utils.ts'
 import type {Document} from 'deno_dom'
 
 export const images = async (doc: Document, lang: string) => {
-  const data: any = {
-    search: '',
-    menu: '',
-    lang: lang,
-    query: doc.querySelector('title')!.textContent.split(' - ')[0],
-    shownMenu: [],
-    hiddenMenu: [],
+  let data: Record<string, any> = {
     proposition: '',
     IMGs: [],
     stringedIMGs: '',
     stringedAspectRatio: ''
   }
-
-  //Get menu infos
-  doc.querySelectorAll('.m3kSL').forEach((el, i) => {
-    const rawID = el.parentElement!.getAttribute('href')!
-    let ID = ''
-    if (rawID == null) ID = 'images'
-    else if (rawID.includes('//maps')) ID = 'maps'
-    else if (i === 0) ID = 'all'
-    else ID = {
-      'vid': 'videos',
-      'nws': 'news',
-      'shop': 'shopping',
-      'bks': 'books',
-      'flm': 'flights',
-      'fin': 'finance'
-    }[rawID.split('tbm=')[1].split('&')[0]]!
-    if (i < 5) data.shownMenu.push({
-      id: ID,
-      value: el.parentElement!.textContent
-    })
-    else data.hiddenMenu.push({
-      id: ID,
-      value: el.parentElement!.textContent
-    })
-  })
-  //TODO: Implement data.hiddenMenu aka "more" on google.com to access others tabs
 
   //Spell check / No results
   //eg: q=minecraftg
@@ -106,14 +74,11 @@ export const images = async (doc: Document, lang: string) => {
 
   //TODO: find a way to load additional images
 
-  //Templates
-  data.search = await renderFile('./templates/search.hbs', {
-    query: data.query
-  })
-  data.menu = await renderFile('./templates/menu.hbs', {
-    shownMenu: data.shownMenu,
-    hiddenMenu: data.hiddenMenu
-  })
+  data = {
+    ...data,
+    ...await rendSearch(doc),
+    ...await rendMenu(doc, true),
+  }
 
-  return await renderFile('./pages/images.hbs', data)
+  return rendPage('images', data, lang)
 }

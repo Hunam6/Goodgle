@@ -1,3 +1,17 @@
+<nav>
+  {{#shownMenu}}
+    <a class="menu" href="&tab={{id}}">{{value}}</a>
+  {{/shownMenu}}
+  <div></div>
+</nav>
+
+<script>
+  //TODO: when hover an other menu item then #current "un-hover" the #current element
+
+  //Menu links
+  document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search.split('&')[0] + el.getAttribute('href')))
+</script>
+
 <style>
   nav {
     bottom: 1.5rem;
@@ -43,15 +57,3 @@
     }
   }
 </style>
-<nav>
-  {{#shownMenu}}
-    <a class="menu" href="&tab={{id}}">{{value}}</a>
-  {{/shownMenu}}
-  <div></div>
-</nav>
-<script>
-  //TODO: when hover an other menu item then #current "un-hover" the #current element
-
-  //Menu links
-  document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search.split('&')[0] + el.getAttribute('href')))
-</script>

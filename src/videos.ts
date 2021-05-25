@@ -1,46 +1,14 @@
 //deno-lint-ignore-file no-explicit-any
-import {renderFile} from 'mustache_ts'
+import {rendSearch, rendMenu, rendPage} from '../src/utils.ts'
 import type {Document} from 'deno_dom'
 
 export const videos = async (doc: Document, lang: string) => {
-  const data: any = {
-    search: '',
-    menu: '',
-    lang: lang,
-    query: doc.querySelector('title')!.textContent.split(' - ')[0],
-    shownMenu: [],
-    hiddenMenu: [],
+  let data: Record<string, any> = {
     proposition: '',
     results: [],
     IMGs: [],
     stringedIMGs: ''
   }
-
-  //Get the big fat JS tag containing a lot of messy information
-  let bigFatJS = ''
-  doc.querySelectorAll('script').forEach(el => el.textContent.includes('(function(){var u=') ? bigFatJS = el.textContent : null)
-
-  //Get menu infos
-  const raw = bigFatJS.split('var m=[')[1].split(';')[0]
-  const menuIDs = ['WEB', 'IMAGES', 'VIDEOS', 'NEWS', 'SHOPPING', 'BOOKS', 'MAPS', 'FLIGHTS', 'FINANCE']
-  const baseMenu: any[] = []
-  menuIDs.forEach((_, i) => baseMenu.push([
-    raw.indexOf(menuIDs[i]),
-    raw.split(menuIDs[i])[0].split('\\x22')[raw.split(menuIDs[i])[0].split('\\x22').length - 3].split('\\x22')[0],
-    menuIDs[i] !== 'WEB' ? menuIDs[i].toLowerCase() : 'all'
-  ]))
-  baseMenu.sort((a, b) => a[0] > b[0] ? 1 : -1)
-  baseMenu.forEach((el, i) =>
-    i < 5 ?
-      data.shownMenu.push({
-        id: el[2],
-        value: el[1]
-      })
-      : data.hiddenMenu.push({
-        id: el[2],
-        value: el[1]
-      }))
-  //TODO: Implement data.hiddenMenu aka "more" on google.com to access others tabs
 
   //Spell check / No results
   //eg: q=minecraftg
@@ -67,7 +35,6 @@ export const videos = async (doc: Document, lang: string) => {
     + '</a>'
 
   //Results
-
   doc.querySelectorAll('.LC20lb').forEach((el, i) => (data.results[i] = {title: el.textContent})) //title
   doc.querySelectorAll('.yuRUbf').forEach((el, i) => (data.results[i].link = el.children[0].getAttribute('href'))) //link
   doc.querySelectorAll('.PcHvNb').forEach((el, i) => (data.results[i].id = el.children[0].getAttribute('id'))) //IDs
@@ -87,14 +54,11 @@ export const videos = async (doc: Document, lang: string) => {
 
   //TODO: find a way to load additional images
 
-  //Templates
-  data.search = await renderFile('./templates/search.hbs', {
-    query: data.query
-  })
-  data.menu = await renderFile('./templates/menu.hbs', {
-    shownMenu: data.shownMenu,
-    hiddenMenu: data.hiddenMenu
-  })
+  data = {
+    ...data,
+    ...await rendSearch(doc),
+    ...await rendMenu(doc),
+  }
 
-  return await renderFile('./pages/videos.hbs', data)
+  return rendPage('videos', data, lang)
 }

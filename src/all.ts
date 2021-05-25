@@ -1,16 +1,10 @@
 //deno-lint-ignore-file no-explicit-any
 import {DOMParser} from 'deno_dom'
-import {renderFile} from 'mustache_ts'
+import {getBigFatJS, getQuery, rendSearch, rendMenu, rendPage} from '../src/utils.ts'
 import type {Document} from 'deno_dom'
 
 export const all = async (doc: Document, lang: string) => {
-  const data: any = {
-    search: '',
-    menu: '',
-    lang: lang,
-    query: doc.querySelector('title')!.textContent.split(' - ')[0],
-    shownMenu: [],
-    hiddenMenu: [],
+  let data: Record<string, any> = {
     proposition: '',
     firstResult: {},
     firstResults: [],
@@ -29,33 +23,7 @@ export const all = async (doc: Document, lang: string) => {
     stringedIMGs: ''
   }
 
-  let bigFatJS = ''
   let noFirstResult = false
-
-  //Get the big fat JS tag containing a lot of messy information
-  doc.querySelectorAll('script').forEach(el => el.textContent.includes('(function(){var u=') ? bigFatJS = el.textContent : null)
-
-  //Get menu infos
-  const raw = bigFatJS.split('var m=[')[1].split(';')[0]
-  const menuIDs = ['WEB', 'IMAGES', 'VIDEOS', 'NEWS', 'SHOPPING', 'BOOKS', 'MAPS', 'FLIGHTS', 'FINANCE']
-  const baseMenu: any[] = []
-  menuIDs.forEach((_, i) => baseMenu.push([
-    raw.indexOf(menuIDs[i]),
-    raw.split(menuIDs[i])[0].split('\\x22')[raw.split(menuIDs[i])[0].split('\\x22').length - 3].split('\\x22')[0],
-    menuIDs[i] !== 'WEB' ? menuIDs[i].toLowerCase() : 'all'
-  ]))
-  baseMenu.sort((a, b) => a[0] > b[0] ? 1 : -1)
-  baseMenu.forEach((el, i) =>
-    i < 5 ?
-      data.shownMenu.push({
-        id: el[2],
-        value: el[1]
-      })
-      : data.hiddenMenu.push({
-        id: el[2],
-        value: el[1]
-      }))
-  //TODO: Implement data.hiddenMenu aka "more" on google.com to access others tabs
   //TODO: error 500 with q=&
 
   //Spell check / No results
@@ -141,7 +109,7 @@ export const all = async (doc: Document, lang: string) => {
   //Quick answers
   if (doc.querySelector('.JolIg') != null) {
     const formatted: string[] = []
-    bigFatJS.split("');})();(function(){window.jsl.dh('").forEach(el => el.includes('iOBnre') || el.includes('wDYxhc') && !el.includes('NFQFxe') ? formatted.push(JSON.parse('"' + el.slice(el.indexOf(',') + 2).replaceAll('\\x', '\\u00') + '"')) : null)
+    getBigFatJS(doc).split("');})();(function(){window.jsl.dh('").forEach(el => el.includes('iOBnre') || el.includes('wDYxhc') && !el.includes('NFQFxe') ? formatted.push(JSON.parse('"' + el.slice(el.indexOf(',') + 2).replaceAll('\\x', '\\u00') + '"')) : null)
     let i = 0
     formatted.forEach(el => {
       const doc = new DOMParser().parseFromString(el, 'text/html')!
@@ -189,14 +157,12 @@ export const all = async (doc: Document, lang: string) => {
   })
   data.stringedIMGs = JSON.stringify(data.IMGs)
 
-  //Templates
-  data.search = await renderFile('./templates/search.hbs', {
-    query: data.query
-  })
-  data.menu = await renderFile('./templates/menu.hbs', {
-    shownMenu: data.shownMenu,
-    hiddenMenu: data.hiddenMenu
-  })
+  data = {
+    ...data,
+    ...getQuery(doc),
+    ...await rendSearch(doc),
+    ...await rendMenu(doc),
+  }
 
-  return await renderFile('./pages/all.hbs', data)
+  return rendPage('all', data, lang)
 }

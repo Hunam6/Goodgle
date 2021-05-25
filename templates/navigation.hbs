@@ -1,0 +1,68 @@
+<footer>
+  <button id="prev" aria-label="previous" onclick="prev()">
+    <div></div>
+  </button>
+  <button id="next" aria-label="next" onclick="next()">
+    <div></div>
+  </button>
+</footer>
+
+<script>
+  //Previous & next buttons
+  function prev() {
+    location.search = 'q=' + (new URLSearchParams(location.search).get('q')) + '&page=' + (parseInt((new URLSearchParams(location.search).get('page'))) - 1)
+  }
+  function next() {
+    location.search = 'q=' + (new URLSearchParams(location.search).get('q')) + '&page=' + ((new URLSearchParams(location.search).has('page')) ? parseInt((new URLSearchParams(location.search).get('page'))) + 1 : 2)
+  }
+  if (new URLSearchParams(location.search).has('page') === false || new URLSearchParams(location.search).get('page') === '1') document.querySelector('#prev').style.visibility = 'hidden'
+  if (document.querySelector('main').children.length === 1) document.querySelector('#next').style.visibility = 'hidden'
+</script>
+
+<style>
+  footer {
+    width: 95%;
+    margin: 0 auto 3rem
+  }
+
+  footer>button {
+    height: 2rem;
+    width: 2rem;
+    border: none;
+    background: none;
+    padding: .5rem;
+    cursor: pointer;
+    margin: 0 .5rem 2rem
+  }
+
+  #next {
+    position: absolute;
+    right: 2.5%
+  }
+
+  footer>button>div {
+    height: .8rem;
+    width: .8rem;
+    border: 0 solid var(--darker);
+    border-width: 0 0 .2rem .2rem
+  }
+
+  #prev>div {
+    transform: rotate(45deg)
+  }
+
+  #next>div {
+    transform: rotate(-135deg)
+  }
+
+  @media (min-width: 1024px) {
+    footer {
+      width: 50%;
+      margin: 0 auto
+    }
+
+    #next {
+      right: 25%
+    }
+  }
+</style>
