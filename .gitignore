@@ -1,2 +1,4 @@
 #For personal testing propose
 test.ts
+.stignore
+okteto.yml

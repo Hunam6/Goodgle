@@ -101,7 +101,7 @@ export const all = async (doc: Document, lang: string) => {
   if (!noFirstResult) data.firstResult = data.results.shift() //first result
   if (doc.querySelectorAll('.st').length !== 1) {
     doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i] = {title: el.textContent})) //first results title
-    doc.querySelectorAll('.st').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
+    doc.querySelectorAll('.usJj9c').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
     doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i].link = el.parentElement!.children[0].getAttribute('href')!)) //first results link
     data.firstResults = data.firstResults.slice(0, 4) //Limit to 4 first results
   }
