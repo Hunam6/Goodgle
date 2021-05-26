@@ -79,6 +79,7 @@ export async function rendSearch(doc?: Document): Promise<Record<string, string>
 export async function rendPage(page: string, data: Record<string, any>, lang: string): Promise<string> {
   return await renderFile(Deno.cwd() + '/templates/base.hbs', {
     page: await renderFile(Deno.cwd() + '/pages/' + page + '.hbs', data),
-    lang: lang
+    lang: lang || 'en',
+    style: page
   })
 }
