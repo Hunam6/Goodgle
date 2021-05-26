@@ -7,7 +7,7 @@ import {all} from './src/all.ts'
 import {images} from './src/images.ts'
 import {videos} from './src/videos.ts'
 
-function getLang(params: Record<string, string>): string {
+function getLang(params: Record<string, string> = {}): string {
   let lang = ''
   if ((Deno.env.get('LANG') || params.lang) != undefined) {
     if ((Deno.env.get('LANG') && params.lang) != undefined || params.lang != undefined) lang = params.lang
@@ -81,7 +81,7 @@ const router = new Router()
 app.addEventListener('listen', ({secure, hostname, port}) => console.log('Listening on: ' + (secure ? 'https://' : 'http://') + (hostname ?? 'localhost') + ':' + port))
 router
   .get('/', async ctx => {
-    ctx.response.body = await rendPage('home', {...await rendSearch()}, getLang({}))
+    ctx.response.body = await rendPage('home', {...await rendSearch()}, getLang())
   })
   .get('/search', async ctx => {
     ctx.response.body = await search(helpers.getQuery(ctx))
@@ -124,6 +124,5 @@ app.use(async ctx => {
 
 await app.listen({port: Deno.env.get('PORT') == undefined ? 8080 : parseInt(Deno.env.get('PORT')!)})
 
-//TODO: PWA
 //TODO: Deno Deploy support
 //TODO: Qovery support
