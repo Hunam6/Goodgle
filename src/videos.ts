@@ -52,8 +52,6 @@ export const videos = async (doc: Document, lang: string) => {
   })
   data.stringedIMGs = JSON.stringify(data.IMGs)
 
-  //TODO: find a way to load additional images
-
   data = {
     ...data,
     ...await rendSearch(doc),

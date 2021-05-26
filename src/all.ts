@@ -74,7 +74,7 @@ export const all = async (doc: Document, lang: string) => {
     + doc.querySelectorAll('.gL9Hy')![1].textContent
     + '</a>'
   //eg: q=minecraft+fdsfdsfsffdgfdgdfgdsqdsqdsqdsq+dsqdsqhdsqhdhsqbdshqbdsqdbsqhdb
-  if (doc.querySelector('.card-section:not(.KDCVqf)')) {
+  if (doc.querySelector('.card-section>ul')) {
     noFirstResult = true
     data.firstResult = {
       title: doc.querySelector('.card-section')!.textContent.split('(')[0]
@@ -132,7 +132,7 @@ export const all = async (doc: Document, lang: string) => {
     doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.split(' - ')[0])) //infos content
     if (doc.querySelector('.Ss2Faf')) doc.querySelectorAll('.Ss2Faf').forEach((el, i) => {
       if (el.children[0]) {
-        if (el.children[0].nodeName === 'DIV') data.knwlPanel.additionalInfos[i] = {title: el.children[0].children[0].textContent}
+        if (el.children[0].children[0]) data.knwlPanel.additionalInfos[i] = {title: el.children[0].children[0].textContent}
         else data.knwlPanel.additionalInfos[i] = {title: el.textContent}
       }
       else data.knwlPanel.additionalInfos[i] = {title: el.textContent}
