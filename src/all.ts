@@ -126,7 +126,7 @@ export const all = async (doc: Document, lang: string) => {
   } else data.hasQuickAnswers = false
 
   //Knowledge panel
-  if (doc.querySelector('.liYKde:not(.Wnoohf)') != null) {
+  if (doc.querySelector('.liYKde.g.VjDLd') != null) {
     data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //title
     data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //subtitle
     if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //description
@@ -139,7 +139,7 @@ export const all = async (doc: Document, lang: string) => {
       doc.querySelectorAll('.Ss2Faf:not(.ellip)').forEach(el => {
         const next = el.parentElement!.children[1]
         //check if not an ad (eg: q=minecraft+dungeons)
-        if (!el.parentElement!.className.includes('ellip') && (next.className !== 'JeEise fBkrHb')) {
+        if (!el.parentElement!.className.includes('ellip') && (next.className !== 'JeEise fBkrHb') && (next.getAttribute('style') !== 'display:none')) {
           //title
           if (el.children[0]) {
             if (el.children[0].children[0]) data.knwlPanel.additionalInfos[index] = {title: el.children[0].children[0].textContent}
@@ -148,14 +148,23 @@ export const all = async (doc: Document, lang: string) => {
           else data.knwlPanel.additionalInfos[index] = {title: el.textContent}
           //content
           if (next.tagName === 'WEB-QUOTE-CONTAINER') {
-            console.log('quotes')
             //quotes
+            data.knwlPanel.additionalInfos[index].isQuotes = true
             data.knwlPanel.additionalInfos[index].quotes = []
             next.querySelectorAll('.kssN8d').forEach(el => data.knwlPanel.additionalInfos[index].quotes.push(el.textContent))
+          } else if (next.tagName === 'CRITIC-REVIEWS-CONTAINER') {
+            //critic reviews
+            data.knwlPanel.additionalInfos[index].isCritics = true
+            data.knwlPanel.additionalInfos[index].critics = []
+            next.children[0].children[0].childNodes.forEach(el => data.knwlPanel.additionalInfos[index].critics.push({
+              critic: el.children[0].children[0].children[0].textContent,
+              link: el.children[0].children[0].children[1].getAttribute('href'),
+              name: el.children[0].children[1].children[1].querySelector('a')!.textContent,
+              icon: el.children[0].children[1].children[0].children[0].getAttribute('id')
+            }))
           } else if (next.className === 'tpa-cc') {
-            console.log('musical platforms')
             //musical platforms
-            data.knwlPanel.additionalInfos[index].isPlatform = true
+            data.knwlPanel.additionalInfos[index].isPlatforms = true
             data.knwlPanel.additionalInfos[index].platforms = []
             next.querySelectorAll('tr').forEach(el => data.knwlPanel.additionalInfos[index].platforms.push({
               platform: el.textContent,
@@ -163,22 +172,19 @@ export const all = async (doc: Document, lang: string) => {
               icon: el.children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0].getAttribute('id')
             }))
           } else if (next.className === 'AxJnmb gIcqHd') {
-            console.log('artworks')
             //artworks
+            data.knwlPanel.additionalInfos[index].isWorks = true
             data.knwlPanel.additionalInfos[index].works = []
             next.childNodes.forEach(el => data.knwlPanel.additionalInfos[index].works.push({
               work: el.textContent,
               link: '/search?q=' + el.textContent
             }))
           } else if (next.className === 'pOM64e') {
-            console.log('Audience reviews')
             //TODO: handle "Audience reviews" eg: q=minecraft+dungeons
             //TODO: fix detecting Audience rating summary
           } else if (next.className === 'jYcvae kY5Gde') {
-            console.log('Audience rating summary')
             //TODO: handle "Audience rating summary" eg: q=minecraft+dungeons
           } else {
-            console.log('normal')
             //normal
             data.knwlPanel.additionalInfos[index].isNormal = true
             data.knwlPanel.additionalInfos[index].elements = []

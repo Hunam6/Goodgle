@@ -9,10 +9,6 @@ body>p {
   font-weight: 600
 }
 
-body>p>a {
-  color: var(--darker)
-}
-
 aside {
   margin: 0 auto;
   background: var(--gray);
@@ -47,7 +43,13 @@ aside>div>h3 {
   font-weight: bold
 }
 
-i {
+aside>div>div {
+  border-radius: 25px;
+  border: .5px solid var(--border);
+  padding: 1rem .5rem
+}
+
+.quote-add-info {
   display: block;
   margin: 1rem 0
 }
@@ -56,6 +58,32 @@ i {
   display: block;
   color: var(--darker);
   margin: .5rem
+}
+
+.critic-add-info {
+  margin: .5rem
+}
+
+.critic-add-info>div {
+  color: var(--dark)
+}
+
+.critic-add-info>div:nth-child(2) {
+  height: 1.5rem;
+  display: flex;
+  justify-items: center;
+  margin: 1rem 0
+}
+
+.critic-add-info>div>a {
+  color: var(--darker);
+  font-weight: 525
+}
+
+.critic-add-info>div>img {
+  height: 100%;
+  margin-right: .5rem;
+  border-radius: 5px
 }
 
 .normal-add-info {
@@ -96,10 +124,6 @@ i {
 
 .platform-add-info>div>img {
   margin-right: .5rem
-}
-
-.platform-add-info>div>a {
-  color: var(--darker)
 }
 
 main {
