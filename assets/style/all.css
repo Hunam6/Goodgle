@@ -47,23 +47,35 @@ aside>div>h3 {
   font-weight: bold
 }
 
-aside>div>div>div {
-  display: flex;
-  align-items: center
+i {
+  display: block;
+  margin: 1rem 0
 }
 
-.additional-infos>a {
-  width: 25%;
+.work-add-info {
+  display: block;
+  color: var(--darker);
+  margin: .5rem
+}
+
+.normal-add-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-around
+}
+
+.normal-add-info>a {
+  width: 20%;
   text-align: center
 }
 
-.additional-infos>a>img {
+.normal-add-info>a>img {
   width: 90%;
   height: attr(width)
 }
 
-.additional-infos>a>h4,
-.additional-infos>a>h5 {
+.normal-add-info>a>h4,
+.normal-add-info>a>h5 {
   font-weight: normal;
   color: var(--dark);
   margin: 0;
@@ -72,8 +84,22 @@ aside>div>div>div {
   text-align: center
 }
 
-.additional-infos>a>h5 {
+.normal-add-info>a>h5 {
   font-size: smaller
+}
+
+.platform-add-info>div {
+  display: flex;
+  align-items: center;
+  margin: .5rem
+}
+
+.platform-add-info>div>img {
+  margin-right: .5rem
+}
+
+.platform-add-info>div>a {
+  color: var(--darker)
 }
 
 main {
@@ -187,7 +213,7 @@ article,
     top: 6.5rem
   }
 
-  .additional-infos>a>img {
+  .normal-add-info>a>img {
     width: 70%
   }
 

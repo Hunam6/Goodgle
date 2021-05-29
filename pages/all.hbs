@@ -11,15 +11,31 @@
     {{#knwlPanel.additionalInfos}}
       <div>
         <h3>{{title}}</h3>
-        <div>
-          <div class="additional-infos">
+        {{#quotes}}
+          <i>{{.}}</i>
+        {{/quotes}}
+        {{#works}}
+          <a href="{{link}}" class="work-add-info">{{work}}</a>
+        {{/works}}
+        {{#isPlatform}}
+          <div class="platform-add-info">
+            {{#platforms}}
+              <div>
+                <img id="{{icon}}" src="data:;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAEUlEQVR42mNkIAAYRxWMJAUAE5gAEdz4t9QAAAAASUVORK5CYII=" alt="{{platform}}">
+                <a href="{{link}}">{{platform}}</a>
+              </div>
+            {{/platforms}}
+          </div>
+        {{/isPlatform}}
+        {{#isNormal}}
+          <div class="normal-add-info">
             {{#elements}}
               <a href="{{link}}">
                 <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{title}}" id="{{ID}}">
               </a>
             {{/elements}}
           </div>
-          <div class="additional-infos">
+          <div class="normal-add-info">
             {{#elements}}
               <a href="{{link}}">
                 <h4>{{title}}</h4>
@@ -27,7 +43,7 @@
               </a>
             {{/elements}}
           </div>
-        </div>
+        {{/isNormal}}
       </div>
     {{/knwlPanel.additionalInfos}}
   </aside>

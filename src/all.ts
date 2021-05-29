@@ -103,47 +103,98 @@ export const all = async (doc: Document, lang: string) => {
     doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i] = {title: el.textContent})) //first results title
     doc.querySelectorAll('.usJj9c').forEach((el, i) => (data.firstResults[i].desc = el.textContent)) //first results description
     doc.querySelectorAll('.l').forEach((el, i) => (data.firstResults[i].link = el.parentElement!.children[0].getAttribute('href')!)) //first results link
-    data.firstResults = data.firstResults.slice(0, 4) //Limit to 4 first results
+    data.firstResults = data.firstResults.slice(0, 4) //limit to 4 first results
   }
 
   //Quick answers
   if (doc.querySelector('.JolIg') != null) {
-    const formatted: string[] = []
-    getBigFatJS(doc).split("');})();(function(){window.jsl.dh('").forEach(el => el.includes('iOBnre') || el.includes('wDYxhc') && !el.includes('NFQFxe') ? formatted.push(JSON.parse('"' + el.slice(el.indexOf(',') + 2).replaceAll('\\x', '\\u00') + '"')) : null)
     let i = 0
-    formatted.forEach(el => {
-      const doc = new DOMParser().parseFromString(el, 'text/html')!
-      if (el.includes('iOBnre')) {
-        data.quickAnswers.push({
-          question: doc.querySelector('.iOBnre')!.textContent.split(': ')[1]
-        })
-        i++
-      }
-      else data.quickAnswers[i - 1] != undefined ? data.quickAnswers[i - 1].answer = doc.querySelector('.wDYxhc')!.innerHTML : null
-    })
+    getBigFatJS(doc)
+      .split(');}')
+      .filter(el => (el.includes('iOBnre') || el.includes('wDYxhc')) && !el.includes('Ya0K2e'))
+      .map(el => JSON.parse('"' + el.split("'")[3].replaceAll('\\x', '\\u00') + '"'))
+      .forEach(el => {
+        const doc = new DOMParser().parseFromString(el, 'text/html')!
+        if (el.includes('iOBnre')) {
+          data.quickAnswers.push({
+            question: doc.querySelector('.iOBnre')!.textContent.split(': ')[1]
+          })
+          i++
+        }
+        else data.quickAnswers[i - 1] != undefined ? data.quickAnswers[i - 1].answer = doc.querySelector('.wDYxhc')!.innerHTML : null
+      })
   } else data.hasQuickAnswers = false
 
   //Knowledge panel
-  if (doc.querySelector('.wwUB2c') != null) {
+  if (doc.querySelector('.liYKde:not(.Wnoohf)') != null) {
     data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //title
     data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //subtitle
     if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //description
     doc.querySelectorAll('.w8qArf').forEach((el, i) => (data.knwlPanel.infos[i] = {title: el.children[0].textContent + ': '})) //infos title
     doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.split(' - ')[0])) //infos content
-    if (doc.querySelector('.Ss2Faf')) doc.querySelectorAll('.Ss2Faf').forEach((el, i) => {
-      if (el.children[0]) {
-        if (el.children[0].children[0]) data.knwlPanel.additionalInfos[i] = {title: el.children[0].children[0].textContent}
-        else data.knwlPanel.additionalInfos[i] = {title: el.textContent}
-      }
-      else data.knwlPanel.additionalInfos[i] = {title: el.textContent}
-      data.knwlPanel.additionalInfos[i].elements = []
-      el.parentElement!.children[1].childNodes.forEach((el, j) => j < 4 ? data.knwlPanel.additionalInfos[i].elements.push({
-        title: el.children[0].children[1] ? el.children[0].children[1].textContent : el.textContent, //additional info title
-        subtitle: el.children[0].children[2] ? el.children[0].children[2].textContent : null, //additional info subtitle
-        link: el.parentElement!.children[j].querySelector('a')!.getAttribute('href')!.startsWith('/') ? el.parentElement!.children[j].querySelector('a')!.getAttribute('href')!.split('&')[0] : el.parentElement!.children[j].querySelector('a')!.getAttribute('href'), //additional info link
-        ID: el.children[0].querySelector('img')!.getAttribute('id') //additional info image ID
-      }) : null)
-    })
+
+    //Additional infos
+    if (doc.querySelector('.Ss2Faf:not(.ellip)')) {
+      let index = 0
+      doc.querySelectorAll('.Ss2Faf:not(.ellip)').forEach(el => {
+        const next = el.parentElement!.children[1]
+        //check if not an ad (eg: q=minecraft+dungeons)
+        if (!el.parentElement!.className.includes('ellip') && (next.className !== 'JeEise fBkrHb')) {
+          //title
+          if (el.children[0]) {
+            if (el.children[0].children[0]) data.knwlPanel.additionalInfos[index] = {title: el.children[0].children[0].textContent}
+            else data.knwlPanel.additionalInfos[index] = {title: el.textContent}
+          }
+          else data.knwlPanel.additionalInfos[index] = {title: el.textContent}
+          //content
+          if (next.tagName === 'WEB-QUOTE-CONTAINER') {
+            console.log('quotes')
+            //quotes
+            data.knwlPanel.additionalInfos[index].quotes = []
+            next.querySelectorAll('.kssN8d').forEach(el => data.knwlPanel.additionalInfos[index].quotes.push(el.textContent))
+          } else if (next.className === 'tpa-cc') {
+            console.log('musical platforms')
+            //musical platforms
+            data.knwlPanel.additionalInfos[index].isPlatform = true
+            data.knwlPanel.additionalInfos[index].platforms = []
+            next.querySelectorAll('tr').forEach(el => data.knwlPanel.additionalInfos[index].platforms.push({
+              platform: el.textContent,
+              link: el.children[0].children[0].getAttribute('href'),
+              icon: el.children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0].getAttribute('id')
+            }))
+          } else if (next.className === 'AxJnmb gIcqHd') {
+            console.log('artworks')
+            //artworks
+            data.knwlPanel.additionalInfos[index].works = []
+            next.childNodes.forEach(el => data.knwlPanel.additionalInfos[index].works.push({
+              work: el.textContent,
+              link: '/search?q=' + el.textContent
+            }))
+          } else if (next.className === 'pOM64e') {
+            console.log('Audience reviews')
+            //TODO: handle "Audience reviews" eg: q=minecraft+dungeons
+            //TODO: fix detecting Audience rating summary
+          } else if (next.className === 'jYcvae kY5Gde') {
+            console.log('Audience rating summary')
+            //TODO: handle "Audience rating summary" eg: q=minecraft+dungeons
+          } else {
+            console.log('normal')
+            //normal
+            data.knwlPanel.additionalInfos[index].isNormal = true
+            data.knwlPanel.additionalInfos[index].elements = []
+            next.childNodes.forEach((el, j) => {
+              if (j < 4) data.knwlPanel.additionalInfos[index].elements.push({
+                title: el.children[0].children[1] ? el.children[0].children[1].textContent : el.textContent, //additional info title
+                subtitle: el.children[0].children[2] ? el.children[0].children[2].textContent : null, //additional info subtitle
+                link: el.parentElement!.children[j].querySelector('a')!.getAttribute('href')!.startsWith('/') ? el.parentElement!.children[j].querySelector('a')!.getAttribute('href')!.split('&')[0] : el.parentElement!.children[j].querySelector('a')!.getAttribute('href'), //additional info link
+                ID: el.children[0].querySelector('img')!.getAttribute('id') //additional info image ID
+              })
+            })
+          }
+          index++
+        }
+      })
+    }
   } else data.hasKnwlPanel = false
 
   //Get images
