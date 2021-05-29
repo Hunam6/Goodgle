@@ -22,7 +22,10 @@
 
 ### Quickly test it
 
-You can quickly test it on my instance, just remember to only use it for testing proposes as it may be unavailable during some dev sessions: <https://goodgle-hunam6.cloud.okteto.net>.
+You can quickly test it on my instances, just remember to only use it for testing proposes as they may be unavailable during some dev sessions:
+
+- <https://goodgle.up.railway.app>
+- <https://goodgle-hunam6.cloud.okteto.net>
 
 ### Locally
 
@@ -37,7 +40,11 @@ Click on [![Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto
 
 Hi and welcome! Contributing is very welcome! Every type of contribution is welcomed, just remember to follow the [GitHub Community Guidelines](https://docs.github.com/articles/github-community-guidelines).
 
-If you want to make a PR please follow the styling rules indicated in `.editorconfig` and `.vscode/settings.json`. If you use VSCode you just need to press <kbd>F1</kbd> and search for <kbd>Start Format Files: Workspace</kbd>.
+- Report `Internal Server Error`s when performing searches, don't forget to provide the search terms and the geographic location of the server (or the instance used).
+
+- Submit an issue.
+
+- Submit a PR: please follow the styling rules indicated in `.editorconfig` and `.vscode/settings.json`.
 
 *__PS__: if you don't know where to start look at all the "TODO" comments (I recommend [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) for VSCode).*
 
