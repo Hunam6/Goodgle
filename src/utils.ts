@@ -83,3 +83,9 @@ export async function rendPage(page: string, data: Record<string, any>, lang: st
     style: page
   })
 }
+
+export async function rendNavigation(): Promise<Record<string, string>> {
+  return {
+    navigation: await renderFile(Deno.cwd() + '/templates/navigation.hbs', {})
+  }
+}

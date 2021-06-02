@@ -152,11 +152,11 @@
     if (navigator.brave) UA.includes('Mobile') ? browser = 'Brave Mobile' : browser = 'Brave'
     if (UA.includes('OPR')) browser = 'Opera'
     if (UA.includes('Firefox')) {
-      if (parseFloat(UA.split('x/')[1]) >= 90) browser = 'Firefox Proton'
+      if (parseFloat(UA.split('x/')[1]) >= 89) browser = 'Firefox Proton'
       else if (UA.includes('Mobile')) browser = 'Firefox Mobile'
       else browser = 'Firefox'
     }
-    else browser = 'unknown'
+    if (browser === '') browser = 'unknown'
     //TODO: Vivaldi detection (doesn't seems possible)
     //TODO: Samsung mobile detection
     //TODO: Safari

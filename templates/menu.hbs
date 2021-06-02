@@ -1,16 +1,13 @@
 <nav>
   {{#shownMenu}}
-    <a class="menu" href="&tab={{id}}">{{value}}</a>
+    <p class="menu" data-tab="{{id}}">{{value}}</p>
   {{/shownMenu}}
   <div></div>
 </nav>
 
-<script>
-  //TODO: when hover an other menu item then #current "un-hover" the #current element
-
-  //Menu links
-  document.querySelectorAll('.menu').forEach(el => el.setAttribute('href', location.search.split('&')[0] + el.getAttribute('href')))
-</script>
+{{!--
+TODO: when hover an other menu item then #current "un-hover" the #current element
+--}}
 
 <style>
   nav {
@@ -27,7 +24,7 @@
     padding: .5rem;
     width: 90%;
     overflow-x: scroll;
-    overflow-y: hidden;
+    overflow-y: hidden
   }
 
   .menu {
@@ -37,23 +34,24 @@
     border-radius: 100vw;
     font-weight: bold;
     font-size: .75rem;
+    cursor: pointer;
   }
 
   .menu:hover {
     text-decoration: none;
     background: var(--dark);
-    color: var(--white);
+    color: var(--white)
   }
 
   @media (min-width: 1024px) {
     nav {
       width: unset;
-      overflow-x: unset;
+      overflow-x: unset
     }
 
     .menu {
       font-size: 1rem;
-      padding: .5rem 1.5rem;
+      padding: .5rem 1.5rem
     }
   }
 </style>

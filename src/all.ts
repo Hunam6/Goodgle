@@ -1,6 +1,6 @@
 //deno-lint-ignore-file no-explicit-any
 import {DOMParser} from 'deno_dom'
-import {getBigFatJS, getQuery, rendSearch, rendMenu, rendPage} from '../src/utils.ts'
+import {getBigFatJS, getQuery, rendSearch, rendMenu, rendPage, rendNavigation} from '../src/utils.ts'
 import type {Document} from 'deno_dom'
 
 export const all = async (doc: Document, lang: string) => {
@@ -219,6 +219,7 @@ export const all = async (doc: Document, lang: string) => {
     ...getQuery(doc),
     ...await rendSearch(doc),
     ...await rendMenu(doc),
+    ...await rendNavigation()
   }
 
   return rendPage('all', data, lang)

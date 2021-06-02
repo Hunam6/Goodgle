@@ -62,7 +62,7 @@ picture>img {
   transform: translateX(-50%)
 }
 
-header,
+form,
 #autocomplete {
   top: 50% !important
 }

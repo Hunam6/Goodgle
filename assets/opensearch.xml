@@ -10,6 +10,7 @@
   <Url type="application/x-suggestions+json" template="{URL}/autocomplete?q={searchTerms}" />
   <Url type="application/json" rel="suggestions" template="{URL}/autocomplete?q={searchTerms}" />
   <Url type="application/opensearchdescription+xml" rel="self" template="{URL}/opensearch.xml" />
+  <Query role="example" searchTerms="Goodgle" />
   <moz:SearchForm>{URL}/search</moz:SearchForm>
   <Developer>Hunam (https://github.com/Hunam6)</Developer>
 </OpenSearchDescription>

@@ -25,12 +25,12 @@
     document.body.prepend(add)
     if (window.innerWidth <= 1024) {
       document.querySelector('body>img').style.display = 'none'
-      document.querySelector('header').style.display = 'none'
+      form.style.display = 'none'
     }
     document.querySelector('#add>button').addEventListener('mouseup', () => {
       add.style.display = 'none'
       document.querySelector('body>img').style.display = 'unset'
-      document.querySelector('header').style.display = 'unset'
+      form.style.display = 'unset'
       localStorage.setItem('added', true)
     })
   }

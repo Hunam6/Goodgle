@@ -102,7 +102,7 @@ router
   })
   .get('/opensearch.xml', async ctx => {
     ctx.response.headers.set('Content-Type', 'application/opensearchdescription+xml')
-    ctx.response.body = new TextEncoder().encode((await Deno.readTextFile('./assets/opensearch.xml')).replaceAll('{URL}', ctx.request.url.origin))
+    ctx.response.body = (await Deno.readTextFile('./assets/opensearch.xml')).replaceAll('{URL}', ctx.request.url.origin)
   })
   .get('/cors', async ctx => {
     ctx.response.body = await fetch(helpers.getQuery(ctx).url, {

@@ -1,33 +1,36 @@
-<header>
-  <button id="home" aria-label="Home"></button>
-  <input type="text" id="search-bar" value="{{query}}" spellcheck="false" aria-label="Goodgle Search" />
-  <button id="search" aria-label="Search">
+<form action="/search">
+  <button type="button" id="home" aria-label="Home"></button>
+  <input type="search" name="q" id="search-bar" value="{{query}}" spellcheck="false" autocomplete="off" aria-label="Goodgle Search" autofocus required />
+  <input type="text" name="tab" value="all" id="tab" hidden />
+  <input type="text" name="page" value="1" id="page" hidden />
+  <button type="submit" id="search" aria-label="Search">
     <div></div>
   </button>
-</header>
+</form>
 <div id="autocomplete"></div>
 
 <script>
-  const searchbar = document.querySelector('#search-bar')
+  const form = document.forms[0]
+  const searchbar = form.elements['q']
   const autocomplete = document.querySelector('#autocomplete')
+  const isMobile = window.innerWidth <= 1024
 
-  //Search functionality
-  function search(query) {
-    if (searchbar.value !== '') location.href = location.origin + '/search?q=' + query + (location.search.includes('tab=') ? '&tab=' + location.search.split('tab=')[1].split('&')[0] : '')
+  //Search
+  function search({ q, tab, page }) {
+    if (q) searchbar.value = q
+    form.elements['tab'].value = tab || new URLSearchParams(location.search).get('tab')
+    form.elements['page'].value = page || new URLSearchParams(location.search).get('page')
+    form.submit()
   }
-
-  //Go home
-  document.querySelector('#home').addEventListener('mouseup', () => location.href = location.origin)
-  document.querySelector('#search').addEventListener('mouseup', () => search(searchbar.value))
 
   //Autocomplete
   function hide() {
     autocomplete.style.display = 'none'
-    if (window.innerWidth >= 1024) document.querySelector('header').style.boxShadow = '0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06)'
+    if (!isMobile) form.style.boxShadow = '0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06)'
   }
   function show() {
     autocomplete.style.display = 'unset'
-    if (window.innerWidth >= 1024) document.querySelector('header').style.boxShadow = 'unset'
+    if (!isMobile) form.style.boxShadow = 'unset'
   }
   function suggestions() {
     if (searchbar.value !== '') fetch(location.origin + '/autocomplete?q=' + searchbar.value)
@@ -35,29 +38,34 @@
       .then(res => {
         autocomplete.innerHTML = ''
         show()
-        res[1].forEach(el => autocomplete.innerHTML += '<a href="/search?q=' + el + '">' + el + '</a>')
+        res[1].forEach(el => autocomplete.innerHTML += '<a class="autocomplete">' + el + '</a>')
         if (res[1].length === 0) hide()
       })
     else hide()
   }
   searchbar.addEventListener('input', () => suggestions())
   document.addEventListener('mouseup', e => {
+    //click on searchbar
     if (e.target === searchbar) {
-      if (window.innerWidth <= 1024) {
-        document.querySelector('header').style.width = '100%'
-        document.querySelector('header').style.borderRadius = '0 0 1.5rem 1.5rem'
-        document.querySelector('header').style.setProperty('top', '0', 'important')
+      if (isMobile) {
+        form.style.width = '100%'
+        form.style.borderRadius = '0 0 1.5rem 1.5rem'
+        form.style.setProperty('top', '0', 'important')
         autocomplete.style.setProperty('top', '0', 'important')
         autocomplete.style.width = '100%'
       }
       show()
       suggestions()
     }
-    else if (e.target.tagName !== 'a') {
-      if (window.innerWidth <= 1024) {
-        document.querySelector('header').style.width = '90%'
-        document.querySelector('header').style.borderRadius = '1.5rem'
-        document.querySelector('header').style.top = '1.5rem'
+    else if (e.target.id === 'home') location.href = location.origin //click on home button
+    else if (e.target.className === 'autocomplete') search({ q: e.target.textContent }) //click on autocomplete propositions
+    else if (e.target.className === 'menu') search({ page: 1, tab: e.target.getAttribute('data-tab') }) //click on menu
+    //click outside
+    else {
+      if (isMobile) {
+        form.style.width = '90%'
+        form.style.borderRadius = '1.5rem'
+        form.style.top = '1.5rem'
         autocomplete.style.width = '90%'
       }
       hide()
@@ -66,11 +74,11 @@
   //Key control
   let i = -1
   searchbar.addEventListener('keydown', e => {
-    function unselect() {
-      autocomplete.children[i].style.border = 'transparent solid .5px'
-    }
     function select() {
       autocomplete.children[i].style.border = 'var(--border) solid .5px'
+    }
+    function unselect() {
+      autocomplete.children[i].style.border = 'transparent solid .5px'
     }
     //Up key
     if (e.keyCode === 38) {
@@ -100,14 +108,16 @@
       }
     }
     //Enter key
-    if (e.keyCode === 13) i !== -1 ? search(autocomplete.children[i].getAttribute('href').substring(10)) : search(searchbar.value)
+    if (e.keyCode === 13) if (i !== -1) search({ q: autocomplete.children[i].getAttribute('href').substring(10) })
+    else search()
+
     //Escape key
     if (e.keyCode === 27) hide()
   })
 </script>
 
 <style>
-  header {
+  form {
     top: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
@@ -120,7 +130,7 @@
     height: 3rem;
     background: var(--white);
     z-index: 2;
-    height: 15vw;
+    height: 15vw
   }
 
   #home {
@@ -130,7 +140,7 @@
     align-self: center;
     margin-left: 2%;
     cursor: pointer;
-    background: url('/goodgle.svg');
+    background: url('goodgle.svg')
   }
 
   #search-bar {
@@ -144,17 +154,17 @@
     color: var(--darker);
     font-weight: bold;
     caret-color: var(--darker);
-    background: none;
+    background: none
   }
 
   #search {
-    background: url('/search.svg');
+    background: url('search.svg');
     height: 2rem;
     width: 2rem;
     border: 0;
     align-self: center;
     margin-right: 2%;
-    cursor: pointer;
+    cursor: pointer
   }
 
   #autocomplete {
@@ -168,7 +178,7 @@
     box-shadow: 0px 4px 24px rgba(0, 0, 0, .14), 0px 2px 12px rgba(0, 0, 0, .06);
     background: var(--white);
     display: none;
-    border-radius: 1.5rem;
+    border-radius: 1.5rem
   }
 
   #autocomplete>a {
@@ -179,21 +189,22 @@
     border: transparent solid .5px;
     border-radius: 1.5rem;
     font-weight: 600;
+    cursor: pointer
   }
 
   #autocomplete>a:hover {
-    border: var(--border) solid .5px;
+    border: var(--border) solid .5px
   }
 
   @media (min-width: 1024px) {
 
-    header,
+    form,
     #autocomplete {
-      width: 40vw;
+      width: 40vw
     }
 
-    header {
-      height: 3.2rem;
+    form {
+      height: 3.2rem
     }
   }
 </style>

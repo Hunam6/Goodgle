@@ -1,4 +1,5 @@
 #For personal testing propose
 test.ts
+Makefile
 .stignore
 okteto.yml

@@ -1,5 +1,5 @@
 //deno-lint-ignore-file no-explicit-any
-import {rendSearch, rendMenu, rendPage} from '../src/utils.ts'
+import {rendSearch, rendMenu, rendPage, rendNavigation} from '../src/utils.ts'
 import type {Document} from 'deno_dom'
 
 export const videos = async (doc: Document, lang: string) => {
@@ -56,6 +56,7 @@ export const videos = async (doc: Document, lang: string) => {
     ...data,
     ...await rendSearch(doc),
     ...await rendMenu(doc),
+    ...await rendNavigation()
   }
 
   return rendPage('videos', data, lang)

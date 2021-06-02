@@ -77,7 +77,7 @@ export const images = async (doc: Document, lang: string) => {
   data = {
     ...data,
     ...await rendSearch(doc),
-    ...await rendMenu(doc, true),
+    ...await rendMenu(doc, true)
   }
 
   return rendPage('images', data, lang)
