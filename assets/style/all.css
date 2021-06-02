@@ -181,7 +181,8 @@ article,
 }
 
 .sub-results>article {
-  margin: 1rem
+  margin: 1rem;
+  max-width: 25%
 }
 
 .quick-answers {
