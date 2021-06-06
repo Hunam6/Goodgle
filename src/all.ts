@@ -2,7 +2,7 @@
 import {DOMParser} from 'deno_dom'
 import {getBigFatJS, getQuery, rendSearch, rendMenu, rendPage, rendNavigation} from '../src/utils.ts'
 import type {Document} from 'deno_dom'
-
+//TODO: different color for clicked links
 export const all = async (doc: Document, lang: string) => {
   let data: Record<string, any> = {
     proposition: '',
@@ -127,8 +127,96 @@ export const all = async (doc: Document, lang: string) => {
 
   //Knowledge panel
   if (doc.querySelector('.liYKde.g.VjDLd') != null) {
+    doc.querySelectorAll('.wDYxhc').forEach(element => {
+      const addInfo = (title: string, content: string) => data.knwlPanel.infos.push({
+        title: title,
+        content: content
+      })
+      const createLink = (link: string | string[], shown?: string | string[]) => {
+        const createLink = (link: string, facade = shown) => '<a href="' + link + '">' + (facade ? facade : link) + '</a>'
+        if (typeof link === 'string') return createLink(link)
+        else {
+          let out = ''
+          link.forEach(el => out += createLink('/search?q=' + el, el))
+          return out
+        }
+      }
+      if (element.children[0]) {
+        const el = element.children[0].parentElement!
+        if (el.hasAttribute('data-attrid')) {
+          if (
+            el.children[0].children[0] &&
+            !el.children[0].classList.contains('kpS1Ac') &&
+            !el.children[0].classList.contains('Ob2kfd') &&
+            !el.querySelector('g-scrolling-carousel') &&
+            !el.getAttribute('data-attrid')!.includes('edit') &&
+            !el.querySelector('.Ss2Faf') &&
+            !el.querySelector('.P7hEAd') &&
+            !el.querySelector('.PQbOE')
+          ) {
+            console.log(el.textContent + '\n' + el.getAttribute('data-attrid') + '\n')
+            if (el.getAttribute('data-attrid') === 'kc:/local:scalable_attributes_group') {
+              //security
+              const base = el.querySelector('.Wowtd')!.parentElement!
+              addInfo(
+                base.children[0].textContent,
+                base.textContent.slice(base.children[0].textContent.length, -base.children[1].textContent.length - 3)
+              )
+            } else if (el.getAttribute('data-attrid') === 'kc:/collection/knowledge_panels/has_phone:phone') {
+              //phone
+              console.log('phone')
+              const tel = el.children[0].children[0].children[1].textContent
+              addInfo(
+                el.children[0].children[0].children[0].textContent,
+                createLink('tel: ' + tel, tel)
+              )
+            } else if (el.getAttribute('data-attrid') === 'kc:/location/location:hours') {
+              //hours
+              addInfo(
+                el.querySelector('.GRkHZd')!.textContent,
+                el.querySelector('.h-n')!.textContent
+              )
+            } else if (el.getAttribute('data-attrid') === 'kc:/location/location:address') {
+              //address
+              const link = el.children[0].children[0].children[1].textContent
+              addInfo(
+                el.children[0].children[0].children[0].textContent,
+                createLink('https://www.google.com/maps?q=' + link, link)
+              )
+            } else if (el.querySelector('.Eq0J8')) {
+              console.log('1')
+              //list of links
+              addInfo(
+                el.querySelector('.GRkHZd')!.textContent,
+                el.querySelector('.Eq0J8')!.textContent
+              )
+            } else if (el.querySelector('.xFAlBc')) {
+              //appointment
+              addInfo(
+                el.querySelector('b')!.textContent + ': ',
+                createLink(el.querySelector('.xFAlBc')!.getAttribute('href')!.split('/?utm')[0], el.querySelector('.xFAlBc')!.textContent)
+              )
+            } else if (el.querySelector('c-wiz')) {
+              //some special cases
+              const title = el.querySelector('.d2aWRb')!.textContent
+              addInfo(
+                title,
+                el.querySelector('.d2aWRb')!.parentElement!.textContent.substring(title.length)
+              )
+            } else if (el.querySelector('.w8qArf')) {
+              //normal
+              addInfo(
+                el.children[0].children[0].children[0].textContent,
+                el.children[0].children[0].children[1].textContent
+              )
+            }
+          }
+        }
+      }
+    })
     data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //title
-    data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //subtitle
+    if (doc.querySelector('.wwUB2c')) data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //subtitle
+    else data.knwlPanel.subtitle = doc.querySelector('.YhemCb')!.textContent
     if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //description
     doc.querySelectorAll('.w8qArf').forEach((el, i) => (data.knwlPanel.infos[i] = {title: el.children[0].textContent + ': '})) //infos title
     doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.split(' - ')[0])) //infos content
