@@ -127,64 +127,69 @@ export const all = async (doc: Document, lang: string) => {
 
   //Knowledge panel
   if (doc.querySelector('.liYKde.g.VjDLd') != null) {
+    data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //title
+    if (doc.querySelector('.wwUB2c')) data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //subtitle
+    else if (doc.querySelector('.YhemCb')) data.knwlPanel.subtitle = doc.querySelector('.YhemCb')!.textContent
+    if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //description
+
+    //Infos
     doc.querySelectorAll('.wDYxhc').forEach(element => {
       const addInfo = (title: string, content: string) => data.knwlPanel.infos.push({
         title: title,
         content: content
       })
-      const createLink = (link: string | string[], shown?: string | string[]) => {
-        const createLink = (link: string, facade = shown) => '<a href="' + link + '">' + (facade ? facade : link) + '</a>'
-        if (typeof link === 'string') return createLink(link)
-        else {
-          let out = ''
-          link.forEach(el => out += createLink('/search?q=' + el, el))
-          return out
-        }
-      }
+      const createLink = (link: string, shown?: string) => '<a href="' + link + '">' + (shown ? shown : link) + '</a>'
+
       if (element.children[0]) {
         const el = element.children[0].parentElement!
+        const attr = el.getAttribute('data-attrid')!
         if (el.hasAttribute('data-attrid')) {
           if (
             el.children[0].children[0] &&
             !el.children[0].classList.contains('kpS1Ac') &&
             !el.children[0].classList.contains('Ob2kfd') &&
             !el.querySelector('g-scrolling-carousel') &&
-            !el.getAttribute('data-attrid')!.includes('edit') &&
+            !attr.includes('edit') &&
             !el.querySelector('.Ss2Faf') &&
             !el.querySelector('.P7hEAd') &&
+            !el.querySelector('.qd9Mkf') && //TODO: like percentage (eg: a film)
             !el.querySelector('.PQbOE')
           ) {
-            console.log(el.textContent + '\n' + el.getAttribute('data-attrid') + '\n')
-            if (el.getAttribute('data-attrid') === 'kc:/local:scalable_attributes_group') {
+            if (attr === 'kc:/local:scalable_attributes_group') {
               //security
               const base = el.querySelector('.Wowtd')!.parentElement!
               addInfo(
                 base.children[0].textContent,
                 base.textContent.slice(base.children[0].textContent.length, -base.children[1].textContent.length - 3)
               )
-            } else if (el.getAttribute('data-attrid') === 'kc:/collection/knowledge_panels/has_phone:phone') {
+            } else if (attr === 'kc:/collection/knowledge_panels/has_phone:phone') {
               //phone
-              console.log('phone')
               const tel = el.children[0].children[0].children[1].textContent
               addInfo(
                 el.children[0].children[0].children[0].textContent,
                 createLink('tel: ' + tel, tel)
               )
-            } else if (el.getAttribute('data-attrid') === 'kc:/location/location:hours') {
+            } else if (attr === 'kc:/location/location:hours') {
               //hours
               addInfo(
                 el.querySelector('.GRkHZd')!.textContent,
                 el.querySelector('.h-n')!.textContent
               )
-            } else if (el.getAttribute('data-attrid') === 'kc:/location/location:address') {
+            } else if (attr === 'kc:/location/location:address') {
               //address
               const link = el.children[0].children[0].children[1].textContent
               addInfo(
                 el.children[0].children[0].children[0].textContent,
                 createLink('https://www.google.com/maps?q=' + link, link)
               )
+            } else if (attr.includes('website')) {
+              //website
+              const link = el.querySelector('.Eq0J8')!.children[0]
+              addInfo(
+                el.querySelector('.GRkHZd')!.textContent,
+                createLink(link.getAttribute('href')!, link.textContent)
+              )
             } else if (el.querySelector('.Eq0J8')) {
-              console.log('1')
               //list of links
               addInfo(
                 el.querySelector('.GRkHZd')!.textContent,
@@ -214,12 +219,6 @@ export const all = async (doc: Document, lang: string) => {
         }
       }
     })
-    data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //title
-    if (doc.querySelector('.wwUB2c')) data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //subtitle
-    else data.knwlPanel.subtitle = doc.querySelector('.YhemCb')!.textContent
-    if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //description
-    doc.querySelectorAll('.w8qArf').forEach((el, i) => (data.knwlPanel.infos[i] = {title: el.children[0].textContent + ': '})) //infos title
-    doc.querySelectorAll('.kno-fv').forEach((el, i) => (data.knwlPanel.infos[i].content = el.textContent.split(' - ')[0])) //infos content
 
     //Additional infos
     if (doc.querySelector('.Ss2Faf:not(.ellip)')) {
@@ -227,7 +226,7 @@ export const all = async (doc: Document, lang: string) => {
       doc.querySelectorAll('.Ss2Faf:not(.ellip)').forEach(el => {
         const next = el.parentElement!.children[1]
         //check if not an ad (eg: q=minecraft+dungeons)
-        if (!el.parentElement!.className.includes('ellip') && (next.className !== 'JeEise fBkrHb') && (next.getAttribute('style') !== 'display:none')) {
+        if (el.parentElement!.children[0].className.includes('qLYAZd') && !el.parentElement!.className.includes('ellip') && (next.className !== 'JeEise fBkrHb') && (next.getAttribute('style') !== 'display:none')) {
           //title
           if (el.children[0]) {
             if (el.children[0].children[0]) data.knwlPanel.additionalInfos[index] = {title: el.children[0].children[0].textContent}
