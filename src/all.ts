@@ -95,7 +95,7 @@ export const all = async (doc: Document, lang: string) => {
 
   //Results
   doc.querySelectorAll('.LC20lb.DKV0Md').forEach((el, i) => (data.results[i] = {title: el.textContent})) //results title
-  doc.querySelectorAll('.aCOpRe').forEach((el, i) => (data.results[i].desc = el.textContent)) //results description
+  doc.querySelectorAll('.IsZvec').forEach((el, i) => (data.results[i].desc = el.children[0].innerHTML)) //results description
   doc.querySelectorAll('.TbwUpd.NJjxre').forEach((el, i) => (data.results[i].shownLink = el.textContent)) //results shown link
   doc.querySelectorAll('.yuRUbf').forEach((el, i) => (data.results[i].link = el.children[0].getAttribute('href')!)) //results link
   if (!noFirstResult) data.firstResult = data.results.shift() //first result
