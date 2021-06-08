@@ -162,6 +162,11 @@ article,
   font-weight: 600
 }
 
+.link-title:visited,
+.link:visited {
+  color: var(--visited)
+}
+
 .link {
   color: var(--dark);
   font-weight: 600

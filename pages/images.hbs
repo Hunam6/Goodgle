@@ -2,30 +2,19 @@
 {{{search}}}
 <main>
   {{#IMGs}}
-    <img style="background: {{color}}" loading="lazy" decoding="async" src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{desc}}" data-original="{{original}}" data-desc="{{desc}}" data-URL="{{URL}}" data-title="{{title}}"></img>
+    <img height="{{height}}" width="{{width}}" style="background: {{color}}" loading="lazy" decoding="async" src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{desc}}" data-original="{{original}}" data-desc="{{desc}}" data-URL="{{URL}}" data-title="{{title}}"></img>
   {{/IMGs}}
 </main>
 <aside></aside>
 {{{menu}}}
 
 <script>
-  //For desktops
-  const aspectRatios = {{{ stringedAspectRatio }}}
-  let style = document.querySelector('style').innerHTML
-  style = style.slice(0, -8)
-  aspectRatios.forEach((el, i) => style += `
-      main img:nth-child(${i + 1}) {
-        height: calc(${el[0]}rem / 17.5);
-        width: calc(${el[1]}rem / 17.5)
-      }
-    `)
-  style += '}'
-
   //Get images
+  const stringedIMGs = {{{ stringedIMGs }}}
   document.querySelectorAll('img').forEach((el, i) => {
-    el.setAttribute('src', {{{ stringedIMGs }}}[i])
-  el.style.background = 'none'
-    })
+    el.setAttribute('src', stringedIMGs[i])
+    el.style.background = 'none'
+  })
 
   //View full image
   document.querySelectorAll('img').forEach(el => el.addEventListener('mouseup', () => {

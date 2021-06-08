@@ -38,7 +38,7 @@
       .then(res => {
         autocomplete.innerHTML = ''
         show()
-        res[1].forEach(el => autocomplete.innerHTML += '<a class="autocomplete">' + el + '</a>')
+        res[1].forEach(el => autocomplete.innerHTML += '<p class="autocomplete">' + el + '</p>')
         if (res[1].length === 0) hide()
       })
     else hide()
@@ -108,7 +108,7 @@
       }
     }
     //Enter key
-    if (e.keyCode === 13) if (i !== -1) search({ q: autocomplete.children[i].getAttribute('href').substring(10) })
+    if (e.keyCode === 13) if (i !== -1) search({ q: autocomplete.children[i].textContent })
     else search()
 
     //Escape key
@@ -181,7 +181,7 @@
     border-radius: 1.5rem
   }
 
-  #autocomplete>a {
+  #autocomplete>p {
     display: block;
     padding: .1875rem 1rem;
     text-decoration: none;
@@ -189,10 +189,11 @@
     border: transparent solid .5px;
     border-radius: 1.5rem;
     font-weight: 600;
+    margin: 0;
     cursor: pointer
   }
 
-  #autocomplete>a:hover {
+  #autocomplete>p:hover {
     border: var(--border) solid .5px
   }
 

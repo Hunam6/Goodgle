@@ -37,6 +37,10 @@ article>div {
   font-weight: 600
 }
 
+.title:visited {
+  color: var(--visited)
+}
+
 article>div>a {
   display: flex;
   align-items: center;

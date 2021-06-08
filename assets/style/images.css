@@ -23,7 +23,8 @@ main {
 main>img {
   margin: .5rem .25rem;
   cursor: pointer;
-  max-width: 40%
+  max-width: 40%;
+  height: auto
 }
 
 aside {
