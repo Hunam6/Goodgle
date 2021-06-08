@@ -2,8 +2,13 @@
 {{{search}}}
 {{#hasKnwlPanel}}
   <aside>
-    <h2>{{knwlPanel.title}}</h2>
-    <p class="subtitle">{{knwlPanel.subtitle}}</p>
+    <div class="head">
+      <div>
+        <h2>{{knwlPanel.title}}</h2>
+        <p>{{knwlPanel.subtitle}}</p>
+      </div>
+      <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" height="{{knwlPanel.IMG.height}}" width="{{knwlPanel.IMG.width}}" id="{{knwlPanel.IMG.IMG}}" alt="{{knwlPanel.title}}">
+    </div>
     <p>{{knwlPanel.desc}}</p>
     {{#knwlPanel.infos}}
       <p><b>{{title}}</b>{{{content}}}</p>

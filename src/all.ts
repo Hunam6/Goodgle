@@ -107,7 +107,7 @@ export const all = async (doc: Document, lang: string) => {
   }
 
   //Quick answers
-  if (doc.querySelector('.JolIg') != null) {
+  if (doc.querySelector('.JolIg')) {
     let i = 0
     getBigFatJS(doc)
       .split(');}')
@@ -126,11 +126,17 @@ export const all = async (doc: Document, lang: string) => {
   } else data.hasQuickAnswers = false
 
   //Knowledge panel
-  if (doc.querySelector('.liYKde.g.VjDLd') != null) {
+  if (doc.querySelector('.liYKde.g.VjDLd')) {
     data.knwlPanel.title = doc.querySelector('.qrShPb')!.textContent //title
     if (doc.querySelector('.wwUB2c')) data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //subtitle
     else if (doc.querySelector('.YhemCb')) data.knwlPanel.subtitle = doc.querySelector('.YhemCb')!.textContent
-    if (doc.querySelector('.kno-rdesc')! != null) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //description
+    if (doc.querySelector('.kno-rdesc')) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //description
+    const base = doc.querySelector('.ivg-i')!.children[0]
+    if (doc.querySelector('.ivg-i')) data.knwlPanel.IMG = {
+      IMG: base.getAttribute('id'),
+      height: base.getAttribute('height'),
+      width: base.getAttribute('width')
+    } //image
 
     //Infos
     doc.querySelectorAll('.wDYxhc').forEach(element => {
