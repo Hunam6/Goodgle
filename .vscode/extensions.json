@@ -2,7 +2,7 @@
   "recommendations": [
     "editorconfig.editorconfig",
     "denoland.vscode-deno",
-    "davidanson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
     "mikebovenlander.formate"
   ]
 }

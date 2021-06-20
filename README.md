@@ -32,6 +32,10 @@ You can quickly test it on my instances, just remember to only use it for testin
     git clone https://github.com/Hunam6/Goodgle & cd Goodgle
     deno run --allow-net --allow-read --allow-env --unstable --import-map=IM.json app.ts
 
+### On Railway
+
+Click on [![Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https%3A%2F%2Fgithub.com%2FHunam6%2FGoodgle&envs=PORT&PORTDefault=8080)
+
 ### On Okteto
 
 Click on [![Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?repository=https://github.com/Hunam6/Goodgle)
