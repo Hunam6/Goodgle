@@ -1,4 +1,4 @@
-FROM hayd/ubuntu-deno:1.10.2
+FROM denoland/deno:1.11.1
 EXPOSE 8080
 COPY . .
 CMD deno run --allow-net --allow-read --allow-env --unstable --import-map=IM.json app.ts
