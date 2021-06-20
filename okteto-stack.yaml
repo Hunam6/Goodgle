@@ -3,5 +3,6 @@ services:
   goodgle:
     public: true
     build: .
+    image: okteto.dev/goodgle:dev
     ports:
       - 8080

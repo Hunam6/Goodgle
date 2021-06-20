@@ -171,6 +171,7 @@ export async function rendFinance(doc: Document): Promise<Record<string, string>
       content: el.parentElement!.children[1].textContent
     }))
   }
+  //TODO: implement "Previous close"
 
   return {
     finance: await renderFile(Deno.cwd() + '/instantAnswers/finance.hbs', data)
