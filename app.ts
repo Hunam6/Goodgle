@@ -25,12 +25,7 @@ async function search(params: Record<string, string>) {
   if (params.page != undefined) URL += '&start=' + (parseInt(params.page) - 1) + '0' //Handle page
   URL += '&hl=' + getLang(params)
   if (params.trueSpelling != undefined) URL += '&nfpr=' + params.trueSpelling //Handle force good spelling
-
-  const getDoc = async (URL: string) =>
-    new DOMParser().parseFromString(
-      await fetchURL(URL).then(res => res.text()),
-      'text/html'
-    )!
+  const getDoc = async (URL: string) => new DOMParser().parseFromString(await fetchURL(URL).then(res => res.text()), 'text/html')!
 
   //Handle tabs
   switch (params.tab) {

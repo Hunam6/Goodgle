@@ -130,12 +130,14 @@ export const all = async (doc: Document, lang: string) => {
     if (doc.querySelector('.wwUB2c')) data.knwlPanel.subtitle = doc.querySelector('.wwUB2c')!.textContent //subtitle
     else if (doc.querySelector('.YhemCb')) data.knwlPanel.subtitle = doc.querySelector('.YhemCb')!.textContent
     if (doc.querySelector('.kno-rdesc')) data.knwlPanel.desc = doc.querySelector('.kno-rdesc')!.children[1].textContent //description
-    const base = doc.querySelector('.ivg-i')!.children[0]
-    if (doc.querySelector('.ivg-i')) data.knwlPanel.IMG = {
-      IMG: base.getAttribute('id'),
-      height: base.getAttribute('height'),
-      width: base.getAttribute('width')
-    } //image
+    if (doc.querySelector('.ivg-i')) { //image
+      const base = doc.querySelector('.ivg-i')!.children[0]
+      if (doc.querySelector('.ivg-i')) data.knwlPanel.IMG = {
+        IMG: base.getAttribute('id'),
+        height: base.getAttribute('height'),
+        width: base.getAttribute('width')
+      }
+    }
 
     //Infos
     doc.querySelectorAll('.wDYxhc').forEach(element => {
@@ -271,7 +273,7 @@ export const all = async (doc: Document, lang: string) => {
               work: el.textContent,
               link: '/search?q=' + el.textContent
             }))
-          } else if (next.className === 'pOM64e') {
+          } else if (next.className === 'idWF4b') {
             //TODO: handle "Audience reviews" eg: q=minecraft+dungeons
             //TODO: fix detecting Audience rating summary
           } else if (next.className === 'jYcvae kY5Gde') {
