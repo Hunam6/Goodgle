@@ -3,11 +3,7 @@ import {fromUnixTime, format} from 'https://raw.githubusercontent.com/pr0ggy/den
 import {renderFile} from 'mustache_ts'
 import type {Document} from 'deno_dom'
 
-export function getQuery(doc: Document): Record<string, string> {
-  return {
-    query: doc.querySelector('title')!.textContent.split(' - ')[0]
-  }
-}
+export const getQuery = (doc: Document): string => doc.querySelector('title')!.textContent.split(' - ')[0]
 
 export function getBigFatJS(doc: Document): string {
   let bigFatJS = ''
@@ -126,7 +122,7 @@ export async function rendMenu(doc: Document, imagesTab = false): Promise<Record
 
 export async function rendSearch(doc?: Document): Promise<Record<string, string>> {
   return {
-    search: await renderFile(Deno.cwd() + '/templates/search.hbs', doc ? getQuery(doc!) : {search: ''})
+    search: await renderFile(Deno.cwd() + '/templates/search.hbs', doc ? {query: getQuery(doc!)} : {})
   }
 }
 

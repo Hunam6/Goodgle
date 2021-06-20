@@ -4,6 +4,7 @@ import {getBigFatJS, getQuery, rendSearch, rendMenu, rendPage, rendNavigation, r
 import type {Document} from 'deno_dom'
 export const all = async (doc: Document, lang: string) => {
   let data: any = {
+    query: getQuery(doc),
     proposition: '',
     firstResult: {},
     firstResults: [],
@@ -309,7 +310,6 @@ export const all = async (doc: Document, lang: string) => {
 
   data = {
     ...data,
-    ...getQuery(doc),
     ...await rendSearch(doc),
     ...await rendMenu(doc),
     ...await rendNavigation(),
