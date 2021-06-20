@@ -9,10 +9,6 @@ body>p {
   font-weight: 600
 }
 
-body>p>a {
-  color: var(--darker)
-}
-
 main {
   display: flex;
   flex-wrap: wrap;
@@ -57,7 +53,6 @@ figure>a>img {
 }
 
 figure>a>p {
-  color: var(--darker);
   font-weight: 600;
   margin: .5rem 0
 }

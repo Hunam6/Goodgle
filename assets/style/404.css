@@ -1,0 +1,24 @@
+body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
+
+div {
+  background: var(--gray);
+  border-radius: 25px;
+  padding: 1rem;
+  border: .5px solid var(--border);
+  text-align: center
+}
+
+#home {
+  margin: 1.5rem 1rem 1rem;
+  display: block;
+  font-weight: 700;
+  background: var(--gray);
+  border: .5px solid var(--darker);
+  border-radius: 25px;
+  padding: .5rem
+}

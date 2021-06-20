@@ -28,8 +28,7 @@ aside {
 }
 
 .head>div>h2 {
-  margin: 0;
-  color: var(--darker)
+  margin: 0
 }
 
 .head>div>p {
@@ -43,7 +42,6 @@ aside {
 }
 
 aside>p>b {
-  color: var(--darker);
   font-weight: 600
 }
 
@@ -52,7 +50,6 @@ aside>p {
 }
 
 aside>div>h3 {
-  color: var(--darker);
   font-weight: bold
 }
 
@@ -69,7 +66,6 @@ aside>div>div {
 
 .work-add-info {
   display: block;
-  color: var(--darker);
   margin: .5rem
 }
 
@@ -89,7 +85,6 @@ aside>div>div {
 }
 
 .critic-add-info>div>a {
-  color: var(--darker);
   font-weight: 525
 }
 
@@ -171,7 +166,6 @@ article,
 .link-title,
 .quick-answers>p,
 #add>p {
-  color: var(--darker);
   font-weight: 600
 }
 
@@ -236,8 +230,7 @@ article,
 }
 
 .quick-answers>div * {
-  font-size: small;
-  color: var(--darker)
+  font-size: small
 }
 
 .quick-answers>div *:not(b) {

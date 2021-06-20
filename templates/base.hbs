@@ -20,16 +20,26 @@
       --dark: hsla(0, 0%, 10%, .7);
       --darker: hsl(0, 0%, 10%, .9);
       --visited: hsl(300, 100%, 10%);
-      --border: hsl(0, 0%, 60%)
+      --border: hsl(0, 0%, 60%);
+      color: var(--darker)
+    }
+
+    a,
+    button {
+      cursor: pointer
     }
 
     a {
-      color: var(--darker);
       text-decoration: none
     }
 
     a:hover {
       text-decoration: underline
+    }
+
+    input,
+    textarea {
+      caret-color: var(--darker)
     }
   </style>
   <link rel="preconnect" href="https://fonts.gstatic.com" />

@@ -9,10 +9,6 @@ body>p {
   font-weight: 600
 }
 
-body>p>a {
-  color: var(--darker)
-}
-
 main {
   margin: 0 0 -1rem
 }
@@ -33,7 +29,6 @@ article>div {
 }
 
 .title {
-  color: var(--darker);
   font-weight: 600
 }
 

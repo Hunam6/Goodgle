@@ -95,12 +95,14 @@ router
   }).get('/finance', async ctx => {
     ctx.response.body = await getFinanceData(helpers.getQuery(ctx).period, helpers.getQuery(ctx).id)
   })
+
 app.use(router.routes())
 app.use(router.allowedMethods())
+
 app.use(async ctx => {
   if (await exists('./assets' + ctx.request.url.pathname)) await send(ctx, ctx.request.url.pathname, {root: './assets'})
   else {
-    ctx.response.body = 'error 404' //TODO: make a good looking 404 page
+    ctx.response.body = await rendPage('404', {}, getLang())
     ctx.response.status = 404
   }
 })
@@ -109,4 +111,3 @@ await app.listen({port: Deno.env.get('PORT') == undefined ? 8080 : parseInt(Deno
 
 //TODO: Deno Deploy support
 //TODO: Qovery support
-//TODO: Railway instructions
