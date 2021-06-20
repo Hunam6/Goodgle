@@ -1,10 +1,9 @@
 //deno-lint-ignore-file no-explicit-any
 import {DOMParser} from 'deno_dom'
-import {getBigFatJS, getQuery, rendSearch, rendMenu, rendPage, rendNavigation} from '../src/utils.ts'
+import {getBigFatJS, getQuery, rendSearch, rendMenu, rendPage, rendNavigation, rendFinance} from '../src/utils.ts'
 import type {Document} from 'deno_dom'
-//TODO: different color for clicked links
 export const all = async (doc: Document, lang: string) => {
-  let data: Record<string, any> = {
+  let data: any = {
     proposition: '',
     firstResult: {},
     firstResults: [],
@@ -297,22 +296,22 @@ export const all = async (doc: Document, lang: string) => {
   } else data.hasKnwlPanel = false
 
   //Get images
+  const IMGs: string[][] = []
   doc.querySelectorAll('script').forEach(el => {
-    if (el.textContent.includes('{var s')) {
-      data.IMGs.push([
-        el.textContent.slice(19).split("'")[0].replaceAll('\\x3d', '='), //Image base64
-        el.textContent.split("['")[1].split("'")[0] //Image ID
-      ])
-    }
+    if (el.textContent.includes('{var s')) IMGs.push([
+      el.textContent.slice(19).split("'")[0].replaceAll('\\x3d', '='), //Image base64
+      el.textContent.split("['")[1].split("'")[0] //Image ID
+    ])
   })
-  data.stringedIMGs = JSON.stringify(data.IMGs)
+  data.IMGs = JSON.stringify(IMGs)
 
   data = {
     ...data,
     ...getQuery(doc),
     ...await rendSearch(doc),
     ...await rendMenu(doc),
-    ...await rendNavigation()
+    ...await rendNavigation(),
+    ...await rendFinance(doc)
   }
 
   return rendPage('all', data, lang)

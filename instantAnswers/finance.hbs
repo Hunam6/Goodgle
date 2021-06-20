@@ -1,0 +1,198 @@
+{{#hasFinance}}
+<article>
+  <div id="finance-header">
+    <div>
+      <p id="price">{{finance.legend.price}}</p>
+      <p id="currency">{{finance.legend.currency}}</p>
+      <p id="price-evolution">{{finance.legend.priceEvolution}}</p>
+    </div>
+    <p id="exchange">{{finance.legend.exchange}}</p>
+  </div>
+  <div id="finance-btns">
+    {{#finance.legend.btns}}
+    <button>{{.}}</button>
+    {{/finance.legend.btns}}
+  </div>
+  <div>
+    <canvas id="finance"></canvas>
+  </div>
+  <div id="finance-details">
+    {{#finance.details}}
+    <p><b>{{title}}</b>: {{content}}</p>
+    {{/finance.details}}
+  </div>
+</article>
+{{/hasFinance}}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  const data = {{{ finance.data }}}
+  const positive = {{{ finance.positive }}} ?'#00a950' : '#f73e3e'
+  document.querySelector('#price-evolution').style.color = positive
+
+  const externalTooltip = ({ chart, tooltip }) => {
+    let el = chart.canvas.parentNode.querySelector('div')
+    if (!el) {
+      el = document.createElement('div')
+      const info = document.createElement('p')
+      const bar = document.createElement('div')
+      el.setAttribute('id', 'tooltip')
+      el.style.height = 'calc(' + chart.chartArea.height + 'px + 4rem' + ')'
+      el.style.transform = 'translate(-50%, calc(' + (chart.chartArea.top - chart.height).toString() + 'px - 5rem))'
+      bar.style.height = chart.height.toString() + 'px'
+      el.append(info)
+      el.append(bar)
+      chart.canvas.parentElement.append(el)
+    }
+    if (tooltip.opacity === 0) {
+      el.style.opacity = 0
+      return
+    }
+    el.children[0].innerHTML = tooltip.body[0].lines[0] + ' ' + tooltip.title[0]
+    el.style.opacity = 1
+    el.style.left = chart.canvas.offsetLeft + tooltip.caretX + 'px'
+  }
+
+  let finance = new Chart(document.querySelector('#finance'), {
+    type: 'line',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        borderColor: positive,
+        data: data.values,
+        borderWidth: 2.5
+      }]
+    },
+    options: {
+      responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false
+      },
+      elements: {
+        point: {
+          radius: 0
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          ticks: {
+            maxTicksLimit: window.innerWidth <= 1024 ? 5 : 15
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          enabled: false,
+          position: 'nearest',
+          external: externalTooltip
+        }
+      }
+    }
+  })
+  const changePeriod = (period) => fetch(location.origin + '/finance?period=' + period + '&id=' + '{{{finance.ID}}}')
+  document.querySelectorAll('#finance-btns>button').forEach((el, i) => el.addEventListener('mouseup', () => {
+    let period = ''
+    if (i === 0) period = '1d'
+    else if (i === 1) period = '5d'
+    else if (i === 2) period = '1M'
+    else if (i === 3) period = '6M'
+    else if (i === 4) period = 'YTD'
+    else if (i === 5) period = '1Y'
+    else if (i === 6) period = '5Y'
+    else period = '40Y'
+    changePeriod(period).then(res => res.json()).then(res => {
+      finance.data.datasets[0].data = res.values
+      finance.data.labels = res.labels
+      finance.update()
+    })
+  }))
+</script>
+
+<style>
+  #price {
+    display: inline;
+    color: var(--darker);
+    font-size: 2.5rem
+  }
+
+  #currency {
+    display: inline;
+    color: var(--dark);
+    font-size: 1.25rem
+  }
+
+  #price-evolution {
+    font-size: 1.125rem
+  }
+
+  #exchange {
+    color: var(--dark);
+    font-size: 1.125rem
+  }
+
+  #finance-header {
+    display: flex;
+    justify-content: space-between
+  }
+
+  #finance-btns>button {
+    background: none;
+    border: .5px solid var(--border);
+    border-radius: 1rem;
+    padding: 0.25rem 1rem;
+    margin: .125rem;
+    cursor: pointer;
+    color: var(--darker);
+  }
+
+
+  #finance-btns>button {
+    color: var(--darker);
+  }
+
+  #finance {
+    margin: 1rem 0;
+  }
+
+  #finance-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  #finance-details>p {
+    margin: 0.5rem;
+    color: var(--darker);
+  }
+
+  #finance-details>p>b {
+    font-weight: 600;
+  }
+
+  #tooltip {
+    pointer-events: none;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #tooltip>p {
+    border: .5px solid var(--border);
+    padding: .25rem .5rem;
+    border-radius: 5rem;
+    background: var(--gray);
+  }
+
+  #tooltip>div {
+    border: 0.1rem dashed;
+    width: 0;
+    color: var(--darker);
+  }
+</style>

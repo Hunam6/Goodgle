@@ -3,7 +3,7 @@ import {rendSearch, rendMenu, rendPage, rendNavigation} from '../src/utils.ts'
 import type {Document} from 'deno_dom'
 
 export const videos = async (doc: Document, lang: string) => {
-  let data: Record<string, any> = {
+  let data: any = {
     proposition: '',
     results: [],
     IMGs: [],

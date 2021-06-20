@@ -26,5 +26,8 @@
       ]
     }
   },
-  "html.format.wrapLineLength": 0
+  "html.format.wrapLineLength": 0,
+  "deno.suggest.imports.hosts": {
+    "https://deno.land": true
+  }
 }

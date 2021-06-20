@@ -1,85 +1,86 @@
 <p>{{{proposition}}}</p>
 {{{search}}}
 {{#hasKnwlPanel}}
-  <aside>
-    <div class="head">
-      <div>
-        <h2>{{knwlPanel.title}}</h2>
-        <p>{{knwlPanel.subtitle}}</p>
-      </div>
-      <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" height="{{knwlPanel.IMG.height}}" width="{{knwlPanel.IMG.width}}" id="{{knwlPanel.IMG.IMG}}" alt="{{knwlPanel.title}}">
+<aside>
+  <div class="head">
+    <div>
+      <h2>{{knwlPanel.title}}</h2>
+      <p>{{knwlPanel.subtitle}}</p>
     </div>
-    <p>{{knwlPanel.desc}}</p>
-    {{#knwlPanel.infos}}
-      <p><b>{{title}}</b>{{{content}}}</p>
-    {{/knwlPanel.infos}}
-    {{#knwlPanel.additionalInfos}}
-      <div>
-        <h3>{{title}}</h3>
-        {{#isQuotes}}
-          <div>
-            {{#quotes}}
-              <i class="quote-add-info">{{.}}</i>
-            {{/quotes}}
-          </div>
-        {{/isQuotes}}
-        {{#isWorks}}
-          <div>
-            {{#works}}
-              <a href="{{link}}" class="work-add-info">{{work}}</a>
-            {{/works}}
-          </div>
-        {{/isWorks}}
-        {{#isCritics}}
-          <div>
-            {{#critics}}
-              <div class="critic-add-info">
-                <div>
-                  {{critic}}
-                  <a href="{{link}}">...</a>
-                </div>
-                <div>
-                  <img id="{{icon}}" src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{name}}">
-                  <a href="{{link}}">{{name}}</a>
-                </div>
-              </div>
-            {{/critics}}
-          </div>
-        {{/isCritics}}
-        {{#isPlatform}}
-          <div>
-            {{#platforms}}
-              <div class="platform-add-info">
-                <img id="{{icon}}" src="data:;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAEUlEQVR42mNkIAAYRxWMJAUAE5gAEdz4t9QAAAAASUVORK5CYII=" alt="{{platform}}">
-                <a href="{{link}}">{{platform}}</a>
-              </div>
-            {{/platforms}}
-          </div>
-        {{/isPlatform}}
-        {{#isNormal}}
-          <div>
-            <div class="normal-add-info">
-              {{#elements}}
-                <a href="{{link}}">
-                  <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{title}}" id="{{ID}}">
-                </a>
-              {{/elements}}
-            </div>
-            <div class="normal-add-info">
-              {{#elements}}
-                <a href="{{link}}">
-                  <h4>{{title}}</h4>
-                  <h5>{{subtitle}}</h5>
-                </a>
-              {{/elements}}
-            </div>
-          </div>
-        {{/isNormal}}
+    <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" height="{{knwlPanel.IMG.height}}" width="{{knwlPanel.IMG.width}}" id="{{knwlPanel.IMG.IMG}}" alt="{{knwlPanel.title}}">
+  </div>
+  <p>{{knwlPanel.desc}}</p>
+  {{#knwlPanel.infos}}
+  <p><b>{{title}}</b>{{{content}}}</p>
+  {{/knwlPanel.infos}}
+  {{#knwlPanel.additionalInfos}}
+  <div>
+    <h3>{{title}}</h3>
+    {{#isQuotes}}
+    <div>
+      {{#quotes}}
+      <i class="quote-add-info">{{.}}</i>
+      {{/quotes}}
+    </div>
+    {{/isQuotes}}
+    {{#isWorks}}
+    <div>
+      {{#works}}
+      <a href="{{link}}" class="work-add-info">{{work}}</a>
+      {{/works}}
+    </div>
+    {{/isWorks}}
+    {{#isCritics}}
+    <div>
+      {{#critics}}
+      <div class="critic-add-info">
+        <div>
+          {{critic}}
+          <a href="{{link}}">...</a>
+        </div>
+        <div>
+          <img id="{{icon}}" src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{name}}">
+          <a href="{{link}}">{{name}}</a>
+        </div>
       </div>
-    {{/knwlPanel.additionalInfos}}
-  </aside>
+      {{/critics}}
+    </div>
+    {{/isCritics}}
+    {{#isPlatform}}
+    <div>
+      {{#platforms}}
+      <div class="platform-add-info">
+        <img id="{{icon}}" src="data:;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAEUlEQVR42mNkIAAYRxWMJAUAE5gAEdz4t9QAAAAASUVORK5CYII=" alt="{{platform}}">
+        <a href="{{link}}">{{platform}}</a>
+      </div>
+      {{/platforms}}
+    </div>
+    {{/isPlatform}}
+    {{#isNormal}}
+    <div>
+      <div class="normal-add-info">
+        {{#elements}}
+        <a href="{{link}}">
+          <img src="data:;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw" alt="{{title}}" id="{{ID}}">
+        </a>
+        {{/elements}}
+      </div>
+      <div class="normal-add-info">
+        {{#elements}}
+        <a href="{{link}}">
+          <h4>{{title}}</h4>
+          <h5>{{subtitle}}</h5>
+        </a>
+        {{/elements}}
+      </div>
+    </div>
+    {{/isNormal}}
+  </div>
+  {{/knwlPanel.additionalInfos}}
+</aside>
 {{/hasKnwlPanel}}
 <main>
+  {{{finance}}}
   <article>
     <a class="link-title" href="{{firstResult.link}}">{{firstResult.title}}</a>
     <br />
@@ -88,29 +89,29 @@
     </p>
     <div class="sub-results">
       {{#firstResults}}
-        <article>
-          <a class="link-title" href="{{link}}">{{title}}</a>
-          <p class="link-text">{{{desc}}}</p>
-        </article>
+      <article>
+        <a class="link-title" href="{{link}}">{{title}}</a>
+        <p class="link-text">{{{desc}}}</p>
+      </article>
       {{/firstResults}}
     </div>
   </article>
   {{#hasQuickAnswers}}
-    <article class="quick-answers">
-      {{#quickAnswers}}
-        <button>+</button>
-        <p>{{question}}</p>
-        <div>{{{answer}}}</div>
-      {{/quickAnswers}}
-    </article>
+  <article class="quick-answers">
+    {{#quickAnswers}}
+    <button>+</button>
+    <p>{{question}}</p>
+    <div>{{{answer}}}</div>
+    {{/quickAnswers}}
+  </article>
   {{/hasQuickAnswers}}
   {{#results}}
-    <article>
-      <a class="link-title" href="{{link}}">{{title}}</a>
-      <br />
-      <a class="link" href="{{link}}">{{shownLink}}</a>
-      <p class="link-text">{{{desc}}}</p>
-    </article>
+  <article>
+    <a class="link-title" href="{{link}}">{{title}}</a>
+    <br />
+    <a class="link" href="{{link}}">{{shownLink}}</a>
+    <p class="link-text">{{{desc}}}</p>
+  </article>
   {{/results}}
 </main>
 {{{menu}}}
@@ -118,7 +119,7 @@
 
 <script>
   //Get images
-  const IMGs = {{{ stringedIMGs }}}
+  const IMGs = {{{ IMGs }}}
   IMGs.forEach(el => document.querySelector('#' + el[1]) != null ? document.querySelector('#' + el[1]).setAttribute('src', el[0]) : null)
 
   //Quick answers

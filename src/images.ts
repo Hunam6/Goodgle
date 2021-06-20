@@ -3,7 +3,7 @@ import {rendSearch, rendMenu, rendPage} from '../src/utils.ts'
 import type {Document} from 'deno_dom'
 
 export const images = async (doc: Document, lang: string) => {
-  let data: Record<string, any> = {
+  let data: any = {
     proposition: '',
     IMGs: [],
     stringedIMGs: '',
