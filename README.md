@@ -5,6 +5,10 @@
 
 <img src="https://siasky.net/nABA-Ukp_nBB_fUeqg7uFfK6Rtmw2s03ZVfqnp5uZOYgpg"/>
 
+### ⚠️ Current state of the project ⚠️
+
+I haven't been posting updates since some days because I'm working on a V2 written in [V](https://github.com/vlang/v)! The current project is pretty usable but, the speed isn't good enough. For a casual website that's good but for a search engine it isn't satisfying enough. I'm also currently blocked by a [bug/feature in V itself](https://github.com/vlang/v/issues/10683).
+
 ### *This project is at an early stage!*
 
 ## Goals
