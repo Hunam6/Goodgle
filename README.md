@@ -3,7 +3,7 @@
 
 ---
 
-<img src="https://siasky.net/nABA-Ukp_nBB_fUeqg7uFfK6Rtmw2s03ZVfqnp5uZOYgpg"/>
+![Goodgle Demo](https://github.com/Hunam6/Goodgle/assets/38606542/544a5d81-4f43-45ad-aadc-251366cf5942)
 
 ### ⚠️ Current state of the project ⚠️
 
