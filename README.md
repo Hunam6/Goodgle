@@ -1,4 +1,6 @@
 <h1 align='center'><img src="./assets/goodgle.svg" height="24" width="24"/> <ins>Goodgle</ins></h1>
+
+[![Deploy to Railyard](https://app.railyard.run/deploy/badge)](https://app.railyard.run/deploy?repo=https://github.com/Hunam6/Goodgle)
 <p align='center'><strong>A metasearch engine based on Google written in Deno 🦕</strong></p>
 
 ---
